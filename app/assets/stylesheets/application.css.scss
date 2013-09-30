@@ -1,0 +1,242 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+$bottom_panel_height: 35px;
+
+html, body {
+  width: 100%;
+  margin: {
+    top: 0px;
+    right: 0px;
+    bottom: $bottom_panel_height;
+    left: 0px;
+  }
+
+  h1, h2, h3 {
+    margin: 5px;
+    padding: 5px;
+  }
+
+  h1 {
+    margin-bottom: 15px;
+  }
+
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+a {
+  text-decoration: none;
+  color: #227;
+
+  &:active {
+    color: #33B;
+  }
+
+  &:hover {
+    //text-shadow: 0px 0px 8px rgba(4, 4, 128, .4);
+  }
+
+  &:visited {
+    color: #339;
+  }
+}
+
+#banner {
+  display: inline-block;
+  width: 100%;
+  background: #24C5C5;
+  padding: 10px;
+  border-bottom: 2px solid;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+
+  #logo {
+    display: block;
+    float: left;
+    img { height: 40px; }
+  }
+
+  #phone_number {
+    height: auto;
+    display: block;
+    position: relative;
+    margin-left: 10px;
+    padding: 2px;
+    float: left;
+
+    img {
+      height: 35px;
+      width: 35px;
+      margin-right: 5px;
+      display: inline-block;
+      float: left;
+    }
+
+    span {
+      vertical-align: middle;
+      font-size: 15px;
+      font-weight: bold;
+    }
+  }
+
+  #title {
+    display: block;
+    //width: 30em;
+    margin: auto;
+    font: /*small-caps*/ 40px/40px "Times New Roman", serif;
+    color: #282;
+    text-align: center;
+  }
+}
+
+form {
+  margin-bottom: 0px;
+}
+
+#columns {
+  position: relative;
+  background: #161;
+  min-height: 100%;
+
+  #main {
+    margin-left: 17em;
+    padding: 1em;
+    background: #FFF;
+    min-height: 100%;
+
+    .pagination {
+      text-align: center;
+
+      .next, .last {
+        text-align: right;
+      }
+      .first, .previous {
+        text-align: left;
+      }
+    }
+
+    .gap {
+      display: none;
+    }
+  }
+
+}
+
+#side {
+  position: absolute;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  padding: 1em 2em;
+  width: 13em;
+  min-height: 100%;
+
+  h4 {
+    color: #FFF;
+  }
+
+  form, div {
+    display: inline;
+  }
+ 
+  input {
+    font-size: small;
+  }
+
+  ul {
+    padding: 0;
+
+    li {
+      list-style: none;
+
+      a {
+        color: #bfb;
+        font-size: small;
+      }
+    }
+  }
+}
+
+#time {
+  position: absolute;
+  color: #bfb;
+  right: 1em;
+}
+
+.primary_button {
+  background: #F00;
+  border: {
+    top: outset 1px #999;
+    right: outset 1px #C00000;
+    bottom: outset 1px #C00;
+    left: outset 1px #666;
+    radius: 5px;
+  };
+  color: #EEE;
+  font: 14px Arial;
+  font-weight: bold;
+  padding: 4px 6px;
+  box-shadow: 1px 1px 3px #700;
+  margin: 5px 5px 3px 5px;
+  cursor: pointer;
+
+  &:active {
+    box-shadow: 0px 0px 2px #400;
+    border: {
+      top: inset 1px #C00;
+      right: inset 1px #666;
+      bottom: inset 1px #999;
+      left: inset 1px #C00000;
+      radius: 5px;
+    };
+  }
+
+  &[disabled] {
+    background: #999;
+    box-shadow: 1px 1px 3px #777;
+    border: none;
+
+    &:active {
+      background: #999;
+      box-shadow: 1px 1px 3px #777;
+    }
+  }
+}
+
+.bottom_panel {
+  display: inline-block;
+  background: #222;
+  width: 100%;
+  height: $bottom_panel_height;
+  padding: 2px;
+  color: #EEE;
+  position: fixed;
+  clear: both;
+  bottom: 0px;
+  left: 0px;
+  padding: 8px;
+  z-index: 999;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font: {
+    weight: bold;
+  };
+}

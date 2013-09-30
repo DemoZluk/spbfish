@@ -1,0 +1,15 @@
+.depot_form
+  - if flash[:alert]
+    %p#notice= flash[:alert]
+
+  = form_tag do
+    %h2 Пожалуйста авторизуйтесь
+
+    .field
+      = label_tag :name, 'Имя:'
+      = text_field_tag :name, params[:name]
+    .field
+      = label_tag :password, 'Пароль:'
+      = password_field_tag :password, params[:password]
+    .submit
+      = submit_tag 'Войти'

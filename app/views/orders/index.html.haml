@@ -1,0 +1,27 @@
+%h1 Список заказов
+
+%table
+  %tr
+    %th Имя
+    %th Адрес
+    %th Email
+    %th Способ оплаты
+    %th
+    %th
+    %th
+    %th Дата доставки
+
+  - @orders.each do |order|
+    %tr
+      %td= link_to(order.name, order)
+      %td= order.address
+      %td= mail_to order.email
+      %td.center= order.pay_type
+      %td= link_to 'Show', order
+      %td= link_to 'Edit', edit_order_path(order)
+      %td= link_to 'Destroy', order, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td.center= order.shipping_date
+
+%br
+
+= link_to('Назад', :back)

@@ -1,0 +1,10 @@
+selector = "##{@product.permalink} .short_description";
+console.(href = $(selector+" a.show").attr('href'));
+$(selector+" a.show").on('click', function(event) {
+event.preventDefault();
+}).html("- Скрыть описание").toggleClass('hide show');
+$(selector+" p").html("#{sanitize(@product.description)}").show('blind');
+$('.entry').not("##{@product.permalink}").on('mousedown', function () {
+$(".short_description p").hide('blind', function() {$(this).html('')});
+$(selector+" a.hide").html("+ Показать описание").toggleClass('hide show')
+});

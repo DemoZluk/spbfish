@@ -1,0 +1,181 @@
+// Place all the styles related to the carts controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.carts {
+  .edit_cart .quantity {
+      box-shadow: inset 0 0 3px #444;
+      text-align: center;
+      border-radius: 7px;
+    a.decrement {
+      position: relative;
+      &:after {
+        content: "";
+        position: absolute;
+        left: -25px;
+        top: 2px;
+        width: 13px;
+        height: 13px;
+        border-radius: 13px;
+        background: #4B4;
+        //border: 10px solid transparent;
+        //margin-top: -5px;
+      }
+      &:before {
+        content: "";
+        width: 1px;
+        position: absolute;
+        left: -23px;
+        top: 7px;
+        border: 4px solid transparent;
+        border-top: 5px solid #FFF;
+        z-index: 3;
+      }
+    }
+  }
+
+  .carts_index {
+    td {
+      padding: 1px 7px;
+    }
+
+    .updated_at {
+      font-style: italic;
+    }
+    
+    .total_price {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .cart_actions {
+      border-bottom: 1px dotted #2727EF;
+      text-align: center;
+
+      a {
+        display: inline-block;
+        padding: 3px 5px;
+      }
+    }
+  }
+}
+
+table.item_table {
+  width: 100%;
+  border: {
+    style: solid;
+    width: 1px;
+    collapse: collapse;
+  }
+
+  tbody {
+    font-size: 15px;
+    // tr:nth-child(2n) {
+    //   background: #EEE;
+    // }
+  }
+
+  .quantity {
+    width: 4em;
+  }
+  .total, .grand_total {
+    font-weight: bold;
+    width: 12em;
+  }
+
+  tfoot {
+    border-top: solid 1px #CCC;
+    font-weight: bold;
+  }
+
+  .delete {
+    width: 6em;
+  }
+}
+
+#cart_block {
+  position: absolute;
+  left: 1em;
+  bottom: 0px;
+  min-width: 400px;
+  width: 30%;
+  //text-align: right;
+  
+  #cart_panel {
+    width: 120%;
+    position: relative;
+    margin-bottom: 2px;
+    left: -0.8em;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 88px;
+      bottom: -19px;
+      border-width: 10px;
+      border-color: #EEE transparent transparent transparent;
+      border-style: solid;
+    }
+  }
+
+  #cart {
+    right: 0px;
+    width: 100%;
+    //bottom: $bottom_panel_height+5px;
+    background: #EEE;
+    color: #000;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(20, 20, 20, 1);
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+    h3{
+      text-align: left;
+    }
+  }
+  
+  .cart_link {
+    cursor: pointer;
+    display: inline-block;
+    text-decoration: none;
+
+    #cart_title {
+      padding-bottom: 1px;
+      border-bottom: dotted 1px;
+      color: #FFF;
+      text-decoration: none;
+    }
+    
+    &:hover {
+      #cart_title {
+        border-bottom: solid 1px;
+      }
+    }
+  }
+
+  #item_counter {
+    right: 30px;
+    display: inline-block;
+    background: #F00;
+    text-align: center;
+    width: 30px;
+    height: 20px;
+    margin: 8px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px #000;
+    color: #FFF;
+    font-weight: normal;
+    text-decoration: none;
+    vertical-align: middle;
+    overflow: hidden;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+  }
+
+  .button_to {
+    display: inline-block;
+    float: right;
+    height: 100%;
+  }
+}

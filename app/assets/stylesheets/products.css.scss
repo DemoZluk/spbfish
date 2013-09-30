@@ -1,0 +1,118 @@
+// Place all the styles related to the Products controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$img-size: 120px;
+$vote_img_size: 32px;
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  .product:nth-child(2n-1) {
+    background: #DDD;
+  }
+
+  tr, td {
+    padding: 5px;
+    vertical-align: top;
+  }
+
+  .image {
+    width: $img-size;
+    cursor: pointer;
+    background: #FFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    border: {
+      style: solid;
+      color: #FFF;
+      width: $img-size*0.03;
+      radius: $img-size*0.03;
+    }
+
+    img {
+      max-width: $img-size;
+      max-height: $img-size*0.75;
+      display: block;
+      margin: auto;
+    }
+  }
+
+  .name {
+    color: #FFF;
+    font: {
+      size: 1.2em;
+      weight: bold;
+    }
+    display: block;
+    margin: 0.8em;
+  }
+
+  .price {
+    text-align: right;
+    width: 6em;
+  }
+
+  .actions {
+    text-align: right;
+    font-size: small;
+    width: 8em;
+  }
+}
+
+.rating {
+  height: $vote_img_size;
+  width: $vote_img_size*5;
+  position: relative;
+  background: transparent image-url('thumb_up_bg.png') left top no-repeat;
+
+  .current {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: transparent image-url('thumb_up_rating.png') left top no-repeat;
+    opacity: 0.9;
+  }
+
+  .vote {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    a {
+      display: block;
+      height: $vote_img_size;
+      width: $vote_img_size;
+      float: left;
+    }
+
+    .vote_bg {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: transparent image-url('thumb_up.png') left top repeat-x;
+      z-index: 2;
+    }
+
+    @for $i from 1 through 5 {
+      a.rate_#{$i}:hover ~ .vote_bg {
+        width: #{$vote_img_size * $i};
+      }
+    }
+  }
+
+  .rating_counter {
+    color: #555;
+    font-size: 11px;
+    position: absolute;
+    right: -30px;
+    text-align: left;
+    bottom: 0;
+  }
+}

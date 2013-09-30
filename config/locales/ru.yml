@@ -1,0 +1,66 @@
+ru:
+
+  views:
+    pagination:
+      first: '<<'
+      previous: '<'
+      next: '>'
+      last: '>>'
+      truncate: Обрезка
+
+  layouts:
+    application:
+      title: "[FishMarkt]"
+  store:
+    index:
+      title: Лавка
+  carts:
+    show:
+      title: Ваша корзина
+  number:
+    currency:
+      format:
+        separator: ","
+  products:
+    vote_feedback: Спасибо за участие.
+  activerecord:
+    models:
+      order: "pedido"
+    attributes:
+      order:
+        address: "Адрес"
+        name: "Имя"
+        email: "E-mail"
+        pay_type: "Способ оплаты"
+        shipping_date: "Дата доставки"
+  helpers:
+    label:
+      product:
+        title: Наименование
+        description: Описание
+        image_url: Изображение
+        price: Цена
+      order:
+      name: ФИО
+      address: Адрес
+      email: Почта
+      pay_type: Тип оплаты
+      shipping_date: Дата доставки
+
+  from: Тропик Аквариум <mail@spbfish.ru>
+  sign: Тропик Аквариум
+  mail_subject: '[Тропик Аквариум] '
+  order_received: Подтверждение заказа
+  order_shipped: Отправка заказа
+  order_thanks: Спасибо за ваш заказ.
+  please_enter_correct_date: ' задана неверно.'
+  user: Пользователь 
+  ordered:  сделал заказ
+  user_created: "Пользователь с именем %{user_name} успешно создан."
+  user_not_found: "Пользователь %{user_name} не найден."
+  invalid_password: Введённый пароль не соответствует учётной записи.
+  logged_out: Пользователь вышел из системы.
+  cant_delete_last_user: Невозможно удалить последнего пользователя.
+  user_deleted: "Пользователь с именем %{user_name} удалён."
+  please_log_in: 'Пожалуйста, авторизуйтесь.'
+  cart_is_empty: Ваша корзина пуста.

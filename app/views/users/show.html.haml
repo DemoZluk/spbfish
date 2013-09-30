@@ -1,0 +1,13 @@
+- if
+  %p#notice= notice
+
+%p
+  %b Name:
+  = @user.name
+%p
+  %b Pass hash:
+  = @user.password_digest
+
+= link_to 'Edit', edit_user_path(@user)
+\|
+= link_to 'Back', users_path

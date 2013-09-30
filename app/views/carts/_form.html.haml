@@ -1,0 +1,23 @@
+= form_for @cart do |f|
+  - if @cart.errors.any?
+    #error_explanation
+      %h2= "Во время заполнения были допущены следующие ошибки:"
+      %ul
+        - @cart.errors.full_messages.each do |msg|
+          %li= msg
+
+  .actions
+    %table 
+      %thead 
+        %th Название
+        %th Кол-во
+        %th Действия
+      %tbody 
+      - @cart.line_items.each do |item|
+        %tr 
+          %td.name= link_to(item.product.title, item.product)
+          %td.quantity
+            =# link_to('', decrement_line_item_path(item.id), remote: true, class: :decrement, method: :post)
+            = text_field_tag item.id, item.quantity, {class: 'spinner center', size: 3}
+          %td.actions= link_to('Удалить', line_item_path, method: :destroy)
+    = f.submit 'Сохранить'

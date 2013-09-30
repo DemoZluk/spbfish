@@ -1,0 +1,3 @@
+$('#cart').stop().fadeOut('fast', function() { $('#cart_panel').html("#{ escape_javascript render('shared/cart', cart: @cart) }").fadeIn('fast')});
+
+$('#item_counter span').stop().hide('fast', function() { $('#item_counter span').html("#{ escape_javascript render('shared/counter') }").show('fast')});

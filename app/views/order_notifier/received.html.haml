@@ -1,0 +1,40 @@
+%html
+  %head
+    %title Уведомление о заказе
+    %meta{:content => "text/html; charset=utf-8"}/ 
+    %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/ 
+
+  %body.email
+    %p= 'Здравствуйте, ' + @order.name
+
+    %p Ваш заказ получен и скоро с вами свяжется менеджер по продажам из нашей компании.
+
+    %p Вы заказали следующие товары:
+
+    %table.order
+      %thead 
+        %tr
+          %th Название
+          %th Кол-во
+          %th Сумма
+      %tbody 
+        - @order.line_items.each do |line_item|
+          %tr
+            %td= line_item.product.long_name
+            %td.quantity.right= line_item.quantity
+            %td.price.right= number_to_currency(line_item.total_price)
+      %tfoot 
+        %tr.bold
+          %td{ :colspan => 2 } Итого
+          %td.right= number_to_currency(@total_price)
+
+    %p Как только товар будет готов к отгрузке вы получите ещё одно письмо.
+
+    Ссылка на ваш заказ:
+
+    %a{href: order_url(@order.id)}= order_url(@order.id)
+
+    %p 
+      \--
+      %br/ 
+      Тропик Аквариум

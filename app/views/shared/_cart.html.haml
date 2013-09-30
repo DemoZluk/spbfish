@@ -1,0 +1,22 @@
+#cart{ :style => 'text-align: center;'}
+  - if cart.line_items.empty?
+    %strong Ваша корзина пуста
+  - else
+    - if controller_name != 'carts'
+      %h3= link_to('Корзина', cart_path(@cart.id), id: 'cart_link')
+    %table.item_table
+      %colgroup 
+        %col{width: '10%'}
+        %col{width: '50%'}
+        %col{width: '35%'}
+        %col{width: '5%'}
+      - cart.line_items.each do |line_item|
+        = render(line_item)
+      %tfoot
+        %td{colspan: 2} Итого
+        %td.grand_total.right= render('shared/grand_total')
+        %td
+        %td.clear_cart= button_to('×', cart, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)
+-# = link_to('Изменить', edit_cart_path(cart))
+-# \|
+-# = link_to('Назад', carts_path)

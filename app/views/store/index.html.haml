@@ -1,0 +1,19 @@
+%title= t('.title')
+- if notice
+  %p#notice= notice
+%h1 Каталог
+= paginate products = Product.order(:title).page(params[:page])
+- products.each do |product|
+  .entry{id: product.permalink}
+    = render 'shared/image', item_id: product.item_id
+    .description
+      %h3= link_to(product.title, product)
+      %p
+        = sanitize(product.long_name).truncate(350, separator: '.', omission: '...')
+      .short_description
+        = link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
+        %p
+    .right_panel
+      = render 'shared/rating', product: product
+      %span.price= number_to_currency(product.price)
+    = button_to('В корзину', line_items_path(product_id: product), class: 'add_to_cart primary_button', remote: true, data: {disable_with: 'Добавляем' })

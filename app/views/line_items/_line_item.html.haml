@@ -1,0 +1,6 @@
+%tr{ :class => line_item == @current_item ? 'current_item' : nil, :id => line_item.product.id }
+  %td.quantity.right #{line_item.quantity} &times;&nbsp;
+  %td.name= link_to(line_item.product.title, product_path(line_item.product.id))
+  %td.total.right= number_to_currency(line_item.total_price)
+  %td.decrement= button_to('-1', decrement_line_item_path(line_item.id), remote: true)
+  %td.delete= button_to('X', line_item, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)

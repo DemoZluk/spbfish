@@ -1,0 +1,7 @@
+$('#cart_panel').html("#{ escape_javascript render('shared/cart', cart: @cart) }");
+
+$('.grand_total').html("#{ escape_javascript render('shared/grand_total') }");
+
+$('.current_item').css({'background-color':'#F55'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
+
+$('#item_counter span').stop().hide('fast', function() { $('#item_counter span').html("#{ escape_javascript render('shared/counter') }").show('fast')});

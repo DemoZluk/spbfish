@@ -1,0 +1,8 @@
+- if notice
+  %p#notice= notice
+
+%h1 Ваша корзина
+
+= render('shared/cart', cart: @cart)
+
+%p= link_to('Назад', :back)

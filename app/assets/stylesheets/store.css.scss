@@ -1,0 +1,94 @@
+// Place all the styles related to the Store controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.store {
+  h1 {
+    margin: auto;
+    padding-bottom: 0.5em;
+    font: 150% sans-serif;
+    color: #226;
+    border-bottom: 3px dotted #77d;
+  }
+
+  /* An entry in the store catalog */
+  .entry {
+    position: relative;
+    min-height: 140px;
+    overflow: hidden;
+    margin-top: 0.5em;
+    border: solid 1px #CCC;
+    border-radius: 10px;
+
+    &:hover {
+      border-color: #888;
+      background: #EFE;
+    }
+
+    h3 {
+      font-size: 120%;
+      font-family: sans-serif;
+      margin: auto;
+      color: #227;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+
+    img {
+      width: 135px;
+      padding: 10px;
+      display: inline-block;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      cursor: pointer;
+    }
+    
+    .description {
+      padding: 10px;
+      margin: auto;
+      width: 70%;
+      display: inline-block;
+      vertical-align: top;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+
+    .short_description {
+        p {
+          display: none;
+        }
+    }
+
+    .right_panel {
+      width: 16%;
+      display: inline-block;
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      text-align: right;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+
+      .price {
+        width: 100%;
+        display: inline-block;
+        color: #44a;
+        font-weight: bold;
+      }
+
+      .rating {
+        position: absolute;
+        top: 30px;
+        right: 2em;
+      }
+    }
+
+    .add_to_cart {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      form {
+        margin: auto;
+      }
+    }
+  }
+}

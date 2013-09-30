@@ -1,0 +1,24 @@
+- if notice
+  %p#notice= notice
+
+- @page_title = @product.title
+
+%h2
+  = @product.title
+%p
+  %b Описание:
+  %p= @product.description
+.image
+  %b Изображение:
+  %br/ 
+  = render 'shared/image', item_id: @product.item_id
+%p
+  %b Цена:
+  = number_to_currency @product.price
+
+= render 'shared/rating', product: @product
+
+= link_to('Назад', :back)
+- if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
+  \|
+  = link_to('Изменить', edit_product_path(@product))

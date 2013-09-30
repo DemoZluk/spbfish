@@ -1,0 +1,18 @@
+= 'Здравствуйте, ' + @order.name
+\
+Ваш заказ получен и скоро с вами свяжется менеджер по продажам из нашей компании.
+\
+Вы заказали следующие товары:
+\
+- @order.line_items.each do |item|
+	= '  - ' + item.quantity.to_s + ' x ' + item.product.title + ': ' + number_to_currency(item.price*item.quantity)
+= '    Итого: ' + number_to_currency(@total_price)
+\
+Как только товар будет готов к отгрузке вы получите ещё одно письмо.
+
+Ссылка на ваш заказ:
+
+= order_url(@order.id)
+
+\--
+Тропик Аквариум

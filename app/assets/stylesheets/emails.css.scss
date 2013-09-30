@@ -1,0 +1,29 @@
+.email {
+
+	.order {
+		font: normal 13px Arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+
+		tbody {
+			border-bottom: dotted 1px #44E;
+			border-top: dotted 1px #44E;
+		}
+
+		.quantity {
+			text-align: center;
+		}
+
+		.price {
+			width: 8em;
+		}
+	}
+
+	.right {
+		text-align: right;
+	}
+
+	.bold {
+		font-weight: bold;
+	}
+}

@@ -1,0 +1,47 @@
+- @app_name = 'FishMarkt'
+%html
+  %head
+    %title= page_title(controller_name, action_name)
+    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
+    = javascript_include_tag "application", "data-turbolinks-track" => true
+    = csrf_meta_tags
+  
+  %div#banner
+    #logo= image_tag('logo.jpg')
+    #phone_number
+      = image_tag('phone.png')
+      %span 
+        +7 (812) 449-79-26
+        %br/ 
+        +7 (901) 317-17-87
+    #title{style: "width: #{(@title.length).to_s}em"}= @app_name
+
+  %body{:class => controller_name}
+  #columns
+    #side
+
+      %ul
+        %li
+          = link_to('На главную', store_url)
+        %li 
+          %a{:href => "#contacts"} Контакты
+        - if session[:user_id] && User.find(session[:user_id]).presence.user_group == 'admin'
+          %h4 Панель администратора
+          %ul 
+            %li
+              = link_to('Заказы', orders_path)
+            %li
+              = link_to('Каталог', products_path)
+            %li 
+              = link_to('Корзины', carts_path)
+            %li 
+              = link_to('Пользователи', users_path)
+            %br
+            %li= link_to('Выход', logout_path, method: :delete)
+      -# - c = session[:counter]
+      -# - if c>=5
+      -#   .counter= 'Вы посетили эту страницу '+c.to_s+' '+Russian.p(c, 'раз', 'раза', 'раз')+' за текущую сессию'
+    #main= yield
+
+  = render('shared/bottom_panel', { controller: controller_name })
+  %footer

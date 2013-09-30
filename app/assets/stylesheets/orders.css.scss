@@ -1,0 +1,55 @@
+// Place all the styles related to the orders controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+fieldset.order {
+  background: #efe;
+
+  .ui-datepicker-trigger {
+    position: relative;
+    right: 26px;
+    top: 6px;
+    margin: 4px;
+    cursor: pointer;
+    box-shadow: 1px 1px 1px #000;
+  }
+
+  .ui-datepicker-trigger:active, .active {
+    right: 25px;
+    top: 7px;
+    box-shadow: none;
+  }
+
+  legend {
+    color: #333;
+    font-family: sans-serif;
+    padding: 0.2em 1em;
+  }
+}
+
+form {
+  label {
+    width: 5em;
+    float: left;
+    text-align: right;
+    padding-top: 0.2em;
+    margin-right: 0.1em;
+    display: block;
+  }
+
+  select, textarea, input {
+    margin-left: 0.5em;
+  }
+
+  .submit {
+    margin-left: 4em;
+  }
+
+  br {
+    display: none
+  }
+}
+
+.center {
+  text-align: center;
+}

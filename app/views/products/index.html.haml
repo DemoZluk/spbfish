@@ -1,0 +1,30 @@
+%h1 Каталог
+
+%table.product-table
+  %tr
+    %th Изображение
+    %th Описание
+    %th Цена
+    %th 
+
+  - @products.each do |product|
+    %tr.product
+      - product.image_url="no_photo.png" if product.image_url.empty?
+      %td
+        %div.image= image_tag(product.image_url)
+      %td.description
+        %span.name= link_to(product.title, product)
+        %p= truncate(strip_tags(product.description), length: 250, separator: '.', omission: '.')
+      %td.price= number_to_currency(product.price)
+      - if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
+        %td.actions
+          = link_to('Показать', product)
+          %br
+          = link_to('Изменить', edit_product_path(product))
+          %br
+          = link_to('Удалить', product, :method => :delete, :data => { :confirm => 'Вы уверены?' })
+          %br
+
+= link_to('New Product', new_product_path)
+
+- Russian.locale
