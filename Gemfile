@@ -4,7 +4,6 @@ ruby '1.9.3'
 gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for Active Record
-gem 'sqlite3'
 # Need pg for heroku
 gem 'pg'
 gem 'rails_12factor'
