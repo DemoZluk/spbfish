@@ -7,7 +7,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-file = File.read('tmp/import.xml')
+file = File.read('xml/import.xml')
 doc = Nokogiri::XML(file)
 doc.css('Товар').each do |product|
 
