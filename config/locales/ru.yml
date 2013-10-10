@@ -1,12 +1,18 @@
 ru:
 
+  selection_labels:
+    title: Названию
+    price: 'Цене, сначала дешёвые'
+    price DESC: 'Цене, сначала дорогие'
+    updated_at: 'Дате, сначала старые'
+
   views:
     pagination:
       first: '<<'
       previous: '<'
       next: '>'
       last: '>>'
-      truncate: Обрезка
+      truncate: ...
 
   layouts:
     application:
@@ -17,12 +23,12 @@ ru:
   carts:
     show:
       title: Ваша корзина
-  number:
-    currency:
-      format:
-        separator: ","
+  admin:
+    index:
+      title: Панель администратора
   products:
     vote_feedback: Спасибо за участие.
+    vote_error: Не удалось проголовать.
   activerecord:
     models:
       order: "pedido"
@@ -33,6 +39,10 @@ ru:
         email: "E-mail"
         pay_type: "Способ оплаты"
         shipping_date: "Дата доставки"
+  number:
+    currency:
+      format:
+        separator: ","
   helpers:
     label:
       product:
@@ -41,11 +51,11 @@ ru:
         image_url: Изображение
         price: Цена
       order:
-      name: ФИО
-      address: Адрес
-      email: Почта
-      pay_type: Тип оплаты
-      shipping_date: Дата доставки
+        name: ФИО
+        address: Адрес
+        email: Почта
+        pay_type: Тип оплаты
+        shipping_date: Дата доставки
 
   from: Тропик Аквариум <mail@spbfish.ru>
   sign: Тропик Аквариум

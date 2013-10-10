@@ -3,22 +3,18 @@
 
 - @page_title = @product.title
 
-%h2
-  = @product.title
-%p
-  %b Описание:
+.image= render 'shared/image', product: @product
+
+.right_panel
+  %p.price= number_to_currency @product.price
+  .rating= render 'shared/rating', product: @product
+  = render 'shared/add_to_cart', product: @product
+
+.text_block
+  %h2
+    = @product.title
+
   %p= @product.description
-.image
-  %b Изображение:
-  %br/ 
-  = render 'shared/image', item_id: @product.item_id
-%p
-  %b Цена:
-  = number_to_currency @product.price
 
-= render 'shared/rating', product: @product
-
-= link_to('Назад', :back)
 - if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
-  \|
   = link_to('Изменить', edit_product_path(@product))

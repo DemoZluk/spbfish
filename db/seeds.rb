@@ -10,16 +10,21 @@
 file = File.read('tmp/import.xml')
 doc = Nokogiri::XML(file)
 doc.css('Товар').each do |product|
+
+  product_title = product.at_css('>Наименование').content
+  permalink = product_title.gsub(/[^-\wа-яё]+/i, ' ').squish.gsub(/\s+/, '_')
+
   Product.create!(
     item: product.at_css('>Артикул').content,
-    title: product.at_css('>Наименование').content.squeeze(' ').gsub(/\.+/, '').strip,
+    title: product_title,
     long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").content,
     description: product.at_css('>Описание').inner_html,
     price: rand(100..5000),
     producer: product.at_css('>Изготовитель>Наименование').content,
     item_id: product.at_css('>Ид').content,
     unit: product.at_css('>БазоваяЕдиница').content,
-    group_id: product.at_css('>Группы>Ид').content
+    group_id: product.at_css('>Группы>Ид').content,
+    permalink: permalink
   )
   product.css('Картинка').each do |img|
     ProductImage.create(
@@ -27,11 +32,6 @@ doc.css('Товар').each do |product|
       item_id: product.at_css('>Ид').content
     )
   end
-end
-
-Product.all.each do |product|
-  product.permalink = product.title.gsub(/[^\wа-я\-]+/i, '_')
-  product.save
 end
 
 doc.xpath('//Группы/descendant::Группа').each do |g|

@@ -1,11 +1,13 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
+
   skip_before_action :authorize, only: [:show, :vote]
 
   # GET /products
   # GET /products.json
-  def index(a)
-    @products = Product.page(params[:page])
+  def index
+    current = session[:user][:prefs][:per_page] rescue 10
+    @products = Product.order(params[:order_by] || 'title').page(params[:page]).per(current)
   end
 
   # GET /products/1
@@ -63,9 +65,26 @@ class ProductsController < ApplicationController
   end
 
   def vote
-    @product.rate(params[:points], @product.id)
-    if @product.save
-      redirect_to :back, notice: I18n.t('products.vote_feedback')
+    @points = params[:points]
+
+    session[:voted] ||= {}
+
+    if @product.rate(@points, @product)
+
+      vote = {@product.id => @points}
+      session[:voted].deep_merge!(vote)
+
+      respond_to do |format|
+        format.html { redirect_to :back, notice: I18n.t('products.vote_feedback') }
+        format.json { render json: @product.rating }
+        format.js
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to :back, notice: I18n.t('products.vote_error') }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.js
+      end
     end
   end
 

@@ -1,17 +1,19 @@
 %h1 Каталог
 
+.control
+  = render 'shared/control'
+
+
 %table.product-table
   %tr
     %th Изображение
     %th Описание
     %th Цена
     %th 
-
   - @products.each do |product|
     %tr.product
-      - product.image_url="no_photo.png" if product.image_url.empty?
       %td
-        %div.image= image_tag(product.image_url)
+        %div.image= render 'shared/image', product: product
       %td.description
         %span.name= link_to(product.title, product)
         %p= truncate(strip_tags(product.description), length: 250, separator: '.', omission: '.')

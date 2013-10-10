@@ -1,5 +1,4 @@
 Depot::Application.routes.draw do
-  resources :comments
 
   get 'admin' => 'admin#index'
 
@@ -8,9 +7,8 @@ Depot::Application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
-  # get "sessions/new"
-  # get "sessions/create"
-  # get "sessions/destroy"
+
+  get 'user_prefs' => 'store#change_user_prefs'
 
   resources :users
 

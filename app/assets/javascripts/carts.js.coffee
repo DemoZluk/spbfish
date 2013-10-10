@@ -30,7 +30,7 @@ actions = ->
       buttonImage: "/assets/images/calendar.gif",
       buttonImageOnly: true,
       minDate: +1,
-      maxDate: +60,
+      maxDate: +14,
       showWeek: true,
       firstDay: 1,
       defaultDate: +1,

@@ -1,0 +1,11 @@
+%span Позиций на странице
+#products_per_page
+  - current = session[:user][:prefs][:per_page] rescue 10
+  = render partial: 'shared/select', locals: {current: current, array: [10, 25, 50], controller: 'store', action: 'change_user_prefs', param: 'per_page'}
+
+%span Сортировать по
+#sort
+  - sort_types = ['title', 'price DESC', 'updated_at']
+  = render partial: 'shared/select', locals: {current: params[:order_by] || 'title', array: sort_types, controller: 'store', action: 'index', param: 'order_by'}
+
+= paginate @products

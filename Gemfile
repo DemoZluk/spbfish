@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for Active Record
+gem 'sqlite3'
+# Need pg for heroku
 gem 'pg'
 
 # Use SCSS for stylesheets
@@ -37,8 +39,6 @@ gem 'haml'
 
 gem 'haml-rails'
 
-gem 'paperclip'
-
 gem 'russian'
 
 gem 'thin'
@@ -47,11 +47,18 @@ gem 'roadie'
 
 gem "letter_opener", :group => :development
 
+# Paperclip - attachment manager
+gem 'paperclip'
+
 # Pageinate results
 gem 'kaminari'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
+
+# Create thumbnails
+gem 'carrierwave'
+gem 'mini_magick', :git => 'git://github.com/minimagick/minimagick.git'
 
 # Use unicorn as the app server
 # gem 'unicorn'

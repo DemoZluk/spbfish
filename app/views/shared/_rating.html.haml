@@ -1,8 +1,13 @@
-.rating
-  .current{style: "width: #{(product.rating || 0)/5*160}px"}
-  .vote
-    - 1.upto(5) do |i|
-      = link_to '', vote_product_path(product, points: i), title: "Оценить на #{i}", class: "rate_#{i}", remote: true
-    .vote_bg
-  .rating_counter
-    = "(#{product.rating_counter || 0})"
+- if session
+  - if session[:voted] && session[:voted][product.id]
+    .voted{style: "width: #{session[:voted][product.id].to_i*120/5}px"}
+    .thanks Спасибо за отзыв!
+  - else
+    .vote
+      - 1.upto(5) do |i|
+        = link_to '', vote_product_path(product, points: i), title: "Оценить на #{i}", class: "rate_#{i}", remote: true
+      .vote_bg
+
+.current{style: "width: #{((product.rating || 0)/5*120).to_i}px"}
+.rating_counter
+  = "(#{product.rating_counter || 0})"

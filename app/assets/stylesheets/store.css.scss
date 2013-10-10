@@ -1,6 +1,7 @@
 // Place all the styles related to the Store controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
 .store {
   h1 {
     margin: auto;
@@ -67,19 +68,6 @@
       text-align: right;
       box-sizing: border-box;
       -moz-box-sizing: border-box;
-
-      .price {
-        width: 100%;
-        display: inline-block;
-        color: #44a;
-        font-weight: bold;
-      }
-
-      .rating {
-        position: absolute;
-        top: 30px;
-        right: 2em;
-      }
     }
 
     .add_to_cart {

@@ -1,2 +1,2 @@
-- image = display_product_image(item_id).first rescue 'no_photo.png'
-= link_to image_tag(image), image
+- image = product.product_images.first.image_url rescue 'no_photo.png'
+= link_to image_tag(image, {alt: product.title}), '../assets/' + image

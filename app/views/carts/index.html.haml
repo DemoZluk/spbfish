@@ -1,31 +1,27 @@
 %h1 Список корзин
 
-= select_tag 'Выбор'
 
 %table.carts_index
   %tr
     %th Покупки
     %th Кол-во
-    %th Стоимость
+    %th Сумма
 
-  - @carts.each do |cart|
-    - cart.line_items.each do |item|
+  - (@carts).each do |cart|
+    - unless cart.line_items.empty?
+      - cart.line_items.each do |item|
+        %tr 
+          %td= item.product.title
+          %td.center= item.quantity
+          %td.right= number_to_currency(item.quantity*item.price)
+      %tr.total_price 
+        %td{colspan: 2} Итого
+        %td.right= number_to_currency(cart.total_price)
+      %tr.updated_at 
+        %td{colspan: 2} Дата изменения
+        %td= cart.updated_at
       %tr 
-        %td= item.product.title
-        %td.center= item.quantity
-        %td.right= number_to_currency(item.quantity*item.price)
-    %tr.total_price 
-      %td{colspan: 2} Итого
-      %td.right= number_to_currency(cart.total_price)
-    %tr.updated_at 
-      %td{colspan: 2} Дата изменения
-      %td= cart.line_items.order('updated_at').last.updated_at
-    %tr 
-      %td.cart_actions{colspan: 3}
-        = link_to('Открыть', cart)
-        = link_to('Изменить', edit_cart_path(cart))
-        = link_to('Удалить', cart, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)
-
-%br
-
-=# link_to 'New Cart', new_cart_path
+        %td.cart_actions{colspan: 3}
+          = link_to('Открыть', cart)
+          = link_to('Изменить', edit_cart_path(cart))
+          = link_to('Удалить', cart, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)

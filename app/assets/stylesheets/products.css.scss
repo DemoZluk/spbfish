@@ -1,9 +1,8 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-
 $img-size: 120px;
-$vote_img_size: 32px;
+$vote_img_size: 24px;
 
 .product-table {
   width: 100%;
@@ -56,14 +55,21 @@ $vote_img_size: 32px;
   .actions {
     text-align: right;
     font-size: small;
-    width: 8em;
+    width: 5em;
   }
+}
+
+.entry .rating {
+  position: absolute;
+  top: 30px;
+  right: 2em;
 }
 
 .rating {
   height: $vote_img_size;
   width: $vote_img_size*5;
   position: relative;
+  margin-bottom: 15px;
   background: transparent image-url('thumb_up_bg.png') left top no-repeat;
 
   .current {
@@ -107,6 +113,25 @@ $vote_img_size: 32px;
     }
   }
 
+  .voted {
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent image-url('thumb_up_voted.png') left top repeat-x;
+    z-index: 3;
+    opacity: 0.8;
+  }
+
+  .thanks {
+    display: block;
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    bottom: -15px;
+    left: 0;
+  }
+
   .rating_counter {
     color: #555;
     font-size: 11px;
@@ -115,4 +140,53 @@ $vote_img_size: 32px;
     text-align: left;
     bottom: 0;
   }
+}
+
+// Show
+.show {
+  .image {
+    float: left;
+    margin: 10px;
+
+    img {
+      max-height: 250px;
+      max-width: 250px;
+    }
+  }
+  
+  .text_block {
+    position: absolute;
+    padding: 5px;
+    text-align: justify;
+    display: inline-block;
+    width: 635px;
+    overflow: hidden;
+  }
+  
+  .right_panel {
+    position: absolute;
+    right: 10px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px rgba(131, 131, 131, 0.8);
+    text-align: right;
+    background: #F7F7F7;
+    width: 150px;
+
+    & .add_to_cart {
+      margin: 20px 0px 5px 0px;
+    }
+
+    .price {
+      margin: 2px;
+    }
+
+    .rating {
+      margin-top: 4px;
+      margin-right: 35px;
+    }
+  }
+
 }
