@@ -5,7 +5,7 @@
 
 %span Сортировать по
 #sort
-  - sort_types = ['title', 'price DESC', 'updated_at']
+  - sort_types = ['title', 'price', 'price DESC', 'updated_at', 'updated_at DESC']
   = render partial: 'shared/select', locals: {current: params[:order_by] || 'title', array: sort_types, controller: 'store', action: 'index', param: 'order_by'}
 
 = paginate @products

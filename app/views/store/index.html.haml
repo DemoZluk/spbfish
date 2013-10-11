@@ -8,7 +8,8 @@
 
 - @products.each do |product|
   .entry{id: product.permalink}
-    = render 'shared/image', product: product
+    = link_to image_tag(image_thumb_helper, alt: product.permalink), product
+    =# render 'shared/image', product: product
     .description
       %h3= link_to(product.title, product)
       %p

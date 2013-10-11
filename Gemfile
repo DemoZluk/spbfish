@@ -4,6 +4,7 @@ ruby '1.9.3'
 gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for Active Record
+gem 'sqlite3'
 # Need pg for heroku
 gem 'pg'
 gem 'rails_12factor'
@@ -58,7 +59,7 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Create thumbnails
 gem 'carrierwave'
-gem 'mini_magick', :git => 'git://github.com/minimagick/minimagick.git'
+gem 'mini_magick', '~> 3.5.0'
 
 # Use unicorn as the app server
 # gem 'unicorn'

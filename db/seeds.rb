@@ -28,7 +28,7 @@ doc.css('Товар').each do |product|
   )
   product.css('Картинка').each do |img|
     ProductImage.create(
-      image_url: img.content.presence || 'no_photo.png',
+      url: img.content,
       item_id: product.at_css('>Ид').content
     )
   end
