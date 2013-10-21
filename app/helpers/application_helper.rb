@@ -15,7 +15,7 @@ module ApplicationHelper
 
   def display_product_image(item_id)
     if item = ProductImage.where(item_id: item_id).presence
-      item.map {|i| i.image_url}
+      item.map {|i| i.url}
     end
   end
 

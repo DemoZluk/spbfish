@@ -6,7 +6,7 @@ gem 'rails', '4.0.0'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 # Need pg for heroku
-gem 'pg'
+#gem 'pg'
 gem 'rails_12factor'
 
 # Use SCSS for stylesheets
@@ -42,11 +42,10 @@ gem 'haml-rails'
 
 gem 'russian'
 
-gem 'thin'
 
 gem 'roadie'
 
-gem "letter_opener", :group => :development
+gem "letter_opener", group: :development
 
 # Paperclip - attachment manager
 gem 'paperclip'
@@ -59,10 +58,11 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 
 # Create thumbnails
 gem 'carrierwave'
-gem 'mini_magick', '~> 3.5.0'
+gem 'mini_magick', git: "https://github.com/minimagick/minimagick.git"
 
 # Use unicorn as the app server
 # gem 'unicorn'
+gem 'thin'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

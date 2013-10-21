@@ -1,3 +1,4 @@
+!!! 5 utf-8
 - @app_name = 'FishMarkt'
 %html
   %head
@@ -19,14 +20,9 @@
   %body{class: controller_name + ' ' + action_name}
     #columns
       #side
-        %ul
-          %li
-            = link_to('На главную', store_url)
-          %li 
-            %a{:href => "#contacts"} Контакты
-          - if session[:user_id] && User.find(session[:user_id]).presence.user_group == 'admin'
-            = render 'shared/admin_panel'
+        = render 'shared/side_nav'
       #main= yield
+    #dummy
 
     = render('shared/bottom_panel')
     %footer

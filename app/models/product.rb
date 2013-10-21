@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  has_many :product_images, primary_key: :item_id, foreign_key: :item_id
+  has_many :images, primary_key: :item_id, foreign_key: :item_id
 
   belongs_to :product_group
 
@@ -35,7 +35,7 @@ class Product < ActiveRecord::Base
   end
 
   def image_url(item_id)
-    product_images.find_all_by_item_id(item_id)
+    images.find_all_by_item_id(item_id)
   end
 
   private

@@ -14,7 +14,11 @@
   %h2
     = @product.title
 
-  %p= @product.description
+  %p
+    - if @product.description == '.'
+      = @product.long_name
+    - else
+      = @product.description
 
 - if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
   = link_to('Изменить', edit_product_path(@product))

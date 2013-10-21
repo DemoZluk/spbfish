@@ -10,24 +10,25 @@
 file = File.read('xml/import.xml')
 doc = Nokogiri::XML(file)
 doc.css('Товар').each do |product|
-
   product_title = product.at_css('>Наименование').content
-  permalink = product_title.gsub(/[^-\wа-яё]+/i, ' ').squish.gsub(/\s+/, '_')
+  permalink = product_title.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+  unless Product.find_by_permalink(permalink)
 
-  Product.create!(
-    item: product.at_css('>Артикул').content,
-    title: product_title,
-    long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").content,
-    description: product.at_css('>Описание').inner_html,
-    price: rand(100..5000),
-    producer: product.at_css('>Изготовитель>Наименование').content,
-    item_id: product.at_css('>Ид').content,
-    unit: product.at_css('>БазоваяЕдиница').content,
-    group_id: product.at_css('>Группы>Ид').content,
-    permalink: permalink
-  )
+    Product.create!(
+      item: product.at_css('>Артикул').content,
+      title: product_title,
+      long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").content,
+      description: product.at_css('>Описание').inner_html,
+      price: rand(100..5000),
+      producer: product.at_css('>Изготовитель>Наименование').content,
+      item_id: product.at_css('>Ид').content,
+      unit: product.at_css('>БазоваяЕдиница').content,
+      group_id: product.at_css('>Группы>Ид').content,
+      permalink: permalink
+    )
+  end
   product.css('Картинка').each do |img|
-    ProductImage.create(
+    Image.create(
       url: img.content,
       item_id: product.at_css('>Ид').content
     )
@@ -42,9 +43,12 @@ doc.xpath('//Группы/descendant::Группа').each do |g|
   else
     parent_id = ''
   end
+  title = g.at_css('>Наименование').content
+  permalink = title.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
   ProductGroups.create(
-    group_id: group_id,
-    title: g.at_css('>Наименование').content,
-    parent_id: parent_id
+    id: group_id,
+    title: title,
+    parent_id: parent_id,
+    permalink: permalink
   )
 end

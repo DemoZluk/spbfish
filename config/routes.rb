@@ -29,6 +29,8 @@ Depot::Application.routes.draw do
     get :vote, on: :member
   end
 
+  resources :product_groups
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

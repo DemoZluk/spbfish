@@ -17,6 +17,7 @@
         %td.grand_total.right= render('shared/grand_total')
         %td
         %td.clear_cart= button_to('×', cart, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)
+  = link_to_function 'X', "$('#cart_panel').hide('blind')", id: 'close_cart'
 -# = link_to('Изменить', edit_cart_path(cart))
 -# \|
 -# = link_to('Назад', carts_path)

@@ -49,7 +49,6 @@ ru:
       product:
         title: Наименование
         description: Описание
-        image_url: Изображение
         price: Цена
       order:
         name: ФИО

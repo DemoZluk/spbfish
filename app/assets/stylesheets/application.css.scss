@@ -112,49 +112,91 @@ form {
 }
 
 #columns {
+  $side_width: 170px;
+  $side_padding: 15px;
+  $side_margin: 5px;
   position: relative;
-  background: #161;
+  //background: #161;
   min-height: 100%;
 
   #main {
-    margin-left: 17em;
-    padding: 1em;
+    margin-left: $side_width+($side_padding+$side_margin)*2;
+    padding: 1em 1em 3em 1em;
     background: #FFF;
     min-height: 100%;
   }
-}
 
-#side {
-  position: absolute;
-  bottom: 0px;
-  top: 0px;
-  left: 0px;
-  padding: 1em 2em;
-  width: 13em;
-  min-height: 100%;
+  #side {
+    border: 1px solid #555;
+    border-radius: 3px;
+    float: left;
+    margin: $side_margin;
+    padding: 10px $side_padding;
+    width: $side_width;
+    min-height: 150px;
 
-  h4 {
-    color: #FFF;
-  }
+    h4 {
+      color: #FFF;
+    }
 
-  form, div {
-    display: inline;
-  }
- 
-  input {
-    font-size: small;
-  }
+    form, div {
+      display: inline;
+    }
+   
+    input {
+      font-size: small;
+    }
 
-  ul {
-    padding: 0;
+    ul {
+      background: #EEE;
+      border: 1px solid #7D7;
+      border-radius: 8px;
+      margin: 0px;
+      padding: 3px;
+      
+      li {
+        position: relative;
+        list-style: none;
+        border: 1px dotted transparent;
+        border-radius: 3px;
 
-    li {
-      list-style: none;
+        &:hover {
+          border-color: #AAA;
+        }
 
-      a {
-        color: #bfb;
-        font-size: small;
+        a {
+          display: block;
+          height: 100%;
+          width: 95%;
+          font-size: small;
+          padding: 5px;
+        }
       }
+
+      li.parent:hover>.child {
+        display: block;
+      }
+    }
+
+    .parent:after {
+      content: '';
+      position: absolute;
+      top: 40%;
+      right: 0px;
+      height: 0px;
+      border-width: 10%;
+      border-color: transparent transparent transparent #000;
+      border-style: solid;
+    }
+
+    ul.child {
+      position: absolute;
+      z-index: 9999;
+      right: -165px;
+      top: 50%;
+      display: none;
+      width: 160px;
+      border-top-left-radius: 0px;
     }
   }
 }
@@ -163,6 +205,10 @@ form {
   position: absolute;
   color: #bfb;
   right: 1em;
+}
+
+#dummy {
+  clear: both;
 }
 
 .bottom_panel {
