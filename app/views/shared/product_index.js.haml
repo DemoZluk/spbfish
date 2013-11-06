@@ -1,0 +1,3 @@
+// Rerender control panel and product list
+$('#product_index').html("#{escape_javascript render @products}")//.prepend("#{escape_javascript debug session[:user]}");
+$('.control').html("#{escape_javascript render 'shared/control'}")

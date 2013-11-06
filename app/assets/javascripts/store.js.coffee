@@ -7,10 +7,6 @@ actions = ->
   # $('.store .entry > img').click ->
   #   $(this).parent().find(':submit').click();
 
-  # Control selections
-  $('.select').hover ->
-    $(this).find('ul').stop().slideToggle()
-
   # Hide notice
   $('#notice').delay(2000).fadeOut(500);
 

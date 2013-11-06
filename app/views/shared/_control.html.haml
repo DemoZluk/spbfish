@@ -1,11 +1,15 @@
-%span Позиций на странице
-#products_per_page
-  - current = session[:user][:prefs][:per_page] rescue 10
-  = render partial: 'shared/select', locals: {current: current, array: [10, 25, 50], controller: 'store', action: 'change_user_prefs', param: 'per_page'}
+- action = @group.permalink rescue 'catalog'
+= form_tag action, method: 'GET', id: 'control_form', remote: true do |f|
+  %span Позиций на странице
+  #products_per_page
+    -# "Items per page" select pseudo-tag
+    = render partial: 'shared/select', locals: {current: @per_page, array: [10, 25, 50], controller: 'store', action: 'change_user_prefs', param: 'per_page', name: 'per_page'}
+  %span Сортировать по
+  #sort
+    - sort_types = ['title', 'price', 'updated_at', 'rating']
+    -# "Order items by" select pseudo-tag
+    = render partial: 'shared/select', locals: {current: @order_by || 'title', array: sort_types, controller: controller_name, action: action_name, param: 'order_by', name: 'order_by'}
+    = check_box_tag 'descending', true, (@desc)
+    = label_tag 'descending', 'по убыванию', id: 'desc_label'
 
-%span Сортировать по
-#sort
-  - sort_types = ['title', 'price', 'price DESC', 'updated_at', 'updated_at DESC']
-  = render partial: 'shared/select', locals: {current: params[:order_by] || 'title', array: sort_types, controller: 'store', action: 'index', param: 'order_by'}
-
-= paginate @products
+  = paginate @products

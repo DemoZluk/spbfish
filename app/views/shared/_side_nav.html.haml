@@ -1,6 +1,6 @@
 %nav
   %ul
-    - ProductGroups.where(parent_id: '').each do |group|
+    - Group.where(parent_id: '').each do |group|
       = menu_for_group(group).html_safe
 
     -#%li

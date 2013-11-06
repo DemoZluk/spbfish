@@ -2,22 +2,38 @@
 - @app_name = 'FishMarkt'
 %html
   %head
-    %title= page_title
+    %title= page_title # Application helper
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tags
-  
-  %div#banner
-    #logo= image_tag('logo.jpg')
-    #phone_number
-      = image_tag('phone.png')
-      %span 
-        +7 (812) 449-79-26
-        %br/ 
-        +7 (901) 317-17-87
-    #title{style: "width: #{(@title.length).to_s}em"}= @app_name
-
+      
   %body{class: controller_name + ' ' + action_name}
+    %div#banner
+      #logo= image_tag('logo.jpg')
+      = link_to @app_name, store_path, id: 'title'
+      #phone_number
+        = image_tag('phone.png')
+        %span 
+          +7 (812) 449-79-26
+          %br/ 
+          +7 (901) 317-17-87
+
+      = form_for 'login' do |f|
+        = f.text_field :name
+
+
+      %nav#top_menu
+        %ul.parent
+          %li= link_to 'Каталог', store_path
+          %li= link_to 'О нас', store_path
+          %li
+            = link_to 'Помощь', store_path
+            %ul.child
+              %li= link_to 'Оплата', store_path
+              %li= link_to 'Доставка', store_path
+              %li= link_to 'Гарантия', store_path
+          %li= link_to 'Отзывы и пожелания', store_path
+
     #columns
       #side
         = render 'shared/side_nav'

@@ -21,7 +21,7 @@ module ApplicationHelper
 
   def selection_label(current)
     if current.to_i == 0
-      label = I18n.t('selection_labels.'+current)
+      label = I18n.t('selection_labels.'+current.to_s)
     else
       label = current
     end

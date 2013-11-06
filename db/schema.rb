@@ -18,6 +18,15 @@ ActiveRecord::Schema.define(version: 20130927120624) do
     t.datetime "updated_at"
   end
 
+  create_table "groups", id: false, force: true do |t|
+    t.string   "id"
+    t.string   "title"
+    t.string   "parent_id"
+    t.string   "permalink"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "images", force: true do |t|
     t.string   "url"
     t.string   "item_id"
@@ -46,15 +55,6 @@ ActiveRecord::Schema.define(version: 20130927120624) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "shipping_date"
-  end
-
-  create_table "product_groups", id: false, force: true do |t|
-    t.string   "id"
-    t.string   "title"
-    t.string   "parent_id"
-    t.string   "permalink"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "products", force: true do |t|

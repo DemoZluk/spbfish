@@ -24,7 +24,8 @@ doc.css('Товар').each do |product|
       item_id: product.at_css('>Ид').content,
       unit: product.at_css('>БазоваяЕдиница').content,
       group_id: product.at_css('>Группы>Ид').content,
-      permalink: permalink
+      permalink: permalink,
+      rating: 0
     )
   end
   product.css('Картинка').each do |img|
@@ -45,7 +46,7 @@ doc.xpath('//Группы/descendant::Группа').each do |g|
   end
   title = g.at_css('>Наименование').content
   permalink = title.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
-  ProductGroups.create(
+  Group.create(
     id: group_id,
     title: title,
     parent_id: parent_id,

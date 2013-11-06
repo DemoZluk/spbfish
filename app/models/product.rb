@@ -1,7 +1,7 @@
 class Product < ActiveRecord::Base
   has_many :images, primary_key: :item_id, foreign_key: :item_id
 
-  belongs_to :product_group
+  belongs_to :group
 
   has_many :line_items
   has_many :orders, through: :line_items

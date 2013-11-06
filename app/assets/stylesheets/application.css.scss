@@ -12,6 +12,10 @@
  *= require_tree .
  */
 
+// Importing fonts from Google Fonts API
+@import url(http://fonts.googleapis.com/css?family=Jura:600|Jura|Play&subset=cyrillic);
+@import "gradient";
+
 $bottom_panel_height: 35px;
 
 html, body {
@@ -69,18 +73,17 @@ a {
   -moz-box-sizing: border-box;
 
   #logo {
-    display: block;
-    float: left;
+    display: inline-block;
     img { height: 40px; }
   }
 
   #phone_number {
     height: auto;
-    display: block;
+    display: inline-block;
     position: relative;
     margin-left: 10px;
     padding: 2px;
-    float: left;
+    //float: right;
 
     img {
       height: 35px;
@@ -94,21 +97,105 @@ a {
       vertical-align: middle;
       font-size: 15px;
       font-weight: bold;
+      display: block;
+      float: right;
     }
   }
 
   #title {
-    display: block;
-    //width: 30em;
+    display: inline-block;
     margin: auto;
-    font: /*small-caps*/ 40px/40px "Times New Roman", serif;
+    font: /*small-caps*/ 44px/44px "Play", serif;
     color: #282;
     text-align: center;
+    vertical-align: top;
+    padding: 0px 25px;
+  }
+}
+
+#top_menu {
+  float: right;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+
+    li {
+      position: relative;
+      font-size: 14px;
+      text-align: center;
+      list-style: none;
+      
+      a {
+        display: block;
+        padding: 5px 10px;
+      }
+
+      a:hover {
+        color: #FFF;
+      }
+    }
+
+    &.parent {
+
+      &>li {
+        display: inline-block;
+        border-radius: 0px 10px;
+
+        &:hover>ul.child {
+          display: block;
+        }
+      }
+    }
+  }
+  
+  ul.parent>li, ul.child {
+    border: 1px solid #43AA43;
+    background: rgb(152,224,176); /* Old browsers */
+    @include grad(rgba(152,224,176,1), 0%, rgba(44,224,20,1) , 50%, rgba(5,209,2,1), 51%, rgba(94,229,139,1), 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#98e0b0', endColorstr='#5ee58b',GradientType=0 ); /* IE6-9 */
+    box-shadow: 2px 2px 3px rgba(21, 163, 21, 0.55);
+  }
+
+  ul.child {
+    position: absolute;
+    top: 28px;
+    right: -1px;
+    display: none;
+    border-radius: 10px 0px 10px 10px;
   }
 }
 
 form {
   margin-bottom: 0px;
+}
+
+#loading {
+  position: absolute;
+  display: none;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background: rgba(160, 160, 160, 0.7);
+  z-index: 9;
+
+  #icon {
+    text-align: center;
+    padding-top: 60px;
+    width: 300px;
+    height: 130px;
+    margin: auto;
+    margin-top: 170px;
+    background: #FFF;
+    border: 5px solid #777;
+    border-radius: 10px;
+  }
+
+  p {
+    font-size: 16px;
+  }
 }
 
 #columns {
@@ -120,6 +207,7 @@ form {
   min-height: 100%;
 
   #main {
+    position: relative;
     margin-left: $side_width+($side_padding+$side_margin)*2;
     padding: 1em 1em 3em 1em;
     background: #FFF;
@@ -184,7 +272,7 @@ form {
       top: 40%;
       right: 0px;
       height: 0px;
-      border-width: 10%;
+      border-width: 4px;
       border-color: transparent transparent transparent #000;
       border-style: solid;
     }

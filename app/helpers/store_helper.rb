@@ -6,7 +6,7 @@ module StoreHelper
     thumb_size = '135x135'
 
 
-    group = ProductGroups.find(product.group_id)
+    group = Group.find(product.group_id)
 
     path = group.title
     while parent = group.parent

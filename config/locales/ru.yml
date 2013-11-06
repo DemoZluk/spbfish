@@ -2,10 +2,9 @@ ru:
 
   selection_labels:
     title: Названию
-    price: 'Цене, сначала дешёвые'
-    price DESC: 'Цене, сначала дорогие'
-    updated_at: 'Дате, сначала старые'
-    updated_at DESC: 'Дате, сначала новые'
+    price: Цене
+    updated_at: Дате
+    rating: Рейтингу
 
   views:
     pagination:
@@ -13,7 +12,7 @@ ru:
       previous: '<'
       next: '>'
       last: '>>'
-      truncate: ...
+      truncate: ..
 
   layouts:
     application:

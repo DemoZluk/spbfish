@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    current = session[:user][:prefs][:per_page] rescue 10
+    current = session[:user][:prefs]['per_page'] rescue 10
     @products = Product.order(params[:order_by] || 'title').page(params[:page]).per(current)
   end
 
