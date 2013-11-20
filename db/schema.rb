@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130927120624) do
+ActiveRecord::Schema.define(version: 20131107140331) do
 
   create_table "carts", force: true do |t|
     t.datetime "created_at"
@@ -57,6 +57,12 @@ ActiveRecord::Schema.define(version: 20130927120624) do
     t.date     "shipping_date"
   end
 
+  create_table "product_property_values", force: true do |t|
+    t.string "item_id"
+    t.string "property_id"
+    t.string "value_id"
+  end
+
   create_table "products", force: true do |t|
     t.string   "item"
     t.string   "title"
@@ -72,6 +78,17 @@ ActiveRecord::Schema.define(version: 20130927120624) do
     t.string   "permalink"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "properties", id: false, force: true do |t|
+    t.string "id"
+    t.string "title"
+  end
+
+  create_table "property_values", id: false, force: true do |t|
+    t.string "title"
+    t.string "id"
+    t.string "property_id"
   end
 
   create_table "users", force: true do |t|

@@ -10,38 +10,26 @@ module CurrentSettings
     @group = Group.find_by_permalink(params[:id])
 
     if @group
-      products = children?(@group).flatten.sort_by(&:"#{@order_by}")
+      products = @group.all_products(@order_by)
+      products = products.reverse_order if @desc
     else
-      products = Product.all.flatten.sort_by(&:"#{@order_by}")
+      @order_by += ' DESC' if @desc
+      products = Product.all.order(@order_by)
     end
-    products.reverse! if @desc
-    @products = Kaminari.paginate_array(products).page(params[:page]).per(@per_page)
-  end
-
-  # If group has any children, recursively
-  # get all produts from all descendants
-  def children?(group)
-    products = []
-    products += group.products
-    if group.children.any?
-      for child in group.children do
-        products += children?(child)
-      end
-    end
-    products
+    @products = products.page(params[:page]).per(@per_page)
   end
 
   def change_user_prefs
-    # Create user preferences if undefined
-    unless session && session[:user] && session[:user][:prefs]
-      session[:user] ||= Hash[:prefs, {}]
+    # Create user preferences in session if undefined
+    session[:user] ||= Hash[:prefs, {}] unless session && session[:user] && session[:user][:prefs]
+
+
+    if session[:user][:prefs] = user_prefs.presence
+      session[:user][:prefs].delete('descending') unless user_prefs[:descending]
+      params.merge! session[:user][:prefs]
     end
 
-    prefs = params.except('utf8', 'action', 'controller', 'id')
-    if prefs.presence
-      session[:user][:prefs].deep_merge! prefs
-      session[:user][:prefs]['descending'] = nil unless prefs['descending']
-    end
+    group_filters
 
     # Update user preferences
     @per_page = session[:user][:prefs]['per_page'] ||= 10
@@ -50,4 +38,15 @@ module CurrentSettings
 
     current_products
   end
+
+  private
+
+    def user_prefs
+      params.slice(:page, :per_page, :order_by, :descending).presence || session[:user][:prefs]
+    end
+
+    def group_filters
+      filters = params.except(:page, :per_page, :order_by, :descending, :utf8, :commit, :action, :controller, :id).presence || session[:group]
+      params.merge! filters.delete_if { |key, value| value == '' } if filters.presence
+    end
 end

@@ -28,22 +28,26 @@ html, body {
   }
 
   h1, h2, h3 {
-    margin: 5px;
-    padding: 5px;
+    margin: 5px auto;
+    padding: 5px 0px;
   }
 
   h1 {
     margin-bottom: 15px;
   }
-
 }
 
-.center {
-  text-align: center;
+ul {
+  margin: 0;
+  padding: 0;
+
+  li {
+    list-style: none;
+  }
 }
 
-.right {
-  text-align: right;
+input[type='checkbox'], input[type='checkbox']~label {
+  vertical-align: middle;
 }
 
 a {
@@ -62,6 +66,19 @@ a {
     color: #339;
   }
 }
+
+form {
+  margin-bottom: 0px;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
 
 #banner {
   display: inline-block;
@@ -113,13 +130,17 @@ a {
   }
 }
 
-#top_menu {
+#enter_form {
   float: right;
+  text-align: right;
+}
+
+#top_menu {
 
   ul {
     margin: 0;
     padding: 0;
-    z-index: 1;
+    z-index: 10;
 
     li {
       position: relative;
@@ -167,10 +188,6 @@ a {
   }
 }
 
-form {
-  margin-bottom: 0px;
-}
-
 #loading {
   position: absolute;
   display: none;
@@ -178,19 +195,23 @@ form {
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background: rgba(160, 160, 160, 0.7);
+  background: rgba(255, 255, 255, 0.6);
   z-index: 9;
 
-  #icon {
+  #notification {
     text-align: center;
-    padding-top: 60px;
     width: 300px;
-    height: 130px;
+    height: 220px;
     margin: auto;
+    padding: 10px;
     margin-top: 170px;
     background: #FFF;
     border: 5px solid #777;
     border-radius: 10px;
+  }
+
+  img#loading_gif {
+    margin-top: 70px;
   }
 
   p {
@@ -198,7 +219,7 @@ form {
   }
 }
 
-#columns {
+#content {
   $side_width: 170px;
   $side_padding: 15px;
   $side_margin: 5px;
@@ -206,12 +227,24 @@ form {
   //background: #161;
   min-height: 100%;
 
-  #main {
-    position: relative;
-    margin-left: $side_width+($side_padding+$side_margin)*2;
-    padding: 1em 1em 3em 1em;
-    background: #FFF;
-    min-height: 100%;
+  #filters {
+    input[type=text] {
+      width: 45px;
+      text-align: center;
+    }
+  }
+
+  .show_hide_tree {
+    cursor: pointer;
+    padding: 3px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 8px;
+
+    &.active {
+      border-bottom: 1px dotted rgba(0, 255, 0, 0.5);
+      border-radius: 8px 8px 0px 0px;
+    }
   }
 
   #side {
@@ -222,23 +255,19 @@ form {
     padding: 10px $side_padding;
     width: $side_width;
     min-height: 150px;
-
-    h4 {
-      color: #FFF;
-    }
-
-    form, div {
-      display: inline;
-    }
    
     input {
       font-size: small;
     }
 
-    ul {
-      background: #EEE;
+    #tree {
       border: 1px solid #7D7;
       border-radius: 8px;
+      background: #EEE;
+    }
+
+    nav.menu_side ul {
+      display: none;
       margin: 0px;
       padding: 3px;
       
@@ -259,12 +288,7 @@ form {
           font-size: small;
           padding: 5px;
         }
-      }
-
-      li.parent:hover>.child {
-        display: block;
-      }
-    }
+      }    }
 
     .parent:after {
       content: '';
@@ -278,14 +302,28 @@ form {
     }
 
     ul.child {
+      background: #EEE;
+      border: 1px solid #7D7;
       position: absolute;
       z-index: 9999;
-      right: -165px;
+      right: -($side_width+5);
       top: 50%;
-      display: none;
-      width: 160px;
-      border-top-left-radius: 0px;
+      width: $side_width;
+      border-radius: 0px 8px 8px 8px;
     }
+
+    li.parent:hover>.child {
+      display: block;
+    }
+
+  }
+
+  #main {
+    position: relative;
+    margin-left: $side_width+($side_padding+$side_margin)*2;
+    padding: 1em 1em 3em 1em;
+    background: #FFF;
+    min-height: 100%;
   }
 }
 

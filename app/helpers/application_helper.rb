@@ -26,4 +26,12 @@ module ApplicationHelper
       label = current
     end
   end
+
+  def min(obj, attribute)
+    number_with_delimiter(obj.sort_by {|p| p[attribute]}.first[attribute].floor)
+  end
+
+  def max(obj, attribute)
+    number_with_delimiter(obj.sort_by {|p| p[attribute]}.reverse!.first[attribute].ceil)
+  end
 end

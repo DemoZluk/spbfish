@@ -6,11 +6,11 @@
 .control
   = render 'shared/control'
 
-#product_index= render @products, locals: {action: '/'}
+#product_index= render @products
 
 #loading
-  #icon
-    = image_tag 'loading.gif', alt: 'loading'
+  #notification
+    = image_tag 'loading.gif', alt: 'loading', id: 'loading_gif'
     %p Идёт загрузка, пожалуйста подождите
 
 .bottom_control

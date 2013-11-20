@@ -1,5 +1,5 @@
 - action = @group.permalink rescue 'catalog'
-= form_tag action, method: 'GET', id: 'control_form', remote: true do |f|
+= form_tag params.merge({a: 'a'}), remote: true, method: 'GET', id: 'control_form', name: 'preferences' do |f|
   %span Позиций на странице
   #products_per_page
     -# "Items per page" select pseudo-tag

@@ -9,34 +9,58 @@
       
   %body{class: controller_name + ' ' + action_name}
     %div#banner
-      #logo= image_tag('logo.jpg')
+      #logo= image_tag 'logo.jpg'
       = link_to @app_name, store_path, id: 'title'
       #phone_number
         = image_tag('phone.png')
         %span 
           +7 (812) 449-79-26
           %br/ 
-          +7 (901) 317-17-87
+          +7 (901) 317-17-87 
+      
+      #enter_form
+        = form_tag '/login' do |f|
+          = text_field 'login', 'username'
 
-      = form_for 'login' do |f|
-        = f.text_field :name
+        %nav#top_menu
+          %ul.parent
+            %li= link_to 'Каталог', store_path
+            %li= link_to 'О нас', store_path
+            %li= link_to 'Контакты', store_path
+            %li
+              = link_to 'Помощь', store_path
+              %ul.child
+                %li= link_to 'Оплата', store_path
+                %li= link_to 'Доставка', store_path
+                %li= link_to 'Гарантия', store_path
+            %li= link_to 'Отзывы и пожелания', store_path
 
-
-      %nav#top_menu
-        %ul.parent
-          %li= link_to 'Каталог', store_path
-          %li= link_to 'О нас', store_path
-          %li
-            = link_to 'Помощь', store_path
-            %ul.child
-              %li= link_to 'Оплата', store_path
-              %li= link_to 'Доставка', store_path
-              %li= link_to 'Гарантия', store_path
-          %li= link_to 'Отзывы и пожелания', store_path
-
-    #columns
+    #content
       #side
-        = render 'shared/side_nav'
+        #tree
+          .show_hide_tree Каталог
+          = render 'shared/menu_side'
+        - if @products
+          #filters
+            %h3 Выбрать
+            = form_tag request.fullpath, {method: 'GET', id: 'filter', name: 'preferences'} do
+              %h4 Цена
+              = text_field_tag 'minPrice', '', {multiple: true, placeholder: (params['group']['price'][0] rescue min(@products, :price))}
+              \-
+              = text_field_tag 'maxPrice', '', {multiple: true, placeholder: (params['group']['price'][1] rescue max(@products, :price))}
+              руб.
+
+              %h4 Производитель
+              %ul#producers
+                - @group.producers.each do |p|
+                  %li
+                    - checked = params['producer'].index(p) rescue false
+                    = check_box_tag 'producer[]', p, checked, {multiple: true, id: p}
+                    = label_tag p, p
+              - @group.properties.uniq.each do |prop|
+                %li= prop.title
+              %input{:type => "submit"}/ 
+      = @param
       #main= yield
     #dummy
 

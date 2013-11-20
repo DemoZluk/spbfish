@@ -28,6 +28,15 @@ doc.css('Товар').each do |product|
       rating: 0
     )
   end
+
+  product.css('ЗначенияСвойства').each do |p|
+    ProductPropertyValue.create(
+      item_id:product.at_css('>Ид').content,
+      property_id: p.at_css('Ид').content,
+      value_id: p.at_css('Значение').content
+    )
+  end
+
   product.css('Картинка').each do |img|
     Image.create(
       url: img.content,
@@ -52,4 +61,21 @@ doc.xpath('//Группы/descendant::Группа').each do |g|
     parent_id: parent_id,
     permalink: permalink
   )
+end
+
+doc.css('Свойство').each do |p|
+  id = p.at_css('Ид').content
+  title = p.at_css('Наименование').content
+  Property.create(
+    id: id,
+    title: title
+  )
+
+  p.css('ВариантыЗначений>Справочник').each do |v|
+    PropertyValue.create(
+      id: v.at_css('ИдЗначения').content,
+      title: v.at_css('Значение').content,
+      property_id: id
+    )
+  end
 end

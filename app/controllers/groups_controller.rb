@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
   include CurrentSettings
-  
+
   before_action :change_user_prefs
   skip_before_action :authorize, only: [:show]
 
@@ -9,6 +9,5 @@ class GroupsController < ApplicationController
       format.html
       format.js {render 'shared/product_index'}
     end
-
   end
 end
