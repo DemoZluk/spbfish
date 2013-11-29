@@ -1,17 +1,19 @@
 $(document).on "ready page:change", ->
   $(document).on 'click', '.select ul li', ->
     $(this).closest('.select').find('select').val($(this).data('value'))
-  $(document).on 'click', '.select ul li, #control_form input[type=checkbox]', ->
+    $(this).closest('form').submit()
+  $(document).on 'change', '#filter input, #control_form input[type=checkbox]', ->
     $(this).closest('form').submit()
 
   # Block interface with notification on ajax event
+  # and change url
   $(document).on 'ajax:beforeSend', '#content', ->
     $('#loading').fadeIn('fast')
-  $(document).on 'ajaxError', ->
-    $('#notification').html('<img alt="loading" src="/assets/alert.png"><p style="color: #F00; font-size: 14px; font-weight: bold;">Произошла ошибка, перезагрузите страницу. Если подобное повторится, сообщите администратору сайта.</p>')
-  $(document).on 'ajaxSuccess', ->
-    #window.history.pushState '', 'Title', 'new'
-  $(document).on 'ajaxComplete', ->
+  $(document).on 'ajax:error', (xhr, error) ->
+    #console.log error
+    $('#error').html('Внимание! Произошла ошибка! Перезагрузите сраницу. Если это не в первый раз, <a href="/report_error">сообщите о ней</a> администратору!').show('blind')
+  $(document).on 'ajaxSuccess', (data, status, xhr) ->
+    $('#error').hide('blind')
     $('#loading').fadeOut('fast')
 
   # Control selections
@@ -21,8 +23,11 @@ $(document).on "ready page:change", ->
     $(this).find('ul').stop().hide('blind')}
   , '.select'
 
-  $('.control form').on 'ajax:beforeSend', (event, xhr, settings) ->
-    console.log settings.data = $('#filter *[value != ""]').serialize().replace('utf8=%E2%9C%93&?', '')
+  # Sorting params and filtering ajax processing
+  $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, settings) ->
+    filters = $.param $('#filters form, .control form').serializeArray()
+    settings.url = this.action + '?' + filters
+    history.pushState('', document.title, settings.url)
 
   $('.show_hide_tree').on 'click', ->
     $(this).toggleClass 'active'

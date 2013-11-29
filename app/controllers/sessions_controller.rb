@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     user = User.find_by_name(params[:name])
     if user 
       if user.authenticate(params[:password])
-        session[:user_id] = user.id
+        session[:user][:id] = user.id
         redirect_to admin_url
         else
         redirect_to login_url, alert: I18n.t(:invalid_password)

@@ -79,8 +79,35 @@ form {
   text-align: right;
 }
 
+#error_wrapper {
+  position: fixed;
+  top: 0px;
+  z-index: 999;
+  right: 50%;
 
-#banner {
+  #error {
+    display: none;
+    position: relative;
+    max-width: 690px;
+    background: rgb(188,3,3); /* Old browsers */
+    @include grad(rgba(188,3,3,1), 0%, rgba(163,24,24,1) , 44%, rgba(163,24,24,1), 44%, rgba(211,63,63,1), 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bc0303', endColorstr='#d33f3f',GradientType=0 ); /* IE6-9 */
+    color: #EEE;
+    left: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    padding: 3px 10px;
+    border-radius: 0px 0px 10px 10px;
+    box-shadow: 0px 1px 5px #000;
+
+    a {
+      text-decoration: underline;
+    }
+  }
+}
+
+#header {
   display: inline-block;
   width: 100%;
   background: #24C5C5;

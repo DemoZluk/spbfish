@@ -1,4 +1,3 @@
-#encoding: utf-8
 module ApplicationHelper
   def hidden_div_if(condition, attributes = {}, &block)
     if condition
@@ -8,9 +7,7 @@ module ApplicationHelper
   end
 
   def page_title
-    @title = (@page_title || t(params[:controller])[params[:action].to_sym][:title]) + ' - ' + @app_name
-    rescue
-      @title = @app_name
+    @title = (@page_title || t(params[:controller])[params[:action].to_sym][:title]) + ' - ' + @app_name rescue @app_name
   end
 
   def display_product_image(item_id)
@@ -21,17 +18,24 @@ module ApplicationHelper
 
   def selection_label(current)
     if current.to_i == 0
-      label = I18n.t('selection_labels.'+current.to_s)
+      label = I18n.t('selection_labels.'+current.match(/\w+/).to_s)
     else
       label = current
     end
   end
 
   def min(obj, attribute)
-    number_with_delimiter(obj.sort_by {|p| p[attribute]}.first[attribute].floor)
+    obj.minimum(attribute).floor
   end
 
   def max(obj, attribute)
-    number_with_delimiter(obj.sort_by {|p| p[attribute]}.reverse!.first[attribute].ceil)
+    obj.maximum(attribute).ceil
+  end
+
+  def values_of property
+    prop_id = property.id
+    item_ids = @group.products.pluck(:item_id)
+    value_ids = ProductPropertyValue.where{(property_id == prop_id) & (item_id >> item_ids)}.pluck(:value_id)
+    PropertyValue.where{id >> value_ids}.order(:title)
   end
 end

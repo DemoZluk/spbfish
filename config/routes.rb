@@ -2,7 +2,12 @@ Depot::Application.routes.draw do
 
   root 'store#index', as: 'store'
 
-  resources :catalog,  controller: 'groups', as: 'group'
+  resources :catalog,  controller: 'groups', as: 'group' do
+    get ':id/page=:page', action: :show, on: :collection
+  end
+  post '/catalog/:id' => 'groups#show'
+
+  get 'catalog', to: 'store#index'
 
   resources :products do
     get :who_bought, on: :member
@@ -18,8 +23,6 @@ Depot::Application.routes.draw do
   resources :carts
 
   get 'admin' => 'admin#index'
-
-  get 'catalog', to: 'store#index'
 
   controller :sessions do
     get 'login' => :new

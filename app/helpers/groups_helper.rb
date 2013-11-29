@@ -1,5 +1,5 @@
 module GroupsHelper
-  def menu_for_group(product_group)
+  def menu_for_group product_group
     out = ''
     out << '<li'
     out << ' class="parent"' if product_group.children.presence

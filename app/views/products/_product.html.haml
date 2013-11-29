@@ -5,9 +5,9 @@
     %h3= link_to(product.title, product)
     %p
       = sanitize(product.long_name).truncate(350, separator: '.', omission: '...')
+    %p= 'Производитель: ' + product.producer
     .short_description
       =# link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
-      %p
   .right_panel
     .rating= render 'shared/rating', product: product
     %span.price= number_to_currency(product.price)

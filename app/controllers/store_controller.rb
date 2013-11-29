@@ -1,7 +1,7 @@
 class StoreController < ApplicationController
   include CurrentSettings
 
-  before_action :change_user_prefs
+  before_action :change_user_prefs, :set_products
   skip_before_action :authorize
 
   def visit_counter
@@ -14,4 +14,12 @@ class StoreController < ApplicationController
       format.js {render template: 'shared/product_index'}
     end
   end
+
+  private
+
+    def set_products
+      products = Product.all
+      products = products.order(@order_by) if @order_by
+      current_products(products)
+    end
 end

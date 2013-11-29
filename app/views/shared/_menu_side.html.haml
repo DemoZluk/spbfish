@@ -3,9 +3,5 @@
     - Group.where(parent_id: '').each do |group|
       = menu_for_group(group).html_safe
 
-    -#%li
-    -#  = link_to('На главную', store_url)
-    -#%li 
-    -#  %a{:href => "#contacts"} Контакты
-    -#- if session[:user_id] && User.find(session[:user_id]).presence.-#user_group == 'admin'
-    -#  = render 'shared/admin_panel'\
+  - if (User.exists?(id: session[:user_id])).try(:user_group) == 'admin'
+    = render 'shared/admin_panel'

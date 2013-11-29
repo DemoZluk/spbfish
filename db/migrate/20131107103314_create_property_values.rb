@@ -1,8 +1,8 @@
 class CreatePropertyValues < ActiveRecord::Migration
   def change
-    create_table :property_values, id: false, primary_key: :id do |t|
+    create_table :property_values, primary_key: :value_id do |t|
       t.string :title
-      t.string :id
+      t.string :value_id
       t.string :property_id
     end
   end

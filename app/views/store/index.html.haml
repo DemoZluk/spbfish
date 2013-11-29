@@ -1,18 +1,21 @@
-- @page_title = @group.title if @group
+- @page_title = @group.title + (', Страница: ' + params[:page].to_s if params[:page]).to_s if @group
 - if notice
   %p#notice= notice
 %h1= @page_title ||= 'Каталог'
 
 .control
   = render 'shared/control'
-
-#product_index= render @products
+#product_index
+  - if @products.any?
+    = render @products
+  - else
+    Раздел ещё пуст, либо не найдено позиций, удовленворящих критериям поиска.
 
 #loading
   #notification
     = image_tag 'loading.gif', alt: 'loading', id: 'loading_gif'
     %p Идёт загрузка, пожалуйста подождите
 
-.bottom_control
-  #previous= link_to_previous_page @products, '<< Назад'
-  #next= link_to_next_page @products, 'Далее >>'
+-#.bottom_control
+-#  #previous= link_to_previous_page @products, '<< Назад'
+-#  #next= link_to_next_page @products, 'Далее >>'

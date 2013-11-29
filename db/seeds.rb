@@ -11,7 +11,7 @@ file = File.read('xml/import.xml')
 doc = Nokogiri::XML(file)
 doc.css('Товар').each do |product|
   product_title = product.at_css('>Наименование').content
-  permalink = product_title.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+  permalink = product_title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
   unless Product.find_by_permalink(permalink)
 
     Product.create!(
@@ -54,7 +54,7 @@ doc.xpath('//Группы/descendant::Группа').each do |g|
     parent_id = ''
   end
   title = g.at_css('>Наименование').content
-  permalink = title.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+  permalink = title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
   Group.create(
     id: group_id,
     title: title,
