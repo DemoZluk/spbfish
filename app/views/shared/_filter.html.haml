@@ -1,0 +1,33 @@
+- products = @group.all_products rescue Product.all
+%h3 Выбрать
+= form_tag url_for, {remote: true, method: 'get', id: 'filter', name: 'preferences'} do
+  #price
+    %h4 Цена
+    = text_field_tag 'minPrice', params['minPrice'], {placeholder: @products_min}
+    \-
+    = text_field_tag 'maxPrice', params['maxPrice'], {placeholder: @products_max}
+    руб.
+
+  #producer
+    %h4 Производитель
+    %ul
+      - producers = products.uniq.pluck(:producer)
+      - producers.each do |producer|
+        %li
+          - checked = params[:producer].try(:index, producer) || (true if producers.count == 1)
+          - disabled = true if producers.count == 1
+          = check_box_tag 'producer[]', producer, checked, {multiple: true, id: producer, disabled: disabled}
+          = label_tag producer, producer
+  - if @group
+    - @group.properties.each do |prop|
+      .filter{id: prop.title.mb_chars.parameterize('_')}
+        - if values_of(prop).any?
+          %h4= prop.title
+          %ul
+            - vals = values_of(prop)
+            - vals.each do |value|
+              %li
+                - checked = params[:property].try :index, value.id || (true if vals.count == 1)
+                - disabled = true if vals.count == 1
+                = check_box_tag "property[]", value.id, checked, {multiple: true, disabled: disabled, id: value.id}
+                = label_tag value.id, value.title
