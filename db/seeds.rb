@@ -9,6 +9,27 @@
 
 file = File.read('xml/import.xml')
 doc = Nokogiri::XML(file)
+
+doc.xpath('//Группы/descendant::Группа').each do |g|
+  parent = g.xpath('ancestor::Группа').last
+  group_id = g.at_css('>Ид').content
+  if parent
+    parent_id = parent.at_css('>Ид').content
+  else
+    parent_id = ''
+  end
+  title = g.at_css('>Наименование').content
+  permalink = title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+  Group.create(
+    id: group_id,
+    title: title,
+    parent_id: parent_id,
+    permalink: permalink
+  )
+end
+
+p 'Created groups'
+
 doc.css('Товар').each do |product|
   product_title = product.at_css('>Наименование').content
   permalink = product_title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
@@ -29,13 +50,19 @@ doc.css('Товар').each do |product|
     )
   end
 
+  p 'Created products'
+
   product.css('ЗначенияСвойства').each do |p|
-    ProductPropertyValue.create(
-      item_id:product.at_css('>Ид').content,
-      property_id: p.at_css('Ид').content,
-      value_id: p.at_css('Значение').content
-    )
+    unless p.at_css('Значение').content == ''
+      ProductPropertyValue.create(
+        item_id:product.at_css('>Ид').content,
+        property_id: p.at_css('Ид').content,
+        value_id: p.at_css('Значение').content
+      )
+    end
   end
+
+  p 'Created Product and Values'
 
   product.css('Картинка').each do |img|
     Image.create(
@@ -43,24 +70,6 @@ doc.css('Товар').each do |product|
       item_id: product.at_css('>Ид').content
     )
   end
-end
-
-doc.xpath('//Группы/descendant::Группа').each do |g|
-  parent = g.xpath('ancestor::Группа').last
-  group_id = g.at_css('>Ид').content
-  if parent
-    parent_id = parent.at_css('>Ид').content
-  else
-    parent_id = ''
-  end
-  title = g.at_css('>Наименование').content
-  permalink = title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
-  Group.create(
-    id: group_id,
-    title: title,
-    parent_id: parent_id,
-    permalink: permalink
-  )
 end
 
 doc.css('Свойство').each do |p|
@@ -73,9 +82,11 @@ doc.css('Свойство').each do |p|
 
   p.css('ВариантыЗначений>Справочник').each do |v|
     PropertyValue.create(
-      id: v.at_css('ИдЗначения').content,
+      value_id: v.at_css('ИдЗначения').content,
       title: v.at_css('Значение').content,
       property_id: id
     )
   end
 end
+
+p 'Created Properties'

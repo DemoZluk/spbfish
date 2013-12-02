@@ -85,9 +85,9 @@ ActiveRecord::Schema.define(version: 20131107140331) do
     t.string "title"
   end
 
-  create_table "property_values", id: false, force: true do |t|
+  create_table "property_values", force: true do |t|
     t.string "title"
-    t.string "id"
+    t.string "value_id"
     t.string "property_id"
   end
 

@@ -16,7 +16,7 @@ end
 # SQL query assistant
 gem 'squeel'
 
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -69,9 +69,11 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'carrierwave'
 gem 'mini_magick', git: "https://github.com/minimagick/minimagick.git"
 
+# Alternative server to WEBrick
+# gem 'puma'
+
 # Use unicorn as the app server
-# gem 'unicorn'
-gem 'thin'
+gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

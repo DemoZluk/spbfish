@@ -21,10 +21,9 @@
   - if @group
     - @group.properties.each do |prop|
       .filter{id: prop.title.mb_chars.parameterize('_')}
-        - if values_of(prop).any?
+        - if vals = values_of(prop).presence
           %h4= prop.title
           %ul
-            - vals = values_of(prop)
             - vals.each do |value|
               %li
                 - checked = params[:property].try :index, value.id || (true if vals.count == 1)
