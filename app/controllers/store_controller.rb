@@ -20,6 +20,6 @@ class StoreController < ApplicationController
     def set_products
       products = Product.all
       products = products.order(@order_by) if @order_by
-      current_products(products)
+      current_list_of products
     end
 end

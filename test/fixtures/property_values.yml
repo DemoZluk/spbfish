@@ -3,9 +3,9 @@
 one:
   title: MyString
   id: MyString
-  parent_id: MyString
+  property_id: MyString
 
 two:
   title: MyString
   id: MyString
-  parent_id: MyString
+  property_id: MyString

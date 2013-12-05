@@ -24,9 +24,9 @@
         - if vals = values_of(prop).presence
           %h4= prop.title
           %ul
-            - vals.each do |value|
+            - vals.each do |val|
               %li
-                - checked = params[:property].try :index, value.id || (true if vals.count == 1)
+                - checked = params[:property].try :index, val.id.to_s || (true if vals.count == 1)
                 - disabled = true if vals.count == 1
-                = check_box_tag "property[]", value.id, checked, {multiple: true, disabled: disabled, id: value.id}
-                = label_tag value.id, value.title
+                = check_box_tag "property[]", val.id, checked, {multiple: true, disabled: disabled, id: 'val_'+val.id.to_s}
+                = label_tag 'val_'+val.id.to_s, val.title

@@ -10,8 +10,6 @@ module CurrentSettings
 
     session[:user][:prefs].delete_if{|key, val| val.blank?} if session[:user][:prefs] = user_prefs.presence
 
-    group_filters
-
     # Update user preferences
     @per_page = session[:user][:prefs][:per_page] ||= 10
     @order_by = session[:user][:prefs][:order_by] ||= 'title'
@@ -21,26 +19,32 @@ module CurrentSettings
 
   # Define product list for current group
   # if group is present, else list all products
-  def current_products products
-    prod = filter_products products
+  def current_list_of products
+    prod = filter products
     @products = prod.page(params[:page]).per(@per_page)
     # redirect_to store_path, notice: 'No results' if @products.empty?
   end
 
-  def filter_products products
+  def filter products
     set_min_max_price(products)
     min = @min_price
     max = @max_price
     products = products.where{(price >= min) & (price <= max)}
 
     if producers = params[:producer]
-      products = products.where{producer.in producers}
+      products = products.where{producer >> producers}
     end
+
+    if filters = params[:property]
+      p PropertyValue.uniq.where{id >> filters}.group_by{:property}
+      # product_ids = ProductPropertyValue.uniq.with_indifferent_accesse{value_id >> filters}.pluck(:item_id)
+    #   # filters.each do |f|
+    #   #   products = products.where{product_property_values.value_id == f}
+    #   # end
+    #   p '-----------------'
+    end
+
     products
-    # if properties = params[:property]
-    #   properties.each do |property|
-    #     products.where{}
-    # end
   end
 
   def set_min_max_price products
@@ -57,10 +61,5 @@ module CurrentSettings
 
     def user_prefs
       params.slice(:per_page, :order_by, :descending).presence || session[:user][:prefs]
-    end
-
-    def group_filters
-      filters = params.except(:page, :per_page, :order_by, :descending, :utf8, :commit, :action, :controller, :id).presence || session[:group]
-      params.merge! filters.delete_if { |key, value| value == '' } if filters.presence
     end
 end

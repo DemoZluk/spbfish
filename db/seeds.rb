@@ -50,19 +50,13 @@ doc.css('Товар').each do |product|
     )
   end
 
-  p 'Created products'
-
   product.css('ЗначенияСвойства').each do |p|
-    unless p.at_css('Значение').content == ''
-      ProductPropertyValue.create(
-        item_id:product.at_css('>Ид').content,
-        property_id: p.at_css('Ид').content,
-        value_id: p.at_css('Значение').content
-      )
-    end
+    ProductPropertyValue.create(
+      item_id:product.at_css('>Ид').content,
+      property_id: p.at_css('Ид').content,
+      value_id: p.at_css('Значение').content
+    )
   end
-
-  p 'Created Product and Values'
 
   product.css('Картинка').each do |img|
     Image.create(
@@ -72,11 +66,13 @@ doc.css('Товар').each do |product|
   end
 end
 
+p 'Created Products and Values'
+
 doc.css('Свойство').each do |p|
   id = p.at_css('Ид').content
   title = p.at_css('Наименование').content
   Property.create(
-    id: id,
+    property_id: id,
     title: title
   )
 

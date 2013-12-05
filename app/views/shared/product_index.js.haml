@@ -1,5 +1,5 @@
 // Rerender control panel and product list
 $('#product_index').html("#{j (@products.any?) ? (render @products) : 'Позиций, удовлетворяющих критериям поиска не найдено.' }").prepend("#{j content_tag :div, flash[:notice], id: 'notice' if flash[:notice]}")//.prepend("#{j debug session[:user]; params[:producer]}");
 $('.control').html("#{j render 'shared/control'}")
-$('#minPrice').attr('placeholder', "#{@products_min}").val("#{@min_price}")
-$('#maxPrice').attr('placeholder', "#{@products_max}").val("#{@max_price}")
+$('#minPrice').attr('placeholder', "#{@products_min}").val("#{@min_price unless @min_price == @products_min}")
+$('#maxPrice').attr('placeholder', "#{@products_max}").val("#{@max_price unless @max_price == @products_max}")

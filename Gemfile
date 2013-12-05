@@ -70,13 +70,15 @@ gem 'carrierwave'
 gem 'mini_magick', git: "https://github.com/minimagick/minimagick.git"
 
 # Alternative server to WEBrick
-# gem 'puma'
+gem 'puma'
 
 # Use unicorn as the app server
-gem 'unicorn'
+# gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+gem 'newrelic_rpm'

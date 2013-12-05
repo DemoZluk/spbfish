@@ -33,9 +33,11 @@ module ApplicationHelper
   end
 
   def values_of property
-    prop_id = property.id
-    item_ids = @group.products.pluck(:item_id)
-    value_ids = ProductPropertyValue.where{(property_id == prop_id) & (item_id >> item_ids)}.pluck(:value_id)
-    PropertyValue.where{value_id >> value_ids}.order(:title)
+    if @group
+      prop_id = property.id
+      item_ids = @group.products.pluck(:item_id)
+      value_ids = ProductPropertyValue.where{(property_id == prop_id) & (item_id >> item_ids)}.pluck(:value_id)
+      PropertyValue.where{value_id >> value_ids}.order(:title)
+    end
   end
 end

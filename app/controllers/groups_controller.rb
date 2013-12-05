@@ -14,11 +14,11 @@ class GroupsController < ApplicationController
   private
 
     def set_group
-      @group = Group.find_by_permalink(params[:id])
+      @group = Group.find_by permalink: params[:id]
     end
 
     def set_products
       products = @group.all_products(@order_by)
-      current_products(products)
+      current_list_of products
     end
 end
