@@ -6,6 +6,7 @@ class Product < ActiveRecord::Base
   has_many :images, primary_key: :item_id, foreign_key: :item_id
   has_many :product_property_values, primary_key: :item_id, foreign_key: :item_id
   has_many :properties, foreign_key: :item_id, through: :product_property_values
+  has_many :values, primary_key: :item_id, foreign_key: :item_id, through: :product_property_values
 
   before_destroy :ensure_not_referenced_by_any_line_item
 

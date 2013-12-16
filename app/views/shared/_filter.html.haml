@@ -3,10 +3,11 @@
 = form_tag url_for, {remote: true, method: 'get', id: 'filter', name: 'preferences'} do
   #price
     %h4 Цена
-    = text_field_tag 'minPrice', params['minPrice'], {placeholder: @products_min}
+    = text_field_tag 'minPrice', params['minPrice'], {placeholder: @products_min, data: {min: @products_min, current: @min_price}}
     \-
-    = text_field_tag 'maxPrice', params['maxPrice'], {placeholder: @products_max}
+    = text_field_tag 'maxPrice', params['maxPrice'], {placeholder: @products_max, data: {max: @products_max, current: @max_price}}
     руб.
+    #price-slider
 
   #producer
     %h4 Производитель
@@ -18,12 +19,13 @@
           - disabled = true if producers.count == 1
           = check_box_tag 'producer[]', producer, checked, {multiple: true, id: producer, disabled: disabled}
           = label_tag producer, producer
-  - if @group
+  - if @group.properties.any?
     - @group.properties.each do |prop|
       .filter{id: prop.title.mb_chars.parameterize('_')}
-        - if vals = values_of(prop).presence
+        - if vals = values_of(prop).try(:sort_by) {|e| e.title.to_i}.presence
           %h4= prop.title
           %ul
+            
             - vals.each do |val|
               %li
                 - checked = params[:property].try :index, val.id.to_s || (true if vals.count == 1)

@@ -1,4 +1,15 @@
 $(document).on "ready page:change", ->
+  $('#price-slider').slider({
+    range: true,
+    min: $("#minPrice").data('min')
+    max: $("#maxPrice").data('max')
+    values: [$("#minPrice").data('current'), $("#maxPrice").data('current')]
+    change: (event, ui) ->
+      $(this).closest('form').submit()
+    slide: (event, ui) ->
+      $("#minPrice").val(ui.values[0])
+      $("#maxPrice").val(ui.values[1])
+    })
   $(document).on 'click', '.select ul li', ->
     $(this).closest('.select').find('select').val($(this).data('value'))
     $(this).closest('form').submit()

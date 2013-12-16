@@ -26,7 +26,8 @@ module CurrentSettings
   end
 
   def filter products
-    set_min_max_price(products)
+
+    set_min_max_price_for products
     min = @min_price
     max = @max_price
     products = products.where{(price >= min) & (price <= max)}
@@ -36,18 +37,24 @@ module CurrentSettings
     end
 
     if filters = params[:property]
-      p PropertyValue.uniq.where{id >> filters}.group_by{:property}
+      # products = products.where{item_id >> (.where{value.id >> filters})}
+      #products = products.where{ item_id >> products.select }
+      Value.uniq.where{id >> filters}.group_by{|value| value.property_id}.values.each do |vals|
+        products = products.where{ item_id >> ProductPropertyValue.joins{value}.where{value.id >> vals} }
+      end
+      p products
+      # products = products.where{item_id >> values.select{item_id}}
       # product_ids = ProductPropertyValue.uniq.with_indifferent_accesse{value_id >> filters}.pluck(:item_id)
-    #   # filters.each do |f|
-    #   #   products = products.where{product_property_values.value_id == f}
-    #   # end
-    #   p '-----------------'
+      # filters.each do |f|
+      #   products = products.where{product_property_values.value_id == f}
+      # end
+      # p '-----------------'
     end
 
     products
   end
 
-  def set_min_max_price products
+  def set_min_max_price_for products
     param_min = params[:minPrice].to_i.abs
     param_max = params[:maxPrice].to_i.abs
     @products_min = products.minimum(:price).floor

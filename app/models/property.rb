@@ -1,7 +1,7 @@
 class Property < ActiveRecord::Base
-  has_many :property_values
+  has_many :values
 
-  validates :id, uniqueness: true, presence: true
+  validates :property_id, uniqueness: true, presence: true
 
   self.primary_key = :property_id
 end

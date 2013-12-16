@@ -77,7 +77,7 @@ doc.css('Свойство').each do |p|
   )
 
   p.css('ВариантыЗначений>Справочник').each do |v|
-    PropertyValue.create(
+    Value.create(
       value_id: v.at_css('ИдЗначения').content,
       title: v.at_css('Значение').content,
       property_id: id
