@@ -12,8 +12,7 @@
   #producer
     %h4 Производитель
     %ul
-      = puts '---------------------------------------------------------'
-      - producers = products.uniq.select(:producer).order("producer").pluck(:producer)
+      - producers = products.uniq.pluck(:producer).sort
       - producers.each do |producer|
         %li
           - checked = params[:producer].try(:index, producer) || (true if producers.count == 1)
