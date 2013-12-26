@@ -12,9 +12,9 @@ class Group < ActiveRecord::Base
   end
 
   def properties
-    item_ids = self.products.pluck(:item_id)
-    property_ids = ProductPropertyValue.where{item_id >> item_ids}.uniq.pluck(:property_id)
-    Property.uniq.where{property_id >> property_ids}.order(:title)
+    ids = self.products.pluck(:id)
+    property_ids = ProductPropertyValue.where{product_id >> ids}.uniq.pluck(:property_id)
+    Property.uniq.where{id >> property_ids}.order(:title)
   end
 
   def producers

@@ -1,13 +1,9 @@
 class User < ActiveRecord::Base
-	validates :name, presence: true, uniqueness: true
-	has_secure_password
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 
-  after_destroy :last_user_remains
+  validates :login, :email, uniqueness: {case_sensitive: false}
 
-  private
-    def last_user_remains
-      if User.count.zero?
-        raise I18n.t(:cant_delete_last_user)
-      end
-    end
 end

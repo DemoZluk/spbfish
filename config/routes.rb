@@ -24,10 +24,13 @@ Depot::Application.routes.draw do
 
   get 'admin' => 'admin#index'
 
-  controller :sessions do
-    get 'login' => :new
-    post 'login' => :create
-    delete 'logout' => :destroy
+
+  devise_for :users
+
+  devise_scope :user do
+    get "login" => "devise/sessions#new"
+    post 'login' => "devise/sessions#create"
+    delete 'logout' => "devise/sessions#destroy"
   end
 
   get 'user_prefs' => 'store#change_user_prefs'

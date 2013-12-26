@@ -39,10 +39,8 @@ module CurrentSettings
     if filters = params[:property]
       # products = products.where{item_id >> (.where{value.id >> filters})}
       #products = products.where{ item_id >> products.select }
-      Value.uniq.where{id >> filters}.group_by{|value| value.property_id}.values.each do |vals|
-        products = products.where{ item_id >> ProductPropertyValue.joins{value}.where{value.id >> vals} }
-      end
-      p products
+      c = Value.uniq.where{id >> filters}.group_by{|value| value.property_id}.count
+      products = products.joins{product_property_values}.where{product_property_values.value_id >> filters}.group{id}.having{count(product_property_values.property_id) == c}
       # products = products.where{item_id >> values.select{item_id}}
       # product_ids = ProductPropertyValue.uniq.with_indifferent_accesse{value_id >> filters}.pluck(:item_id)
       # filters.each do |f|

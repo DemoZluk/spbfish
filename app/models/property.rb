@@ -3,5 +3,5 @@ class Property < ActiveRecord::Base
 
   validates :property_id, uniqueness: true, presence: true
 
-  self.primary_key = :property_id
+  # self.primary_key = :property_id
 end

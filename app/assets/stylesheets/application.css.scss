@@ -107,14 +107,22 @@ form {
   }
 }
 
+#header_wrapper {
+  border: 4px solid #7A2210;
+  padding: 7px;
+  margin: 5px;
+  border-radius: 10px;
+}
+
 #header {
   display: inline-block;
   width: 100%;
   background: #24C5C5;
   padding: 10px;
-  border-bottom: 2px solid;
+  border-bottom: 1px solid;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
+  border-radius: 5px;
 
   #logo {
     display: inline-block;

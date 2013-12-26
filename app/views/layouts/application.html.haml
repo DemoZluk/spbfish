@@ -10,27 +10,28 @@
   %body{class: controller_name + ' ' + action_name}
     #error_wrapper
       #error
-    #header
-      #logo= image_tag 'logo.jpg'
-      = link_to @app_name, store_path, id: 'title'
-      #phone_number
-        = image_tag('phone.png')
-        %span 
-          +7 (812) 449-79-26
-          %br/ 
-          +7 (901) 317-17-87
-      
-      #enter_form
-        = form_tag login_path do
-          = label_tag :name, 'Имя:'
-          = text_field_tag :name, params[:name]
-          = label_tag :password, 'Пароль:'
-          = password_field_tag :password, params[:password]
-          = submit_tag 'Войти'
-          = link_to 'Регистрация', new_user_path
+    #header_wrapper
+      #header
+        #logo= image_tag 'logo.jpg'
+        = link_to @app_name, store_path, id: 'title'
+        #phone_number
+          = image_tag('phone.png')
+          %span 
+            +7 (800) XXX-XX-XX
+            %br/ 
+            +7 (900) XXX-XX-XX
+        
+        #enter_form
+          = form_tag login_path do
+            = label_tag :name, 'Имя:'
+            = text_field_tag :name, params[:name]
+            = label_tag :password, 'Пароль:'
+            = password_field_tag :password, params[:password]
+            = submit_tag 'Войти'
+            = link_to 'Регистрация', new_user_path
 
-        %nav#top_menu
-          = render 'shared/menu_top'
+          %nav#top_menu
+            = render 'shared/menu_top'
 
     #content
       #side

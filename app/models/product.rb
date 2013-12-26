@@ -4,14 +4,14 @@ class Product < ActiveRecord::Base
   has_many :line_items
   has_many :orders, through: :line_items
   has_many :images, primary_key: :item_id, foreign_key: :item_id
-  has_many :product_property_values, primary_key: :item_id, foreign_key: :item_id
-  has_many :properties, foreign_key: :item_id, through: :product_property_values
-  has_many :values, primary_key: :item_id, foreign_key: :item_id, through: :product_property_values
+  has_many :product_property_values
+  has_many :properties, through: :product_property_values
+  has_many :values, through: :product_property_values
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
   validates :title, :description, presence: true
-  validates :price, numericality: {greater_than_or_equal_to: 0.01}
+  validates :price, numericality: {greater_than_or_equal_to: 0.00}
   validates :title, uniqueness: true
 
   def to_param

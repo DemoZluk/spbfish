@@ -19,7 +19,7 @@
           - disabled = true if producers.count == 1
           = check_box_tag 'producer[]', producer, checked, {multiple: true, id: producer, disabled: disabled}
           = label_tag producer, producer
-  - if @group.properties.any?
+  - if @group.try(:properties).try(:any?)
     - @group.properties.each do |prop|
       .filter{id: prop.title.mb_chars.parameterize('_')}
         - if vals = values_of(prop).try(:sort_by) {|e| e.title.to_i}.presence
@@ -32,3 +32,4 @@
                 - disabled = true if vals.count == 1
                 = check_box_tag "property[]", val.id, checked, {multiple: true, disabled: disabled, id: 'val_'+val.id.to_s}
                 = label_tag 'val_'+val.id.to_s, val.title
+  %input{type: "reset", value: "Сброс" }/ 

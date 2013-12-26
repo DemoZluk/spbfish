@@ -65,6 +65,9 @@ gem 'kaminari'
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
+# Authentication system
+gem 'devise'
+
 # Create thumbnails
 gem 'carrierwave'
 gem 'mini_magick', git: "https://github.com/minimagick/minimagick.git"
