@@ -63,11 +63,10 @@ doc.css('Товар').each do |product|
   permalink = product_title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
 
   if Product.find_by permalink: permalink
-    puts 'Product ' + product_title + ' already exists.'
+    puts 'Товар ' + product_title + ' уже существует.'
   else
     item_id = product.at_css('>Ид').content
 
-    puts product.at_css('>Артикул')
     Product.create!(
       item: product.at_css('>Артикул').content,
       title: product_title,
@@ -88,6 +87,8 @@ doc.css('Товар').each do |product|
         property_id: Property.find_by(property_id: p.at_css('Ид').content).id,
         value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id)
       )
+
+    puts 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
     end
 
     product.css('Картинка').each do |img|
