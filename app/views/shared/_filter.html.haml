@@ -12,6 +12,7 @@
   #producer
     %h4 Производитель
     %ul
+      = puts '---------------------------------------------------------'
       - producers = products.uniq.select(:producer).order("producer").pluck(:producer)
       - producers.each do |producer|
         %li
