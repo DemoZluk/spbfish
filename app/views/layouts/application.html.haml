@@ -10,6 +10,7 @@
   %body{class: controller_name + ' ' + action_name}
     #error_wrapper
       #error
+        = notice || ''
     #header_wrapper
       = render 'shared/header'
 
