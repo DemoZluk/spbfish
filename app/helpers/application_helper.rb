@@ -1,9 +1,24 @@
 module ApplicationHelper
-  def hidden_div_if(condition, attributes = {}, &block)
-    if condition
-      attributes['style'] = 'display:none;'
+
+  def values_of property
+    if @group
+      prop_id = property.id
+      product_ids = @group.products.pluck(:id)
+      value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.pluck(:value_id)
+      Value.where{id >> value_ids}.order(:title)
     end
-    content_tag(:div, attributes, &block)
+  end
+  
+  def resource_name
+    :user
+  end
+  
+  def resource
+    @resource ||= User.new
+  end
+  
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
   end
 
   def page_title
@@ -32,12 +47,10 @@ module ApplicationHelper
     obj.maximum(attribute).ceil
   end
 
-  def values_of property
-    if @group
-      prop_id = property.id
-      product_ids = @group.products.pluck(:id)
-      value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.pluck(:value_id)
-      Value.where{id >> value_ids}.order(:title)
+  def hidden_div_if(condition, attributes = {}, &block)
+    if condition
+      attributes['style'] = 'display:none;'
     end
+    content_tag(:div, attributes, &block)
   end
 end

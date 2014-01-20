@@ -18,7 +18,7 @@ class StoreController < ApplicationController
   private
 
     def set_products
-      products = Product.where{price != 0}
+      products = Product.with_price
       products = products.order(@order_by) if @order_by
       current_list_of products
     end

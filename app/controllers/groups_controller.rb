@@ -18,7 +18,7 @@ class GroupsController < ApplicationController
     end
 
     def set_products
-      products = @group.all_products(@order_by).where{price != 0}
+      products = @group.all_products(@order_by)
       current_list_of products
     end
 end

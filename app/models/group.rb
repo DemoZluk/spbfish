@@ -24,7 +24,7 @@ class Group < ActiveRecord::Base
   # If group has any children, join products, groups and their parents
   def all_products(order = 'title')
     ids = self.ids_including_children
-    Product.where{group_id >> ids}.order(order)
+    Product.where{(group_id >> ids) & (price > 0)}.order(order)
   end
 
   def ids_including_children

@@ -59,10 +59,16 @@ $vote_img_size: 24px;
   }
 }
 
+.rating_wrapper {
+  position: relative;
+  height: 24px;
+  margin-bottom: 15px;
+}
+
 .entry .rating {
   position: absolute;
-  top: 30px;
-  right: 2em;
+  // top: 30px;
+  right: 45px;
 }
 
 .rating {
@@ -131,15 +137,13 @@ $vote_img_size: 24px;
     bottom: -15px;
     left: 0;
   }
-
-  .rating_counter {
-    color: #555;
-    font-size: 11px;
-    position: absolute;
-    right: -30px;
-    text-align: left;
-    bottom: 0;
-  }
+}
+.rating_counter {
+  color: #555;
+  font-size: 11px;
+  position: absolute;
+  left: 215px;
+  bottom: 0px;
 }
 
 // Showing product
@@ -189,4 +193,8 @@ $vote_img_size: 24px;
     }
   }
 
+}
+
+#product_card {
+  margin: 5px;
 }

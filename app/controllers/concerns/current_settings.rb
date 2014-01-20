@@ -32,6 +32,8 @@ module CurrentSettings
     max = @max_price
     products = products.where{(price >= min) & (price <= max)}
 
+    puts params
+
     if producers = params[:producer]
       products = products.where{producer >> producers}
     end

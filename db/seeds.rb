@@ -13,7 +13,9 @@ doc = Nokogiri::XML(import)
 #===========================================#
 p 'Creating groups'
 
-doc.xpath('//Группы/descendant::Группа').each do |g|
+groups = doc.xpath('//Группы/descendant::Группа')
+groups_progress = ProgressBar.create(total: groups.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+groups.each do |g|
   parent = g.xpath('ancestor::Группа').last
   group_id = g.at_css('>Ид').content
   if parent
@@ -29,6 +31,7 @@ doc.xpath('//Группы/descendant::Группа').each do |g|
     parent_id: parent_id,
     permalink: permalink
   )
+  groups_progress.increment
 end
 
 p 'End'
@@ -36,7 +39,9 @@ p 'End'
 #===========================================#
 p 'Creating Properties'
 
-doc.css('Свойство').each do |p|
+props = doc.css('Свойство')
+props_progress = ProgressBar.create(total: props.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+props.each do |p|
   id = p.at_css('Ид').content
   title = p.at_css('Наименование').content
   Property.create(
@@ -51,6 +56,7 @@ doc.css('Свойство').each do |p|
       property_id: id
     )
   end
+  props_progress.increment
 end
 
 p 'End'
@@ -58,12 +64,14 @@ p 'End'
 #===========================================#
 p 'Creating Products and Values'
 
-doc.css('Товар').each do |product|
+prods = doc.css('Товар')
+prods_progress = ProgressBar.create(total: prods.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+prods.each do |product|
   product_title = product.at_css('>Наименование').content
   permalink = product_title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
 
   if Product.find_by permalink: permalink
-    puts 'Товар ' + product_title + ' уже существует.'
+    prods_progress.log 'Товар ' + product_title + ' уже существует.'
   else
     item_id = product.at_css('>Ид').content
 
@@ -88,7 +96,7 @@ doc.css('Товар').each do |product|
         value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id)
       )
 
-    puts 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
+    #prods_progress.log 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
     end
 
     product.css('Картинка').each do |img|
@@ -98,6 +106,8 @@ doc.css('Товар').each do |product|
       )
     end
   end
+
+  prods_progress.increment
 end
 
 p 'End'
@@ -106,16 +116,18 @@ p 'End'
 p 'Setting prices'
 
 offers = File.read('xml/offers.xml')
-prices = Nokogiri::XML(offers)
-prices.css('Предложение').each do |offer|
+prices = Nokogiri::XML(offers).css('Предложение')
+prices_progress = ProgressBar.create(total: prices.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+prices.each do |offer|
   if product = Product.find_by(item_id: offer.at_css('Ид').content)
     price = offer.at_css('ЦенаЗаЕдиницу').content
     product.price = price.to_f
     # p product.title + ' price: ' + price
     product.save
   else
-    p 'Product ' + offer.at_css('Наименование').content + ' not found'
+    prices_progress.log 'Product ' + offer.at_css('Наименование').content + ' not found'
   end
+  prices_progress.increment
 end
 
 p 'End'

@@ -1,12 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-actions = ->
-  # Show cart
-  $('#cart_block .cart_link').click( ->
-    #$('.cart_block #cart_panel').show();
-    $('#cart_block #cart_panel').stop().toggle('blind', 500);
-  ) if $('#cart_panel[disabled]').length == 0;
+$(document).on "ready page:change", ->
   $(".delete").on('click', 'input', ->
     $('.current_item').removeAttr('class');
     $(this).closest('tr').attr('class', 'current_item');
@@ -53,6 +48,9 @@ actions = ->
   #   -> $('#cart').stop().hide(500)
   # )
   
-
-$(document).ready actions
-$(document).on "page:change", actions
+$(document).on "page:change", ->
+  # Show cart
+  $('#cart_block .cart_link').click( ->
+    #$('.cart_block #cart_panel').show();
+    $('#cart_block #cart_panel').stop().toggle('blind', 500);
+  ) if $('#cart_panel[disabled]').length == 0;

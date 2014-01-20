@@ -25,17 +25,18 @@ Depot::Application.routes.draw do
   get 'admin' => 'admin#index'
 
 
-  devise_for :users
+  devise_for :users, :controllers => { :sessions => "sessions" }
 
   devise_scope :user do
-    get "login" => "devise/sessions#new"
+    get 'login' => "devise/sessions#new"
     post 'login' => "devise/sessions#create"
     delete 'logout' => "devise/sessions#destroy"
+    get 'sign_up' => "devise/registrations#new"
   end
 
   get 'user_prefs' => 'store#change_user_prefs'
 
-  resources :users
+  # resources :users
 
   resources :orders
 

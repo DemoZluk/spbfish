@@ -1,0 +1,17 @@
+#header
+  #logo= image_tag 'logo.png'
+  = link_to @app_name, store_path, id: 'title'
+  #phone_number
+    = image_tag 'phone.png'
+    %span 
+      +7 (800) XXX-XX-XX
+      %br/ 
+      +7 (900) XXX-XX-XX
+  #enter_form
+    - unless user_signed_in?
+      = render "shared/login_form"
+    - else
+      = button_to 'Выйти', logout_path, method: :delete
+
+    %nav#top_menu
+      = render 'shared/menu_top'

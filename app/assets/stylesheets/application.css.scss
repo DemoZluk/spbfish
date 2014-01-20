@@ -46,6 +46,12 @@ ul {
   }
 }
 
+input[type='text'], input[type='email'], input[type='password'], textarea {
+  border: 1px solid rgb(149, 149, 148);
+  border-radius: 3px;
+  outline: none;
+}
+
 input[type='checkbox'], input[type='checkbox']~label {
   vertical-align: middle;
 }
@@ -126,7 +132,7 @@ form {
 
   #logo {
     display: inline-block;
-    img { height: 40px; }
+    img { height: 52px; }
   }
 
   #phone_number {
@@ -171,6 +177,8 @@ form {
 }
 
 #top_menu {
+
+  padding-top: 9px;
 
   ul {
     margin: 0;
@@ -350,7 +358,12 @@ form {
     li.parent:hover>.child {
       display: block;
     }
-
+    
+    .count {
+      font-size: 8px;
+      vertical-align: sub;
+      color: #666;
+    }
   }
 
   #main {

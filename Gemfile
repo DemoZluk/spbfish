@@ -8,9 +8,14 @@ group :production, :staging do
   gem "pg"
 end
 
+group :test do
+  gem 'sqlite3'
+end
+
 # Use sqlite3 as the database for dev and test
-group :development, :test do
-  gem "sqlite3", "~> 1.3.0", :require => "sqlite3"
+group :development do
+  gem "mysql2"
+  #gem "sqlite3", "~> 1.3.0", :require => "sqlite3"
 end
 
 # SQL query assistant
@@ -70,7 +75,7 @@ gem 'devise'
 
 # Create thumbnails
 gem 'carrierwave'
-gem 'mini_magick', git: "https://github.com/minimagick/minimagick.git"
+gem 'mini_magick'
 
 # Alternative server to WEBrick
 gem 'puma'
@@ -85,3 +90,7 @@ gem 'puma'
 # gem 'debugger', group: [:development, :test]
 
 gem 'newrelic_rpm'
+
+gem 'passenger'
+
+gem 'ruby-progressbar'

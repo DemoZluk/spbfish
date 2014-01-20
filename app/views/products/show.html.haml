@@ -2,12 +2,15 @@
   %p#notice= notice
 
 - @page_title = @product.title
+- group = @product.group
+
+%p= link_to group.title, group_path(group) + '#' + @product.permalink
 
 .image= render 'shared/image', product: @product
 
 .right_panel
   %p.price= number_to_currency @product.price
-  .rating= render 'shared/rating', product: @product
+  .rating_wrapper= render 'shared/rating', product: @product
   = render 'shared/add_to_cart', product: @product
 
 .text_block

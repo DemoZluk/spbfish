@@ -32,4 +32,13 @@ module StoreHelper
   def create_thumbnail
     system("");
   end
+
+  def numeric? array
+    numeric_vals = array.map do |v|
+      if v.title.match(/^\d+/)
+        v.title.to_i
+      end
+    end
+    numeric_vals.compact
+  end
 end

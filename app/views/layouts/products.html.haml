@@ -14,15 +14,9 @@
       = render 'shared/header'
 
     #content
-      #side
-        #tree
-          .show_hide_tree Каталог
-          = render 'shared/menu_side'
-        - if @products
-          #filters
-            = render 'shared/filter'
-      #main= yield
-    #dummy
+      #product_card= yield
 
+    #dummy
     = render 'shared/bottom_panel'
+    
     %footer

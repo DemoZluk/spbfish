@@ -1,5 +1,5 @@
 .bottom_panel
-  - unless controller_name == 'carts'
+  - unless ['carts','registrations'].include? controller_name
     #cart_block
       #cart_panel{ :style => 'display: none;' }
         - if @cart

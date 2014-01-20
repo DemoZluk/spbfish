@@ -4,7 +4,7 @@ $(document).on "ready page:change", ->
     min: $("#minPrice").data('min')
     max: $("#maxPrice").data('max')
     values: [$("#minPrice").data('current'), $("#maxPrice").data('current')]
-    change: (event, ui) ->
+    stop: (event, ui) ->
       $(this).closest('form').submit()
     slide: (event, ui) ->
       $("#minPrice").val(ui.values[0])
@@ -40,6 +40,7 @@ $(document).on "ready page:change", ->
     settings.url = this.action + '?' + filters
     history.pushState('', document.title, settings.url)
 
-  $('.show_hide_tree').on 'click', ->
+$(document).on "page:change", ->
+  $('.show_hide_tree').click ->
     $(this).toggleClass 'active'
     $('nav.menu_side>ul').slideToggle()

@@ -17,6 +17,10 @@ class Product < ActiveRecord::Base
   def to_param
     permalink
   end
+
+  def self.with_price
+    Product.where{price > 0}
+  end
   
   def self.latest
     Product.order('updated_at').last
