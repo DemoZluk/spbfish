@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
 
-  skip_before_action :authorize, only: [:show, :vote]
+  skip_before_action :authenticate_user!, only: [:show, :vote]
 
   # GET /products
   # GET /products.json

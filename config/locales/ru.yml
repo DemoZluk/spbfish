@@ -40,6 +40,8 @@ ru:
         pay_type: "Способ оплаты"
         shipping_date: "Дата доставки"
       user:
+        username: Имя
+        login: Логин
         email: Почта
         password: Пароль
         remember_me: Запомнить

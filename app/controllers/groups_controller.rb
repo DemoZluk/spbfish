@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   include CurrentSettings
 
   before_action :change_user_prefs, :set_group, :set_products
-  skip_before_action :authorize, only: [:show]
+  skip_before_action :authenticate_user!, only: [:show]
 
   def show
     respond_to do |format|

@@ -1,5 +1,4 @@
 class Users::SessionsController < Devise::SessionsController
-  skip_before_action :authorize
   
   # #before_action :authenticate_user!
 

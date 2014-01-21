@@ -2,7 +2,7 @@ class StoreController < ApplicationController
   include CurrentSettings
 
   before_action :change_user_prefs, :set_products
-  skip_before_action :authorize
+  skip_before_action :authenticate_user!
 
   def visit_counter
     session[:counter] = (session[:counter]||0)+1

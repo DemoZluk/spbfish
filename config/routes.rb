@@ -25,7 +25,7 @@ Depot::Application.routes.draw do
   get 'admin' => 'admin#index'
 
 
-  devise_for :users, :controllers => { :sessions => "sessions" }
+  devise_for :users
 
   devise_scope :user do
     get 'login' => "devise/sessions#new"

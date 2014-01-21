@@ -1,7 +1,10 @@
-<p>Hello <%= @resource.email %>!</p>
+<p>Здравствуйте, <%= @resource.email %>!</p>
 
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+<p>Ваш аккаунт был заблокирован из-за того, что кто-то (возможно, Вы) слишком много раз ввёл неверный пароль.</p>
 
-<p>Click the link below to unlock your account:</p>
+<p>Пройдите по ссылке ниже, чтобы разблокировать его:</p>
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, :unlock_token => @token) %></p>
+<p><%= link_to 'Разблокировать аккаунт', unlock_url(@resource, :unlock_token => @token) %></p>
+
+<p>Если Вы по каким-то причинам не можете нажать на ссылку, то скопируйте её в адресную строку вашего браузера.</p>
+<p><%= link_to unlock_url(@resource, :unlock_token => @token) %></p>
