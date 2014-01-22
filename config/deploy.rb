@@ -13,14 +13,9 @@ require 'rvm/capistrano'
 set :repository, "#{user}@#{domain}:Git/#{application}.git"
 set :deploy_to, "/home/#{user}/Workplace/www/#{application}"
 
-set :application, "fmkt.tst"
-set :repository,  "ssh://dezl@192.168.56.2/~/Git/depot.git"
-
 role :app, domain
 role :web, domain
 role :db, domain, :primary => true
-
-ssh_options[:forward_agent] = true
 
 set :deploy_via, :remote_cache
 set :scm, 'git'
