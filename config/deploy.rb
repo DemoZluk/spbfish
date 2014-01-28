@@ -10,6 +10,7 @@ set :domain, domain
 set :application, application
 
 set :repo_url, "#{user}@#{domain}:Git/#{application}.git"
+set :deploy_to, "/home/#{user}/Workplace/www/#{application}"
 
 # set :rvm_type, :user
 # set :rvm_ruby_string, 'ruby-2.0.0-p356'

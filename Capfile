@@ -17,12 +17,12 @@ require 'capistrano/deploy'
 require 'capistrano/rvm'
 # require 'capistrano/rbenv'
 # require 'capistrano/chruby'
-# require 'capistrano/bundler'
+require 'capistrano/bundler'
 # require 'capistrano/rails/assets'
 # require 'capistrano/rails/migrations'
 
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
-# Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
+Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
 user = "dezl"
 server = "192.168.56.2"
 
@@ -32,5 +32,8 @@ set :rvm_type, :user
 set :rvm_ruby_version, '2.0.0'
 
 task :srch do
-  run "ls -1 ~"
+  on roles :all do |host|
+    info "Host: #{host.user}@#{host}"
+    execute :ls, '.'
+  end
 end

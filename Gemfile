@@ -14,9 +14,10 @@ end
 
 # Use sqlite3 as the database for dev and test
 group :development do
-  gem "mysql2"
   #gem "sqlite3", "~> 1.3.0", :require => "sqlite3"
 end
+
+gem "mysql2"
 
 # SQL query assistant
 gem 'squeel'
