@@ -31,12 +31,16 @@ GEM
     bcrypt-ruby (3.0.1)
     bcrypt-ruby (3.0.1-x86-mingw32)
     builder (3.1.4)
-    capistrano (2.15.5)
-      highline
-      net-scp (>= 1.0.0)
-      net-sftp (>= 2.0.0)
-      net-ssh (>= 2.0.14)
-      net-ssh-gateway (>= 1.1.0)
+    capistrano (3.1.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (~> 1.3)
+    capistrano-bundler (1.1.1)
+      capistrano (~> 3.0)
+      sshkit (>= 1.2.0)
+    capistrano-rvm (0.1.1)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
     carrierwave (0.9.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -63,14 +67,13 @@ GEM
       warden (~> 1.2.3)
     erubis (2.7.0)
     execjs (2.0.2)
-    haml (4.0.4)
+    haml (4.0.5)
       tilt
     haml-rails (0.5.1)
       actionpack (~> 4.0.0)
       activesupport (~> 4.0.0)
       haml (>= 3.1, < 5.0)
       railties (~> 4.0.0)
-    highline (1.6.20)
     hike (1.2.3)
     i18n (0.6.9)
     jbuilder (1.5.3)
@@ -80,7 +83,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
-    kaminari (0.15.0)
+    kaminari (0.15.1)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     launchy (2.4.2)
@@ -95,16 +98,12 @@ GEM
       subexec (~> 0.2.1)
     mini_portile (0.5.2)
     minitest (4.7.5)
-    multi_json (1.8.2)
+    multi_json (1.8.4)
     mysql2 (0.3.14)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
-    net-sftp (2.1.2)
-      net-ssh (>= 2.6.5)
     net-ssh (2.7.0)
-    net-ssh-gateway (1.2.0)
-      net-ssh (>= 2.6.5)
-    newrelic_rpm (3.7.1.180)
+    newrelic_rpm (3.7.1.188)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     nokogiri (1.6.1-x86-mingw32)
@@ -115,7 +114,7 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
-    passenger (4.0.29)
+    passenger (4.0.35)
       daemon_controller (>= 1.1.0)
       rack
       rake (>= 0.8.1)
@@ -148,7 +147,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.1.1)
-    rdoc (3.12.2)
+    rdoc (4.1.1)
       json (~> 1.4)
     roadie (2.4.3)
       actionmailer (> 3.0.0, < 5.0.0)
@@ -158,16 +157,14 @@ GEM
     ruby-progressbar (1.4.0)
     russian (0.6.0)
       i18n (>= 0.5.0)
-    rvm-capistrano (1.5.1)
-      capistrano (~> 2.15.4)
     sass (3.2.13)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
       sass (>= 3.1.10)
       sprockets-rails (~> 2.0.0)
-    sdoc (0.3.20)
-      json (>= 1.1.3)
-      rdoc (~> 3.10)
+    sdoc (0.4.0)
+      json (~> 1.8)
+      rdoc (~> 4.0, < 5.0)
     sprockets (2.10.1)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -177,21 +174,28 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
-    sqlite3 (1.3.7)
-    sqlite3 (1.3.7-x86-mingw32)
+    sqlite3 (1.3.8)
+    sqlite3 (1.3.8-x86-mingw32)
     squeel (1.1.1)
       activerecord (>= 3.0)
       activesupport (>= 3.0)
       polyamorous (~> 0.6.0)
+    sshkit (1.3.0)
+      net-scp (>= 1.1.2)
+      net-ssh
+      term-ansicolor
     subexec (0.2.3)
+    term-ansicolor (1.2.2)
+      tins (~> 0.8)
     thor (0.18.1)
     thread_safe (0.1.3)
       atomic
     tilt (1.4.1)
+    tins (0.13.1)
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    turbolinks (2.1.0)
+    turbolinks (2.2.0)
       coffee-rails
     tzinfo (0.3.38)
     uglifier (2.4.0)
@@ -206,6 +210,9 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
+  capistrano (~> 3.1.0)
+  capistrano-bundler (>= 1.1.0)
+  capistrano-rvm
   carrierwave
   coffee-rails (~> 4.0.0)
   devise
@@ -228,7 +235,6 @@ DEPENDENCIES
   roadie
   ruby-progressbar
   russian
-  rvm-capistrano
   sass-rails (~> 4.0.0)
   sdoc
   sqlite3

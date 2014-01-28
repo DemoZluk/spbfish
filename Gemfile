@@ -84,7 +84,9 @@ gem 'puma'
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-gem 'rvm-capistrano', group: :development
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-rvm'
+gem 'capistrano-bundler', '>=1.1.0'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]

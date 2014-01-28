@@ -1,53 +1,72 @@
-require 'bundler/capistrano'
+# # config valid only for Capistrano 3.1
+# lock '3.1.0'
 
-set :user, 'dezl'
-set :domain, '192.168.56.2'
-set :application, 'fmkt.tst'
+user = 'dezl'
+domain = '192.168.56.2'
+application = 'fmkt.tst'
 
-# Using RVM
-set :rvm_type, :user
-set :rvm_ruby_string, 'ruby-2.0.0-p353'
-require 'rvm/capistrano'
+set :user, user
+set :domain, domain
+set :application, application
 
-# file paths
-set :repository, "#{user}@#{domain}:Git/#{application}.git"
-set :deploy_to, "/home/#{user}/Workplace/www/#{application}"
+set :repo_url, "#{user}@#{domain}:Git/#{application}.git"
 
-role :app, domain
-role :web, domain
-role :db, domain, :primary => true
+# set :rvm_type, :user
+# set :rvm_ruby_string, 'ruby-2.0.0-p356'
+# require 'rvm1/capistrano3'
 
-set :deploy_via, :remote_cache
-set :scm, 'git'
-set :branch, 'master'
-set :scm_verbose, true
-set :use_sudo, false
-set :normalize_asset_timestamps, false
-set :rails_env, :production
+# # Default branch is :master
+# # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 
-namespace :deploy do
-  desc "cause Passenger to initiate a restart"
-  task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
-    
-  desc "reload the database with seed data"
-  task :seed do
-    deploy.migrations
-    run "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
-  end
-end
-# if you want to clean up old releases on each deploy uncomment this:
-# after "deploy:restart", "deploy:cleanup"
+# # Default deploy_to directory is /var/www/my_app
+# set :deploy_to, "/home/#{user}/Workplace/www/#{application}"
 
-# if you're still using the script/reaper helper you will need
-# these http://github.com/rails/irs_process_scripts
+# # Default value for :scm is :git
+# # set :scm, :git
 
-# If you are using Passenger mod_rails uncomment this:
+# # Default value for :format is :pretty
+# # set :format, :pretty
+
+# # Default value for :log_level is :debug
+# # set :log_level, :debug
+
+# # Default value for :pty is false
+# # set :pty, true
+
+# # Default value for :linked_files is []
+# # set :linked_files, %w{config/database.yml}
+
+# # Default value for linked_dirs is []
+# # set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+
+# # Default value for default_env is {}
+# # set :default_env, { path: "/opt/ruby/bin:$PATH" }
+
+# # Default value for keep_releases is 5
+# # set :keep_releases, 5
+
+# before 'deploy', 'rvm1:install:rvm'   # install/update RVM
+# before 'deploy', 'rvm1:install:ruby'  # install/update Ruby
+
 # namespace :deploy do
-#   task :start do ; end
-#   task :stop do ; end
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
+
+#   desc 'Restart application'
+#   task :restart do
+#     on roles(:app), in: :sequence, wait: 5 do
+#       # Your restart mechanism here, for example:
+#       # execute :touch, release_path.join('tmp/restart.txt')
+#     end
 #   end
+
+#   after :publishing, :restart
+
+#   after :restart, :clear_cache do
+#     on roles(:web), in: :groups, limit: 3, wait: 10 do
+#       # Here we can do anything such as:
+#       # within release_path do
+#       #   execute :rake, 'cache:clear'
+#       # end
+#     end
+#   end
+
 # end
