@@ -8,10 +8,5 @@ class ApplicationController < ActionController::Base
 
   protected
 
-    def authorize
-      unless session[:user_id] && User.find(session[:user_id])
-        redirect_to login_url, notice: I18n.t(:please_log_in)
-      end
-    end
     
 end

@@ -21,3 +21,9 @@
 -# = link_to('Изменить', edit_cart_path(cart))
 -# \|
 -# = link_to('Назад', carts_path)
+
+-# if flash[:merge_carts?]
+#merge_carts
+  %p= flash[:merge_carts?]
+  = link_to 'Да, добавить', merge_yes_path
+  = link_to 'Нет, удалить старую', merge_no_path

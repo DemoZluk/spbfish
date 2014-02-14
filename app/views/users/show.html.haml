@@ -1,13 +1,10 @@
-- if
+- if notice
   %p#notice= notice
 
-%p
-  %b Name:
-  = @user.name
-%p
-  %b Pass hash:
-  = @user.password_digest
+%h3
+  = "Привет, #{@user.login ? @user.login : @user.email}!" # greeting < users_helper.rb
+- if @user.orders.any?
+  %h2 Активные заказы
 
-= link_to 'Edit', edit_user_path(@user)
-\|
-= link_to 'Back', users_path
+  - @user.orders.each do |order|
+    = link_to order.created_at, order

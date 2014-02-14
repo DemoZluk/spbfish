@@ -7,12 +7,14 @@
       +7 (800) XXX-XX-XX
       %br/ 
       +7 (900) XXX-XX-XX
-  - unless controller_name == 'registrations'
-    #enter_form
-      - unless user_signed_in?
-        = render "shared/login_form"
-      - else
-        = button_to 'Выйти', logout_path, method: :delete
-
-  %nav#top_menu
-    = render 'shared/menu_top'
+  #right_header_part
+    - unless controller_name == 'registrations'
+      #enter_form
+        - unless user_signed_in?
+          = render "shared/login_form"
+        - else
+          = link_to 'Профиль', user_root_path
+          = link_to 'Выйти', logout_path, method: :delete
+    %nav#top_menu
+      = render 'shared/menu_top'
+    =# debug session[:user]

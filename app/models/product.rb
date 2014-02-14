@@ -19,11 +19,18 @@ class Product < ActiveRecord::Base
   end
 
   def self.with_price
-    Product.where{price > 0}
+    where{price > 0}
   end
   
   def self.latest
     Product.order('updated_at').last
+  end
+
+  sifter :filter_by do |params|
+
+    # if flt
+    #   puts 'flt'
+    # end
   end
 
   def rate(points, product)

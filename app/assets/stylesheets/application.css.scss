@@ -132,7 +132,7 @@ form {
 
   #logo {
     display: inline-block;
-    img { height: 52px; }
+    img { height: 90px; }
   }
 
   #phone_number {
@@ -169,6 +169,11 @@ form {
     vertical-align: top;
     padding: 0px 25px;
   }
+}
+
+#right_header_part {
+  display: inline-block;
+  float: right;
 }
 
 #enter_form {

@@ -1,22 +1,25 @@
 module ApplicationHelper
 
   def values_of property
+
+    # !!! Optimize later
+
     if @group
       prop_id = property.id
-      product_ids = @group.products.pluck(:id)
-      value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.pluck(:value_id)
-      Value.where{id >> value_ids}.order(:title)
+      product_ids = @group.products.pluck(:id).uniq
+      value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.uniq.pluck(:value_id)
+      Value.where{id >> value_ids}.order_by_products_count#.joins{products}.uniq.group{id}#.order{count(products.id).desc}
     end
   end
-  
+
   def resource_name
     :user
   end
-  
+
   def resource
     @resource ||= User.new
   end
-  
+
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
   end
@@ -31,9 +34,13 @@ module ApplicationHelper
     end
   end
 
+  def eql item, current
+    item.to_s.match(/[.\w]+/).to_s == current.to_s.match(/[.\w]+/).to_s.sub('products.', '')
+  end
+
   def selection_label(current)
     if current.to_i == 0
-      label = I18n.t('selection_labels.'+current.match(/\w+/).to_s)
+      label = I18n.t('selection_labels.' + current.match(/[.\w]+/).to_s.sub('products.', ''))
     else
       label = current
     end

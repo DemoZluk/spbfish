@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.js {render 'shared/product_index'}
+      format.js {render 'store/index'}
     end
   end
 

@@ -3,11 +3,11 @@
 = form_tag url_for, {remote: true, method: 'get', id: 'filter', name: 'preferences'} do
   #price
     %h4 Цена
-    = text_field_tag 'minPrice', params['minPrice'], {placeholder: @products_min, data: {min: @products_min, current: @min_price}}
+    = text_field_tag 'minPrice', params['minPrice'], {class: 'min', placeholder: @products_min, data: {min: @products_min, current: @min_price}}
     \-
-    = text_field_tag 'maxPrice', params['maxPrice'], {placeholder: @products_max, data: {max: @products_max, current: @max_price}}
+    = text_field_tag 'maxPrice', params['maxPrice'], {class: 'max', placeholder: @products_max, data: {max: @products_max, current: @max_price}}
     руб.
-    #price-slider
+    .slider{data: {min: @products_min, max: @products_max}}
 
   #producer
     %h4 Производитель
@@ -24,21 +24,24 @@
   - if @group.try(:properties).try(:any?)
     - @group.properties.each do |prop|
       .filter{id: prop.title.mb_chars.parameterize('_')}
-        - if vals = values_of(prop).try(:sort_by) {|e| e.title.to_i}.presence
+        - if (vals = values_of(prop)).any?#.try(:sort_by) {|e| e.title.to_i}.presence
           %h4= prop.title
-          %ul
-            -# if (numeric? vals).count < 5 # store_helper
-            - vals.each do |val|
-              - unless (val_cntr = products.joins{values}.where{values.id == val.id}.count) == 0
-                %li
-                  - checked = params[:property].try(:index, val.id.to_s) || (true if vals.count == 1)
-                  - disabled = true if vals.count == 1
-                  = check_box_tag "property[]", val.id, checked, {multiple: true, disabled: disabled, id: 'val_'+val.id.to_s}
-                  = label_tag 'val_'+val.id.to_s, val.title
-                  %span.count= "(#{val_cntr})"
-            -# else
-              -#%input{:type => "text", value: numeric?(vals).min, name: "property[#{prop.id}][]"}/
-              -#\ - 
-              -#%input{:type => "text", value: numeric?(vals).max, name: "property[#{prop.id}][]"}/
-              -#= vals.first.title.split(' ')[1]
+          - if vals.numerical.length > 5
+            .numerical
+              %input.min{:type => "text", placeholder: numeric?(vals).min, name: "r[#{prop.id}][]", value: ((params[:r] && params[:r][prop.id.to_s] && params[:r][prop.id.to_s][0]) ? params[:r][prop.id.to_s][0] : nil)}/
+              \ - 
+              %input.max{:type => "text", placeholder: numeric?(vals).max, name: "r[#{prop.id}][]", value: ((params[:r] && params[:r][prop.id.to_s] && params[:r][prop.id.to_s][1]) ? params[:r][prop.id.to_s][1] : nil)}/
+              .slider{data: {min: numeric?(vals).min, max: numeric?(vals).max}}
+          - else
+            %ul
+              - vals.each_with_index do |val, i|
+                - unless (val_cntr = products.joins{values}.where{values.id == val.id}.length) == 0
+                  %li{(i <= 4) ? {} : {class: 'more', style: 'display: none'}}
+                    - checked = params[:p].try(:index, val.id.to_s) || (true if vals.length == 1)
+                    - disabled = true if vals.length == 1
+                    = check_box_tag "p[]", val.id, checked, {multiple: true, disabled: disabled, id: 'val_'+val.id.to_s}
+                    = label_tag 'val_'+val.id.to_s, val.title
+                    %span.count= "(#{val_cntr})"
+              - if vals.length > 5
+                .show_more Показать ещё
   %input{type: "button", value: "Сброс"}/ 

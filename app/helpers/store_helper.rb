@@ -34,11 +34,6 @@ module StoreHelper
   end
 
   def numeric? array
-    numeric_vals = array.map do |v|
-      if v.title.match(/^\d+/)
-        v.title.to_i
-      end
-    end
-    numeric_vals.compact
+    array.map{|v| v.value.to_f}.compact
   end
 end

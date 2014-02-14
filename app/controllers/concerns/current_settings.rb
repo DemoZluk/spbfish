@@ -12,9 +12,9 @@ module CurrentSettings
 
     # Update user preferences
     @per_page = session[:user][:prefs][:per_page] ||= 10
-    @order_by = session[:user][:prefs][:order_by] ||= 'title'
+    @order_by = 'products.' + session[:user][:prefs][:order_by] ||= 'title'
     @desc = session[:user][:prefs][:descending].presence
-    @order_by = @order_by + ' DESC' if @desc
+    @order_by += ' DESC' if @desc
   end
 
   # Define product list for current group
@@ -28,28 +28,54 @@ module CurrentSettings
   def filter products
 
     set_min_max_price_for products
-    min = @min_price
-    max = @max_price
-    products = products.where{(price >= min) & (price <= max)}
 
-    puts params
+    products = products.where(price: @min_price..@max_price)
 
     if producers = params[:producer]
       products = products.where{producer >> producers}
     end
 
-    if filters = params[:property]
-      # products = products.where{item_id >> (.where{value.id >> filters})}
-      #products = products.where{ item_id >> products.select }
-      c = Value.uniq.where{id >> filters}.group_by{|value| value.property_id}.count
-      products = products.joins{product_property_values}.where{product_property_values.value_id >> filters}.group{id}.having{count(product_property_values.property_id) == c}
-      # products = products.where{item_id >> values.select{item_id}}
-      # product_ids = ProductPropertyValue.uniq.with_indifferent_accesse{value_id >> filters}.pluck(:item_id)
-      # filters.each do |f|
-      #   products = products.where{product_property_values.value_id == f}
-      # end
-      # p '-----------------'
+
+    # if (rng = params[:r].try :values) && rng.flatten.reject{|e| e.empty?}.any?
+    #   rng.each do |r|
+    #     rmin = r[0].to_i
+    #     rmax = (r[1].presence || 9999999).to_i
+    #     products = products.joins{values}.where{(product_property_values.property_id == r[0]) & ((values.title >= rmin) & (values.title <= rmax) | (product_property_values.value_id == nil))}
+    #   end
+    # end
+
+    products = products.joins{values}.uniq
+
+    query = []
+
+    if rng = params[:r]
+      rng.each do |k,v|
+        if v.reject(&:empty?).any?
+          min = v[0].to_f
+          max = v[1].presence || Value.where{property_id == Property.find(k).property_id}.maximum(:value)
+          query << "(`values`.`value` >= #{min} AND `values`.`value` <= #{max} AND `product_property_values`.`property_id` = #{k})"
+        end
+      end
     end
+
+    if flt = params[:p]
+      query << "(`product_property_values`.`value_id` IN (#{flt.join(', ')}))"
+    end
+
+    if rng || flt
+      c = 0
+      c += Value.uniq.where{id >> flt}.group_by{|value| value.property_id}.count if flt
+      c += params[:r].keep_if{|k,v| v.reject(&:empty?).any?}.count if rng
+      
+      products = products.where(query.join(' OR ')).group{id}.having{count(product_property_values.property_id) >= c}
+    end
+
+    # vals << params[:p].map(&:to_s) if params[:p] && params[:p].any?
+
+    # unless vals.empty?
+    #   vv = Value.joins{product_property_values}.where{id >> vals.flatten}.pluck('product_property_values.product_id')
+    #   products = products.where{id >> vv}
+    # end
 
     products
   end
@@ -57,8 +83,8 @@ module CurrentSettings
   def set_min_max_price_for products
     param_min = params[:minPrice].to_i.abs
     param_max = params[:maxPrice].to_i.abs
-    @products_min = products.minimum(:price).floor
-    @products_max = products.maximum(:price).ceil
+    @products_min = products.minimum(:price).to_i.try :floor
+    @products_max = products.maximum(:price).to_i.try :ceil
     @min_price = (param_min == 0) ? @products_min : ((param_min < @products_max) ? param_min : @products_max-1)
     @max_price = (param_max == 0) ? @products_max : ((param_max > @min_price) ? param_max : @min_price+1)
     @max_price = @min_price+1 if @max_price <= @min_price

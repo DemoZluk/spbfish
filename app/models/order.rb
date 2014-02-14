@@ -1,6 +1,7 @@
 #encoding: utf-8
 class Order < ActiveRecord::Base
   has_many :line_items, dependent: :destroy
+  belongs_to :user
 
   PAYMENT_TYPES = [ "Самовывоз", "Безналичный расчёт" ]
   validates :name, :address, :email, :shipping_date, presence: true

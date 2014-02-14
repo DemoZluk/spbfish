@@ -1,10 +1,10 @@
 .select
   %select{name: name}
     - array.each do |item|
-      %option{selected: item.to_s.match(/\w+/).to_s == current.to_s.match(/\w+/).to_s ? true : false, value: item.to_s}= selection_label(item)
-  %span= selection_label(current) # Application helper
+      %option{selected: eql(item, current) ? true : false, value: item.to_s}= selection_label(item) # < application_helper.rb
+  %span= selection_label(current) # < application_helper.rb
   .arrow_down
   %ul.values
     - array.each do |item|
-      - unless item.to_s.match(/\w+/).to_s == current.to_s.match(/\w+/).to_s
+      - unless eql(item, current) # < application_helper.rb
         %li{data: {value: item.to_s}}= selection_label(item)

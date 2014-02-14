@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LineItemsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:create, :decrement, :destroy]
-  # include CurrentCart
+  include CurrentCart
   # before_action :set_cart, only: [:create]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement]
 
@@ -84,13 +84,11 @@ class LineItemsController < ApplicationController
           @line_item.destroy
           #redirect_to(cart_path(session[:cart_id]), notice: 'Product deleted')
         else
-          logger.error('No such product')
-          #redirect_to(store_url, notice: 'No such product')
+          invalid_line_item
         end
       end
     else
-      logger.error('No such product')
-      #redirect_to(store_url, notice: 'No such product')
+      invalid_line_item
     end
     if @line_item.save
       respond_to do |format|
@@ -99,8 +97,7 @@ class LineItemsController < ApplicationController
         format.json { head :no_content }
       end
     else
-      logger.error('No such product')
-      redirect_to(store_url, notice: 'No such product')
+      invalid_line_item
     end
   end
 

@@ -31,9 +31,19 @@ role :app, "#{user}@#{server}"
 set :rvm_type, :user
 set :rvm_ruby_version, '2.0.0'
 
-task :srch do
-  on roles :all do |host|
-    info "Host: #{host.user}@#{host}"
-    execute :ls, '.'
+task :precompile do
+  on roles :app do
+    info release_path
   end
 end
+
+# namespace :deploy do
+  task :chk_rvm do
+    on roles :app, in: :sequence, wait: 5 do
+      within release_path do
+        execute :ls, '-l'
+        execute "bundle", 'exec cap production rvm:check'
+      end
+    end
+  end
+# end

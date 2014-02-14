@@ -1,8 +1,8 @@
-class Users::SessionsController < Devise::SessionsController
+class UsersController < ApplicationController
   
   # #before_action :authenticate_user!
 
-  # before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # # GET /users
   # # GET /users.json
@@ -12,8 +12,14 @@ class Users::SessionsController < Devise::SessionsController
 
   # # GET /users/1
   # # GET /users/1.json
-  # def show
-  # end
+  def show
+  end
+
+  def create
+    if session && session[:user]
+      session[:user][:id] = current
+    end
+  end
 
   # # GET /users/new
   # def new
@@ -69,11 +75,15 @@ class Users::SessionsController < Devise::SessionsController
   #   end
   # end
 
-  # private
-  #   # Use callbacks to share common setup or constraints between actions.
-  #   def set_user
-  #     @user = User.find(params[:id])
-  #   end
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_user
+      if params[:id]
+        @user = User.find(params[:id])
+      else
+        @user = User.find(session[:user][:id])
+      end
+    end
 
   #   # Never trust parameters from the scary internet, only allow the white list through.
   #   def user_params

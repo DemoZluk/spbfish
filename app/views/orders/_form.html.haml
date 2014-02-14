@@ -14,7 +14,7 @@
       %td= f.text_area :address, placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', rows: 3, cols: 32, required: true
     %tr.field
       %td= f.label :email
-      %td= f.email_field :email, size: 40, placeholder: "example@domain.com", required: true
+      %td= f.email_field :email, size: 40, placeholder: "example@domain.com", required: true, value: (User.find(session[:user][:id]).email if session[:user][:id])
     %tr.field
       %td= f.label :pay_type
       %td= f.select :pay_type, Order::PAYMENT_TYPES, prompt: 'Выберите способ оплаты'

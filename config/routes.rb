@@ -3,7 +3,7 @@ Depot::Application.routes.draw do
   root 'store#index', as: 'store'
 
   resources :catalog,  controller: 'groups', as: 'group' do
-    get ':id/page=:page', action: :show, on: :collection
+    # get ':id/page=:page', action: :show, on: :collection
   end
   post '/catalog/:id' => 'groups#show'
 
@@ -20,21 +20,26 @@ Depot::Application.routes.draw do
     end
   end
 
-  resources :carts
+  resources :carts do
+    get 'cart', to: :show
+  end
 
   get 'admin' => 'admin#index'
 
-
-  devise_for :users
+  get 'user' => 'users#show', as: 'user_root'
+  devise_for :users, controllers: { sessions: 'users/sessions' }
 
   devise_scope :user do
-    get 'login' => "devise/sessions#new"
-    post 'login' => "devise/sessions#create"
-    delete 'logout' => "devise/sessions#destroy"
+    get 'login' => "users/sessions#new"
+    post 'login' => "users/sessions#create"
+    delete 'logout' => "users/sessions#destroy"
     get 'sign_up' => "devise/registrations#new"
   end
 
   get 'user_prefs' => 'store#change_user_prefs'
+
+  get 'merge_yes' => 'carts#merge_yes'
+  get 'merge_no' => 'carts#merge_no'
 
   # resources :users
 

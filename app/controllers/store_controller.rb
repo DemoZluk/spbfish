@@ -11,7 +11,7 @@ class StoreController < ApplicationController
   def index
     respond_to do |format|
       format.html
-      format.js {render template: 'shared/product_index'}
+      format.js
     end
   end
 

@@ -4,9 +4,9 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 
 # Need pg for heroku
-group :production, :staging do
-  gem "pg"
-end
+# group :production, :staging do
+#   gem "pg"
+# end
 
 group :test do
   gem 'sqlite3'
@@ -14,6 +14,10 @@ end
 
 # Use sqlite3 as the database for dev and test
 group :development do
+  # Use Capistrano for deployment
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-rvm'
+  gem 'capistrano-bundler', '>=1.1.0'
   #gem "sqlite3", "~> 1.3.0", :require => "sqlite3"
 end
 
@@ -84,11 +88,6 @@ gem 'puma'
 # Use unicorn as the app server
 # gem 'unicorn'
 
-# Use Capistrano for deployment
-gem 'capistrano', '~> 3.1.0'
-gem 'capistrano-rvm'
-gem 'capistrano-bundler', '>=1.1.0'
-
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
@@ -97,3 +96,6 @@ gem 'newrelic_rpm'
 gem 'passenger'
 
 gem 'ruby-progressbar'
+gem 'brice'
+gem 'hirb-unicode'
+gem 'hirb'

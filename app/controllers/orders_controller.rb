@@ -84,6 +84,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type, :shipping_date)
+      params.require(:order).permit(:name, :address, :email, :pay_type, :shipping_date).merge!(user_id: (session[:user][:id] if session[:user][:id]))
     end
 end

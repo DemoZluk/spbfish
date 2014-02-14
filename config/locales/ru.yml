@@ -1,5 +1,4 @@
 ru:
-
   selection_labels:
     title: Названию
     price: Цене
@@ -17,18 +16,23 @@ ru:
   layouts:
     application:
       title: "[FishMarkt]"
+
   store:
     index:
       title: Лавка
+
   carts:
     show:
       title: Ваша корзина
+
   admin:
     index:
       title: Панель администратора
+
   products:
     vote_feedback: Спасибо за участие.
     vote_error: Не удалось проголовать.
+
   activerecord:
     models:
       order: "Заказ"
@@ -46,6 +50,7 @@ ru:
         password: Пароль
         remember_me: Запомнить
         password_confirmation: Повтор пароля
+
   number:
     currency:
       format:
@@ -85,6 +90,7 @@ ru:
   user_deleted: "Пользователь с именем %{user_name} удалён."
   please_log_in: 'Пожалуйста, авторизуйтесь.'
   cart_is_empty: Ваша корзина пуста.
+  merge_carts?: 'В прошлый раз в Вашей корзине остались товары, желаете добавить их в Вашу нынешнюю корзину?'
 
   devise:
     confirmations:
