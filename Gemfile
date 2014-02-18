@@ -8,20 +8,24 @@ gem 'rails', '4.0.0'
 #   gem "pg"
 # end
 
+# Use sqlite3 as the database for testing
 group :test do
   gem 'sqlite3'
 end
 
-# Use sqlite3 as the database for dev and test
+# Use mysql for dev and production
+group :development, :production do
+  gem "mysql2"
+end
+
+# Use Capistrano for deployment
 group :development do
-  # Use Capistrano for deployment
   gem 'capistrano', '~> 3.1.0'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler', '>=1.1.0'
   #gem "sqlite3", "~> 1.3.0", :require => "sqlite3"
 end
 
-gem "mysql2"
 
 # SQL query assistant
 gem 'squeel'
@@ -61,7 +65,6 @@ gem 'haml-rails'
 
 gem 'russian'
 
-
 gem 'roadie'
 
 gem "letter_opener", group: :development
@@ -96,9 +99,6 @@ gem 'newrelic_rpm'
 gem 'passenger'
 
 gem 'ruby-progressbar'
-gem 'brice'
-gem 'hirb-unicode'
-gem 'hirb'
 
 # Command line prompt
 gem 'highline', "~> 1.6.20"

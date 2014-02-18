@@ -18,7 +18,7 @@ def open_file
 end
 
 def create_groups
-  p 'Creating groups'
+  p "Creating groups"
 
   groups = @doc.xpath('//Группы/descendant::Группа')
   groups_progress = ProgressBar.create(total: groups.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -41,11 +41,11 @@ def create_groups
     groups_progress.increment
   end
 
-  p 'End'
+  p "End"
 end
 
 def create_properties
-  p 'Creating Properties'
+  p "Creating Properties"
 
   props = @doc.css('Свойство')
   props_progress = ProgressBar.create(total: props.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -67,11 +67,11 @@ def create_properties
     props_progress.increment
   end
 
-  p 'End'  
+  p "End"  
 end
 
 def create_products_and_values
-  p 'Creating Products and Values'
+  p "Creating Products and Values"
 
   prods = @doc.css('Товар')
   prods_progress = ProgressBar.create(total: prods.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -119,11 +119,11 @@ def create_products_and_values
     prods_progress.increment
   end
 
-  p 'End'
+  p "End"
 end
 
 def setup_prices
-  puts 'Setting prices'
+  puts "Setting prices"
 
   offers = File.read('xml/offers.xml')
   prices = Nokogiri::XML(offers).css('Предложение')
@@ -141,7 +141,7 @@ def setup_prices
       prices_progress.increment
     end
   else 
-    print "No prices defined in 'offers.xml'. Create random prices for each product?[y/n]: "
+    print "Prices haven't been defined in 'offers.xml'. Create random price for each product?[y/n]: "
     input = STDIN.gets.chomp
     if input == 'y'
       prices_progress = ProgressBar.create(total: Product.all.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -152,12 +152,12 @@ def setup_prices
     end
   end
 
-  p 'End'
+  p "End"
 end
 
 
 def add_values_to_values
-  p 'Populating value attribute'
+  p "Populating value attribute"
 
   values_progress = ProgressBar.create(total: Value.all.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   Value.all.each do |val|
@@ -166,7 +166,7 @@ def add_values_to_values
     values_progress.increment
   end
 
-  p 'End'
+  p "End"
 end
 
 main
