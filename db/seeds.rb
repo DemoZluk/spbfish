@@ -4,11 +4,11 @@
 #
 
 def main
-  # open_file
-  # create_groups
-  # create_properties
-  # create_products_and_values
-  # setup_prices
+  open_file
+  create_groups
+  create_properties
+  create_products_and_values
+  setup_prices
   add_values_to_values
 end
 
@@ -102,8 +102,7 @@ def create_products_and_values
         ProductPropertyValue.create(
           product_id: Product.find_by(item_id: item_id).id,
           property_id: Property.find_by(property_id: p.at_css('Ид').content).id,
-          value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id),
-          value: ((val.title.match(/^\d+(.\d+)?$/)) ? title[0].to_f : nil)
+          value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id)
         )
 
       #prods_progress.log 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
@@ -124,21 +123,33 @@ def create_products_and_values
 end
 
 def setup_prices
-  p 'Setting prices'
+  puts 'Setting prices'
 
   offers = File.read('xml/offers.xml')
   prices = Nokogiri::XML(offers).css('Предложение')
-  prices_progress = ProgressBar.create(total: prices.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
-  prices.each do |offer|
-    if product = Product.find_by(item_id: offer.at_css('Ид').content)
-      price = offer.at_css('ЦенаЗаЕдиницу').content
-      product.price = price.to_f
-      # p product.title + ' price: ' + price
-      product.save
-    else
-      prices_progress.log 'Product ' + offer.at_css('Наименование').content + ' not found'
+  if prices.size > 0
+    prices_progress = ProgressBar.create(total: prices.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+    prices.each do |offer|
+      if product = Product.find_by(item_id: offer.at_css('Ид').content)
+        price = offer.at_css('ЦенаЗаЕдиницу').content
+        product.price = price.to_f
+        # p product.title + ' price: ' + price
+        product.save
+      else
+        prices_progress.log 'Product ' + offer.at_css('Наименование').content + ' not found'
+      end
+      prices_progress.increment
     end
-    prices_progress.increment
+  else 
+    print "No prices defined in 'offers.xml'. Create random prices for each product?[y/n]: "
+    input = STDIN.gets.chomp
+    if input == 'y'
+      prices_progress = ProgressBar.create(total: Product.all.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+      Product.all.each do |p|
+        p.update(price: rand(1..10000))
+        prices_progress.increment
+      end
+    end
   end
 
   p 'End'

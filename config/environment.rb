@@ -2,9 +2,9 @@
 require File.expand_path('../application', __FILE__)
 
 # Initialize the Rails application.
-Depot::Application.initialize!
+Fishmarkt::Application.initialize!
 
-Depot::Application.configure do
+Fishmarkt::Application.configure do
 	config.action_mailer.delivery_method = :smtp
 	config.action_mailer.smtp_settings = {
 		address: "smtp.spbfish.ru",

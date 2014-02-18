@@ -23,15 +23,23 @@ require 'capistrano/bundler'
 
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
-user = "dezl"
-server = "192.168.56.2"
 
-role :app, "#{user}@#{server}"
+@user = "fish"
+@server = "www.fishmarkt.ru"
+@application = 'fishmarkt'
+
+role :app, "#{@user}@#{@server}"
 
 set :rvm_type, :user
 set :rvm_ruby_version, '2.0.0'
 
 task :precompile do
+  on roles :app do
+    info release_path
+  end
+end
+
+task :test_path do
   on roles :app do
     info release_path
   end
@@ -47,3 +55,17 @@ end
     end
   end
 # end
+
+namespace :deploy do
+  task :create_symlinks do
+    on roles :app do
+      info "Make symlink for database yaml"
+      execute :ln, "-nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+      
+      info "Make symlink for images folder"
+      execute :ln, "-fs #{shared_path}/images #{release_path}/app/assets/images"
+    end
+  end
+  
+  after :published, :create_symlinks
+end
