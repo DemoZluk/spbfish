@@ -18,8 +18,8 @@ require 'capistrano/rvm'
 # require 'capistrano/rbenv'
 # require 'capistrano/chruby'
 require 'capistrano/bundler'
-# require 'capistrano/rails/assets'
-# require 'capistrano/rails/migrations'
+require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
 
 # Loads custom tasks from `lib/capistrano/tasks' if you have any defined.
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
@@ -33,6 +33,7 @@ role :app, "#{@user}@#{@server}"
 set :rvm_type, :user
 set :rvm_ruby_version, '2.0.0'
 
+
 task :precompile do
   on roles :app do
     info release_path
@@ -45,27 +46,11 @@ task :test_path do
   end
 end
 
-# namespace :deploy do
-  task :chk_rvm do
-    on roles :app, in: :sequence, wait: 5 do
-      within release_path do
-        execute :ls, '-l'
-        execute "bundle", 'exec cap production rvm:check'
-      end
+task :chk_rvm do
+  on roles :app, in: :sequence, wait: 5 do
+    within release_path do
+      execute :ls, '-l'
+      execute "bundle", 'exec cap production rvm:check'
     end
   end
-# end
-
-namespace :deploy do
-  task :create_symlinks do
-    on roles :app do
-      info "Make symlink for database yaml"
-      execute :ln, "-nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-      
-      info "Make symlink for images folder"
-      execute :ln, "-fs #{shared_path}/images #{release_path}/app/assets/images"
-    end
-  end
-  
-  after :published, :create_symlinks
 end
