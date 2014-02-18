@@ -9,5 +9,5 @@ namespace :deploy do
     end
   end
   
-  after :published, :create_symlinks
+  before :compile_assets, :create_symlinks
 end
