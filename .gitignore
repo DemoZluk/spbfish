@@ -11,7 +11,7 @@
 db/*.sqlite3*
 config/database.yml
 
-app/assets/images
+/app/assets/images
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
