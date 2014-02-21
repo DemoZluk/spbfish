@@ -50,6 +50,10 @@ ru:
         password: Пароль
         remember_me: Запомнить
         password_confirmation: Повтор пароля
+      article:
+        title: Заголовок
+        body: Тело
+        author: Автор
 
   number:
     currency:

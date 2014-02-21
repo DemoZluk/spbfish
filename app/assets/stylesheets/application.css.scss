@@ -137,9 +137,6 @@ form {
 
   #phone_number {
     height: auto;
-    display: inline-block;
-    position: relative;
-    margin-left: 10px;
     padding: 2px;
     //float: right;
 
@@ -161,14 +158,15 @@ form {
   }
 
   #title {
-    display: inline-block;
-    margin: auto;
     font: /*small-caps*/ 44px/44px "Play", serif;
-    color: #282;
-    text-align: center;
-    vertical-align: top;
-    padding: 0px 25px;
+    color: #333;
   }
+}
+
+#left_header_part {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 20px;
 }
 
 #right_header_part {
@@ -177,14 +175,13 @@ form {
 }
 
 #enter_form {
-  float: right;
   text-align: right;
 }
 
 #top_menu {
-
-  padding-top: 9px;
-  text-align: right;
+  top: 90px;
+  right: 30px;
+  position: absolute;
 
   ul {
     margin: 0;

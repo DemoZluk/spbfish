@@ -195,6 +195,31 @@ $vote_img_size: 24px;
 
 }
 
+#breadcrumbs {
+  margin-left: 10px;
+  font: 16px Arial,sans-serif;
+}
+
 #product_card {
   margin: 5px;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 10px;
+
+  .image {
+    display: inline-block;
+  }
+
+  .text_block {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+    text-align: justify;
+    margin: 0px 20px;
+  }
+
+  .right_panel {
+    display: inline-block;
+    vertical-align: top;
+  }
 }

@@ -1,0 +1,23 @@
+%h1 Список статей
+
+%table
+  %tr
+    %th Заколовок
+    %th Тело
+    %th Автор
+    %th
+    %th
+    %th
+
+  - @articles.each do |article|
+    %tr
+      %td= article.title
+      %td= truncate article.body
+      %td= article.author
+      %td= link_to 'Открыть', article
+      %td= link_to 'Изменить', edit_article_path(article)
+      %td= link_to 'Удалить', article, :method => :delete, :data => { :confirm => 'Уверены?' }
+
+%br
+
+= link_to 'Добавить статью', new_article_path

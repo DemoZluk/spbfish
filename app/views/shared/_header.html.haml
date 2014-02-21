@@ -1,12 +1,13 @@
 #header
   #logo= image_tag 'logo.png'
-  = link_to @app_name, store_path, id: 'title'
-  #phone_number
-    = image_tag 'phone.png'
-    %span 
-      +7 (800) XXX-XX-XX
-      %br/ 
-      +7 (900) XXX-XX-XX
+  #left_header_part
+    = link_to @app_name, store_path, id: 'title'
+    #phone_number
+      = image_tag 'phone.png'
+      %span 
+        +7 (800) XXX-XX-XX
+        %br/ 
+        +7 (900) XXX-XX-XX
   #right_header_part
     - unless controller_name == 'registrations'
       #enter_form

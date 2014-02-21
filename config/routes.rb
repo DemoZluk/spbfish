@@ -1,5 +1,7 @@
 Fishmarkt::Application.routes.draw do
 
+  resources :articles
+
   root 'store#index', as: 'store'
 
   resources :catalog,  controller: 'groups', as: 'group' do

@@ -1,7 +1,6 @@
-- @page_title = @group.title + (', Страница: ' + params[:page].to_s if params[:page]).to_s if @group
 - if notice
   %p#notice= notice
-%h1= @page_title ||= 'Каталог'
+%h1= 'Каталог'
 
 .control
   = render 'shared/control'
@@ -9,7 +8,7 @@
   - if @products.any?
     = render @products
   - else
-    Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
+    %p Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
 
 #loading
   #notification

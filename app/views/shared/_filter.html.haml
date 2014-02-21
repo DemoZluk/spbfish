@@ -27,7 +27,7 @@
         - if (vals = values_of(prop)).any?#.try(:sort_by) {|e| e.title.to_i}.presence
           %h4= prop.title
           - if vals.numerical.length > 5
-            .numerical
+            .numerical{ data: { id: prop.id } }
               %input.min{:type => "text", placeholder: numeric?(vals).min, name: "r[#{prop.id}][]", value: ((params[:r] && params[:r][prop.id.to_s] && params[:r][prop.id.to_s][0]) ? params[:r][prop.id.to_s][0] : nil)}/
               \ - 
               %input.max{:type => "text", placeholder: numeric?(vals).max, name: "r[#{prop.id}][]", value: ((params[:r] && params[:r][prop.id.to_s] && params[:r][prop.id.to_s][1]) ? params[:r][prop.id.to_s][1] : nil)}/

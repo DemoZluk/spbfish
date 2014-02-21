@@ -1,0 +1,10 @@
+- if flash[:notice]
+  %p#notice= notice
+
+%h2= @article.title
+%p= @article.body
+
+- if current_user
+  = link_to 'Изменить', edit_article_path(@article)
+  \ | 
+  = link_to 'К списку статей', articles_path

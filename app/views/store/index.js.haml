@@ -1,4 +1,5 @@
-// Rerender control panel and product list
+// Еcли вы это видите, перезагрузите страницу
+
 $('#product_index').html("#{j (@products.any?) ? (render @products) : 'Позиций, удовлетворяющих критериям поиска не найдено.' }")//.prepend("#{j content_tag :div, flash[:notice], id: 'notice' if flash[:notice]}")//.prepend("#{j debug session[:user]; params[:producer]}");
 $('.control').html("#{j render 'shared/control'}")
 $('#minPrice').attr('placeholder', "#{@products_min}").val("#{@min_price if params[:minPrice]}")

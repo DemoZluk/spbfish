@@ -4,24 +4,30 @@
 - @page_title = @product.title
 - group = @product.group
 
-%p= link_to group.title, group_path(group) + '#' + @product.permalink
+#breadcrumbs
+  = link_to 'Каталог', store_path
+  >
+  = link_to (parent = group.parent).title, group_path(parent)
+  >
+  = link_to group.title, group_path(group, anchor: @product.permalink)
 
-.image= render 'shared/image', product: @product
+#product_card
+  .image= render 'shared/image', product: @product
 
-.right_panel
-  %p.price= number_to_currency @product.price
-  .rating_wrapper= render 'shared/rating', product: @product
-  = render 'shared/add_to_cart', product: @product
+  .text_block
+    %h2
+      = @product.title
 
-.text_block
-  %h2
-    = @product.title
+    %p
+      - if @product.description == '.'
+        = @product.long_name
+      - else
+        = @product.description
 
-  %p
-    - if @product.description == '.'
-      = @product.long_name
-    - else
-      = @product.description
+  .right_panel
+    %p.price= number_to_currency @product.price
+    .rating_wrapper= render 'shared/rating', product: @product
+    = render 'shared/add_to_cart', product: @product
 
 - if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
   = link_to('Изменить', edit_product_path(@product))
