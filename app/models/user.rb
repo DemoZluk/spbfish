@@ -4,10 +4,9 @@ class User < ActiveRecord::Base
   has_many :carts, dependent: :destroy
   has_many :orders, dependent: :destroy
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   validates :email, uniqueness: {case_sensitive: false}
-  validates :password_confirmation, presence: true
+  validates :email, :password, :password_confirmation, presence: true
 
 end
