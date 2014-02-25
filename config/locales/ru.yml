@@ -31,18 +31,18 @@ ru:
 
   products:
     vote_feedback: Спасибо за участие.
-    vote_error: Не удалось проголовать.
+    vote_error: "Не удалось проголовать, возможно, Вы уже голосовали."
 
   activerecord:
     models:
-      order: "Заказ"
+      order: Заказ
     attributes:
       order:
-        address: "Адрес"
-        name: "Имя"
-        email: "Почта"
-        pay_type: "Способ оплаты"
-        shipping_date: "Дата доставки"
+        address: Адрес
+        name: Имя
+        email: Почта
+        pay_type: Способ оплаты
+        shipping_date: Дата доставки
         phone_number: Номер телефона
         comment: Комментарий
       user:

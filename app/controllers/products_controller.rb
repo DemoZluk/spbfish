@@ -70,19 +70,19 @@ class ProductsController < ApplicationController
 
     session[:voted] ||= {}
 
-    if @product.rate(@points, @product)
+    if !session[:voted][@product.id] && @product.rate(@points)
 
       vote = {@product.id => @points}
       session[:voted].deep_merge!(vote)
 
       respond_to do |format|
-        format.html { redirect_to_back_or_default, notice: I18n.t('products.vote_feedback') }
+        format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_feedback')} ) }
         format.json { render json: @product.rating }
         format.js
       end
     else
       respond_to do |format|
-        format.html { redirect_to :back, notice: I18n.t('products.vote_error') }
+        format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_error')} ) }
         format.json { render json: @product.errors, status: :unprocessable_entity }
         format.js
       end

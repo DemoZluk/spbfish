@@ -33,15 +33,15 @@ class Product < ActiveRecord::Base
     # end
   end
 
-  def rate(points, product)
+  def rate(points)
     if [1, 2, 3, 4, 5].include?(points.to_i)
-      rt = product.rating || 0
-      rc = product.rating_counter || 0
+      rt = self.rating || 0
+      rc = self.rating_counter || 0
 
-      product.rating = (rt * rc + points.to_i) / (rc + 1)
-      product.rating_counter = rc + 1
+      self.rating = (rt * rc + points.to_i) / (rc + 1)
+      self.rating_counter = rc + 1
 
-      product.save
+      self.save
     else
       return false
     end

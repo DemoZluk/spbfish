@@ -1,9 +1,9 @@
-# # config valid only for Capistrano 3.1
-# lock '3.1.0'
+# config valid only for Capistrano 3.1
+lock '3.1.0'
 
-# user = 'dezl'
-# domain = '192.168.56.2'
-# application = 'fishmarkt.ru'
+user = 'fish'
+domain = 'fishmarkt.ru'
+application = 'fishmarkt'
 
 # set :user, @user
 # set :domain, @server
