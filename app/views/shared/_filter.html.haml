@@ -1,6 +1,6 @@
 - products = @group.all_products rescue Product.with_price
 %h3 Выбрать
-= form_tag url_for, {remote: true, method: 'get', id: 'filter', name: 'preferences'} do
+= form_tag request.path, {remote: true, method: 'get', id: 'filter', name: 'preferences'} do
   #price
     %h4 Цена
     = text_field_tag 'minPrice', params['minPrice'], {class: 'min', placeholder: @products_min, data: {min: @products_min, current: @min_price}}
@@ -44,4 +44,4 @@
                     %span.count= "(#{val_cntr})"
               - if vals.length > 5
                 .show_more Показать ещё
-  %input{type: "button", value: "Сброс"}/ 
+  = submit_tag 'Сбросить все', {name: 'reset', id: 'reset_button', type: :reset}

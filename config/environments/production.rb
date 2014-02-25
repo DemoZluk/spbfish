@@ -9,6 +9,21 @@ Fishmarkt::Application.configure do
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
   config.eager_load = true
+  
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.default_url_options = { :host => "fishmarkt.ru" }
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.fishmarkt.ru",
+    port: 587,
+    domain: "fishmarkt.ru",
+    authentication: "plain",
+    user_name: "mail@fishmarkt.ru",
+    password: "spbfish-discus",
+    enable_starttls_auto: true,
+    openssl_verify_mode: 'none'
+  }
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false

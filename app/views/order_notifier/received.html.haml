@@ -5,13 +5,13 @@
     %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/ 
 
   %body.email
-    %p= 'Здравствуйте, ' + @order.name
+    %p= "Здравствуйте, #{@order.name}!"
 
-    %p Ваш заказ получен и скоро с вами свяжется менеджер по продажам из нашей компании.
+    %p Ваш заказ получен и скоро с вами свяжется сотрудник из нашей компании.
 
     %p Вы заказали следующие товары:
 
-    %table.order
+    %table.order{style: 'font-family: "Lucida Console", Monaco, monospace'}
       %thead 
         %tr
           %th Название
@@ -29,12 +29,18 @@
           %td.right= number_to_currency(@total_price)
 
     %p Как только товар будет готов к отгрузке вы получите ещё одно письмо.
+    %b Добавить:
+    %p &nbsp;&nbsp;Информация о стоимости доставки
+    %p &nbsp;&nbsp;Информация о дате доставки
+
 
     Ссылка на ваш заказ:
 
-    %a{href: order_url(@order.id)}= order_url(@order.id)
+    %a{href: order_url(@order)}= order_url(@order)
 
     %p 
       \--
       %br/ 
-      Тропик Аквариум
+      FISHmarkt
+      Телефоны
+      И другие реквизиты

@@ -14,7 +14,7 @@ $(document).on "ready page:change", ->
 
   $( ->
     $( "#datepicker" ).datepicker( $.datepicker.regional[ "ru" ] );
-    $( "#date" ).datepicker({
+    $( "#order_shipping_date" ).datepicker({
       constrainInput: true,
       autoSize: true,
       showAnim: 'blind',

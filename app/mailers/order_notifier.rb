@@ -16,7 +16,7 @@ class OrderNotifier < ActionMailer::Base
   def order(order, total_price)
     @order = order
     @total_price = total_price
-    mail to: 'mail@spbfish.ru', subject: '[Test] ' + I18n.t(:user) + @order.name + I18n.t(:ordered)
+    mail to: 'mail@fishmarkt.ru', subject: '[Test] ' + I18n.t(:user_made_order,user_name: @order.name)
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml

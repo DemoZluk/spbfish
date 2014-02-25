@@ -1,4 +1,4 @@
-$(document).on "ready", ->
+$(document).on "ready page:change", ->
 
   $('.show_hide_tree').click ->
     $(this).toggleClass 'active'

@@ -1,12 +1,19 @@
 #encoding: utf-8
 class Order < ActiveRecord::Base
+  include Tokenable
   has_many :line_items, dependent: :destroy
   belongs_to :user
 
-  PAYMENT_TYPES = [ "Самовывоз", "Безналичный расчёт" ]
-  validates :name, :address, :email, :shipping_date, presence: true
+  PAYMENT_TYPES = [ "Самовывоз", "Доставка" ]
+  validates :name, :email, :shipping_date, presence: true
+  validates :address, presence: true, unless: 'pay_type == "Самовывоз"'
   validates :pay_type, inclusion: PAYMENT_TYPES
+  validates :comment, length: {maximum: 50}
   validate :check_date
+
+  def to_param
+    token
+  end
 
   def check_date
     if shipping_date.present? && (shipping_date < DateTime.tomorrow || shipping_date > DateTime.current+60)

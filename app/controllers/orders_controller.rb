@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_before_action :authenticate_user!, only: [:show, :new, :create]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
   #before_action :check_date, only: [:create, :update]
 
@@ -32,6 +32,7 @@ class OrdersController < ApplicationController
   def create
     total_price = @cart.total_price
     @order = Order.new(order_params)
+    @order.token = params[:authenticity_token]
     @order.add_line_items_from_cart(@cart)
 
     respond_to do |format|
@@ -41,7 +42,7 @@ class OrdersController < ApplicationController
         format.json { render action: 'store#index', status: :created,
         location: @order }
         OrderNotifier.received(@order, total_price).deliver
-        # OrderNotifier.order(@order, total_price).deliver
+        OrderNotifier.order(@order, total_price).deliver
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
       else
@@ -79,11 +80,11 @@ class OrdersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-      @order = Order.find(params[:id])
+      @order = Order.find_by(token: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type, :shipping_date).merge!(user_id: (session[:user][:id] if session[:user][:id]))
+      params.require(:order).permit(:name, :address, :email, :pay_type, :shipping_date, :phone_number, :comment).merge!(user_id: (session[:user][:id] if session[:user][:id]))
     end
 end

@@ -10,7 +10,7 @@ gem 'rails', '4.0.0'
 
 # Use sqlite3 as the database for testing
 group :test do
-  gem 'sqlite3'
+  gem 'sqlite3', "~> 1.3.0", :require => "sqlite3"
 end
 
 # Use mysql for dev and production
@@ -24,7 +24,7 @@ group :development do
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler', '>=1.1.0'
-  #gem "sqlite3", "~> 1.3.0", :require => "sqlite3"
+  #gem "sqlite3"
 end
 
 

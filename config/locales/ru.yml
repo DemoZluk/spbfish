@@ -19,7 +19,7 @@ ru:
 
   store:
     index:
-      title: Лавка
+      title: Каталог
 
   carts:
     show:
@@ -43,6 +43,8 @@ ru:
         email: "Почта"
         pay_type: "Способ оплаты"
         shipping_date: "Дата доставки"
+        phone_number: Номер телефона
+        comment: Комментарий
       user:
         username: Имя
         login: Логин
@@ -77,15 +79,15 @@ ru:
         remember_me: Запомнить
         password_confirmation: Повтор пароля
 
-  from: Тропик Аквариум <mail@spbfish.ru>
-  sign: Тропик Аквариум
-  mail_subject: '[Тропик Аквариум] '
+  from: FISHmarkt <mail@fishmarkt.ru>
+  sign: FISHmarkt
+  mail_subject: '[FISHmarkt] '
   order_received: Подтверждение заказа
   order_shipped: Отправка заказа
   order_thanks: Спасибо за ваш заказ.
+
   please_enter_correct_date: ' задана неверно.'
-  user: Пользователь 
-  ordered:  сделал заказ
+  user_made_order: "Пользователь %{user_name} сделал заказ"
   user_created: "Пользователь с именем %{user_name} успешно создан."
   user_not_found: "Пользователь %{user_name} не найден."
   invalid_password: Введённый пароль не соответствует учётной записи.

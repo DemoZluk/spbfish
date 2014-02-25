@@ -18,7 +18,20 @@ Fishmarkt::Application.configure do
 
   config.action_mailer.default_url_options = { :host => "fmkt.tst" }
 
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.smtp_settings = {
+    address: "smtp.fishmarkt.ru",
+    port: 587,
+    domain: "fishmarkt.ru",
+    authentication: "plain",
+    user_name: "mail@fishmarkt.ru",
+    password: "spbfish-discus",
+    enable_starttls_auto: true,
+    openssl_verify_mode: 'none'
+  }
+
+  # config.action_mailer.delivery_method = :letter_opener
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
