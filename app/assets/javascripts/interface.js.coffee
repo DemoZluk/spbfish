@@ -1,12 +1,38 @@
-$(document).on "ready page:change", ->
+
+
+clearForm = (form) ->
+  # iterate over all of the inputs for the form
+  # element that was passed in
+  form.find('input').each ->
+    type = $(this).attr 'type';
+    tag = this.tagName.toLowerCase(); # normalize case
+    # it's ok to reset the value attr of text inputs,
+    # password inputs, and textareas
+    if (type == 'text' || type == 'password' || tag == 'textarea')
+      this.value = ""
+    # checkboxes and radios need to have their checked state cleared
+    # but should *not* have their 'value' changed
+    else if (type == 'checkbox' || type == 'radio')
+      this.checked = null
+    # select elements need to have their 'selectedIndex' property set to -1
+    # (this works for both single and multiple select elements)
+    else if (tag == 'select')
+      this.selectedIndex = -1
+
+$(document).on 'ready page:load', ->
 
   $('.show_hide_tree').click ->
     $(this).toggleClass 'active'
-    $('nav.menu_side>ul').slideToggle()
+    $('nav.menu_side>ul').slideToggle('fast')
+    if $(this).hasClass 'active'
+      $(this).text '▲ Каталог ▲'
+    else
+      $(this).text '▼ Каталог ▼'
 
+  window.addEventListener 'popstate', (event) ->
+    console.log('popstate fired!')
+    history.replaceState(null, null, event.state)
 
-  window.onpopstate = (e) ->
-    location.reload()
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}
 
@@ -51,6 +77,13 @@ $(document).on "ready page:change", ->
         $(this).closest('form').submit()
     })
 
+  $('#reset_button').on 'click', (e) ->
+    e.preventDefault()
+    form = $(this).closest('form')
+    clearForm(form)
+    form.submit()
+
+
 
 #--- Ajax hooks' processing ---#
 $(document).on 'ajax:beforeSend', '#content', ->
@@ -87,7 +120,7 @@ $(document).on 'change', '#filter input, #control_form input[type=checkbox]', ->
 $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, settings) ->
   filters = $.param $('#filters form, .control form').serializeArray()
   settings.url = this.action + '?' + filters
-  history.pushState('', document.title, settings.url)
+  history.pushState('document', document.title, settings.url)
 
   # $('#price-slider').slider({
   #   range: true,

@@ -2,6 +2,8 @@
   %p#notice= notice
 
 - @page_title = @product.title
+- content_for :description, @product.long_name
+- content_for :keywords, @product.long_name.split(' ')
 - group = @product.group
 
 #breadcrumbs

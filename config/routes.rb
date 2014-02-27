@@ -23,7 +23,7 @@ Fishmarkt::Application.routes.draw do
   end
 
   resources :carts do
-    get 'cart', to: :show
+    get :cart, on: :member
   end
 
   get 'admin' => 'admin#index'

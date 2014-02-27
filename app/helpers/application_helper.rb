@@ -25,7 +25,8 @@ module ApplicationHelper
   end
 
   def page_title
-    @title = (@page_title || t(params[:controller])[params[:action].to_sym][:title]) + ' - ' + @app_name rescue @app_name
+    default = t('default_title')
+    title = (@page_title || t(params[:controller])[params[:action].to_sym][:title]) + ' - ' + default rescue default
   end
 
   def display_product_image(item_id)

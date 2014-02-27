@@ -20,5 +20,6 @@ config/database.yml
 *.pyc
 *.pyo
 *.bak
+*.old
 *~
 start.bat

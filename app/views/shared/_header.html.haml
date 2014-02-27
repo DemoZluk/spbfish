@@ -1,7 +1,7 @@
 #header
-  #logo= image_tag 'logo.png'
+  #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
   #left_header_part
-    = link_to @app_name, store_path, id: 'title'
+    = link_to t('default_title'), store_path, id: 'title'
     #phone_number
       = image_tag 'phone.png'
       %span 

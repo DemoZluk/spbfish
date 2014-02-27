@@ -2,14 +2,16 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
+require "highline/import"
 
 def main
-  open_file
-  create_groups
-  create_properties
-  create_products_and_values
-  setup_prices
-  add_values_to_values
+  # open_file
+  # create_groups
+  # create_properties
+  # create_products_and_values
+  # setup_prices
+  # add_values_to_values
+  create_first_admin_user
 end
 
 def open_file
@@ -31,7 +33,7 @@ def create_groups
       parent_id = ''
     end
     title = g.at_css('>Наименование').content
-    permalink = title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+    permalink = title.mb_chars.parameterize('-') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
     Group.create(
       id: group_id,
       title: title,
@@ -77,7 +79,7 @@ def create_products_and_values
   prods_progress = ProgressBar.create(total: prods.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   prods.each do |product|
     product_title = product.at_css('>Наименование').content
-    permalink = product_title.mb_chars.parameterize('_') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+    permalink = product_title.mb_chars.parameterize('-') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
 
     if Product.find_by permalink: permalink
       prods_progress.log 'Товар ' + product_title + ' уже существует.'
@@ -167,6 +169,23 @@ def add_values_to_values
   end
 
   p "End"
+end
+
+def create_first_admin_user
+  puts "Creating first user with admin priveleges:"
+  email = HighLine.ask('email: '){|q| q.case = :down; q.validate = /[a-z][\w\.\-]+@([a-z]+[\w\-]+\.)+[a-z]{2,5}/}
+  f = ''
+  while f != 'y' do
+    password = HighLine.ask('Your password: '){|q| q.echo = '*'}
+    c_pass = HighLine.ask('Confirm pass: '){|q| q.echo = '*'}
+    if password == c_pass
+      User.create!(email: email, password: password, password_confirmation: password, group: 'admin')
+      f = 'y'
+    else
+      puts "Passwords don't match, try again"
+    end
+  end
+  puts "User #{email} successfully created!"
 end
 
 main

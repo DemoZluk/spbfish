@@ -1,4 +1,6 @@
 ru:
+  default_title: FISHmarkt
+
   selection_labels:
     title: Названию
     price: Цене
@@ -12,10 +14,6 @@ ru:
       next: '>'
       last: '>>'
       truncate: ..
-
-  layouts:
-    application:
-      title: "[FishMarkt]"
 
   store:
     index:
