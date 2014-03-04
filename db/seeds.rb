@@ -5,12 +5,12 @@
 require "highline/import"
 
 def main
-  # open_file
-  # create_groups
-  # create_properties
-  # create_products_and_values
-  # setup_prices
-  # add_values_to_values
+  open_file
+  create_groups
+  create_properties
+  create_products_and_values
+  setup_prices
+  add_values_to_values
   create_first_admin_user
 end
 

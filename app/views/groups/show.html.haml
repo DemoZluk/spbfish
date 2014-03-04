@@ -4,7 +4,7 @@
 %h1= @group.title# + (', Страница: ' + params[:page].to_s if params[:page]).to_s
 
 = render 'children'
-
+= @par
 .control
   = render 'shared/control'
 #product_index

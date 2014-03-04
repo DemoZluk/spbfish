@@ -23,5 +23,7 @@ module Fishmarkt
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
 
     config.encoding = "utf-8"
+    
+    config.i18n.enforce_available_locales = true
   end
 end

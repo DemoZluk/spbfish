@@ -1,14 +1,15 @@
-.entry{id: product.permalink}
-  =# link_to image_tag(image_thumb_helper(product), alt: product.permalink), product
-  = render 'shared/image', product: product
-  .description
-    %h3= link_to product.title, product, target: 'blank'
-    %p
-      = sanitize(product.long_name).truncate(350, separator: '.', omission: '...')
-    %p= 'Производитель: ' + product.producer
-    .short_description
-      =# link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
-  .right_panel
-    %span.price= number_to_currency(product.price)
-    .rating_wrapper= render 'shared/rating', product: product
-  = render 'shared/add_to_cart', product: product
+- cache product do
+  .entry{id: product.permalink}
+    =# link_to image_tag(image_thumb_helper(product), alt: product.permalink), product
+    = render 'shared/image', product: product
+    .description
+      %h3= link_to product.title, product, target: 'blank'
+      %p
+        = sanitize(product.long_name).truncate(350, separator: '.', omission: '...')
+      %p= 'Производитель: ' + product.producer
+      .short_description
+        =# link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
+    .right_panel
+      %span.price= number_to_currency(product.price)
+      .rating_wrapper= render 'shared/rating', product: product
+    = render 'shared/add_to_cart', product: product

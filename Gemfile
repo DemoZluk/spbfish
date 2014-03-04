@@ -106,3 +106,5 @@ gem 'ruby-progressbar'
 
 # Command line prompt
 gem 'highline', "~> 1.6.20"
+
+gem 'whenever', :require => false

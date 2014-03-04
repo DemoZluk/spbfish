@@ -27,9 +27,8 @@
               .show_hide_tree{'data-no-transition-cache' => true} ▼ Каталог ▼
               = render 'shared/menu_side'
           - if @products
-            - cache 'filters' do
-              #filters
-                = render 'shared/filter'
+            #filters
+              = render 'shared/filter'
         #main= yield
 
     = render 'shared/metrika.html'

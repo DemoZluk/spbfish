@@ -1,5 +1,5 @@
 class Group < ActiveRecord::Base
-  belongs_to :parent, class_name: 'Group', foreign_key: :parent_id
+  belongs_to :parent, class_name: 'Group', foreign_key: :parent_id, touch: true
   has_many :children, class_name: 'Group', foreign_key: :parent_id
   has_many :products
 

@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  belongs_to :group
+  belongs_to :group, touch: true
 
   has_many :line_items
   has_many :orders, through: :line_items

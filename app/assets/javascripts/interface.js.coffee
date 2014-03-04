@@ -1,5 +1,3 @@
-
-
 clearForm = (form) ->
   # iterate over all of the inputs for the form
   # element that was passed in
@@ -19,7 +17,7 @@ clearForm = (form) ->
     else if (tag == 'select')
       this.selectedIndex = -1
 
-$(document).on 'ready page:load', ->
+$(document).on 'page:change', ->
 
   $('.show_hide_tree').click ->
     $(this).toggleClass 'active'
@@ -118,7 +116,9 @@ $(document).on 'change', '#filter input, #control_form input[type=checkbox]', ->
 
 # Sorting params and filtering ajax processing
 $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, settings) ->
-  filters = $.param $('#filters form, .control form').serializeArray()
+  arr = $.map $('#filters form, .control form').serializeArray(), (e) ->
+    if e.value == '' then null else e
+  filters = $.param arr
   settings.url = this.action + '?' + filters
   history.pushState('document', document.title, settings.url)
 

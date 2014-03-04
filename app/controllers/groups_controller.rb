@@ -7,7 +7,7 @@ class GroupsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.js {par = params[:p].merge(params[:r]); render 'store/index'}
+      format.js {@par = params[:p].to_a + params[:r].to_a; render 'store/index'}
     end
   end
 
