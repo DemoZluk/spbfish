@@ -25,7 +25,7 @@
       - if Time.now>Time.parse('15:00')
         - days = 1.day.from_now
       %td= f.label(:shipping_date)
-      %td= f.text_field :shipping_date, placeholder: 'гггг-мм-дд'#, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
+      %td= f.text_field :shipping_date, placeholder: 'гггг-мм-дд', autocomplete: 'off'#, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
     %tr.field
       %td= f.label(:comment)
       %td= f.text_area :comment, placeholder: 'Ваши комментарии к заказу (максимум 500 символов)', rows: 3, cols: 55

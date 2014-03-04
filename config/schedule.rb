@@ -22,11 +22,10 @@
 set :output, 'log/cron_jobs.log'
 set :environment, 'development'
 
-env :BASH_ENV, '/home/fish/.bashrc'
 env :PATH, ENV['PATH']
-env :GEM_PATH, ENV['GEM_PATH']
+env :GEM_HOME, ENV['GEM_HOME']
 
 
-every 3.hours do
+every :day do
   rake 'destroy_abandoned_carts'
 end

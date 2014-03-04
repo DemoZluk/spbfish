@@ -27,9 +27,8 @@ $(document).on 'page:change', ->
     else
       $(this).text '▼ Каталог ▼'
 
-  window.addEventListener 'popstate', (event) ->
-    console.log('popstate fired!')
-    history.replaceState(null, null, event.state)
+  window.onpopstate = (event) ->
+    location.reload()
 
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}
@@ -99,9 +98,9 @@ $(document).on 'ajaxSuccess', (data, status, xhr) ->
 
 # Control selections
 $(document).on {mouseenter: ->
-  $(this).find('ul').stop().show('blind')
+  $(this).find('ul').stop().show('blind', 'fast')
 mouseleave: ->
-  $(this).find('ul').stop().hide('blind')}
+  $(this).find('ul').stop().hide('blind', 'fast')}
 , '.select'
 
 

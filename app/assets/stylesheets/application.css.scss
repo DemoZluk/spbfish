@@ -14,7 +14,7 @@
  */
 
 // Importing fonts from Google Fonts API
-@import url(http://fonts.googleapis.com/css?family=Jura:600|Jura|Play&subset=cyrillic);
+//@import url(http://fonts.googleapis.com/css?family=Jura:600|Jura|Play&subset=cyrillic);
 @import "gradient";
 
 $bottom_panel_height: 35px;
@@ -134,7 +134,7 @@ form {
 
   #logo {
     display: inline-block;
-    img { height: 90px; }
+    img { height: 90px; width: 120px }
   }
 
   #phone_number {
@@ -160,7 +160,7 @@ form {
   }
 
   #title {
-    font: /*small-caps*/ 44px/44px "Play", serif;
+    font: /*small-caps*/ 44px/44px verdana,helvetica,arial, sans-serif;
     color: #333;
   }
 }

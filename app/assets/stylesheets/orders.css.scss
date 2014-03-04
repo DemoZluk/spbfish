@@ -14,7 +14,7 @@ fieldset.order {
     box-shadow: 1px 1px 1px #000;
   }
 
-  .ui-datepicker-trigger:active, .active {
+  .ui-datepicker-trigger:active, #order_shipping_date:focus~.ui-datepicker-trigger {
     right: 25px;
     top: 7px;
     box-shadow: none;

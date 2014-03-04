@@ -65,10 +65,16 @@ $vote_img_size: 24px;
   margin-bottom: 15px;
 }
 
-.entry .rating {
-  position: absolute;
-  // top: 30px;
-  right: 45px;
+.entry {
+  .rating {
+    position: absolute;
+    // top: 30px;
+    right: 45px;
+  }
+
+  .rating_counter {
+    right: 0px;
+  }
 }
 
 .rating {
@@ -142,7 +148,7 @@ $vote_img_size: 24px;
   color: #555;
   font-size: 11px;
   position: absolute;
-  left: 215px;
+  left: 125px;
   bottom: 0px;
 }
 
