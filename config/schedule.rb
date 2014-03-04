@@ -27,6 +27,6 @@ env :PATH, ENV['PATH']
 env :GEM_PATH, ENV['GEM_PATH']
 
 
-every 1.minute do
+every 3.hours do
   rake 'destroy_abandoned_carts'
 end
