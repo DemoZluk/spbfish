@@ -1,6 +1,7 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: :show
+  skip_before_action :set_cart, except: [:show, :index]
 
   # GET /articles
   # GET /articles.json

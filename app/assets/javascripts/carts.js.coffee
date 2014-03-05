@@ -31,4 +31,4 @@ $(document).on "page:change", ->
   $('#cart_block .cart_link').click( ->
     #$('.cart_block #cart_panel').show();
     $('#cart_block #cart_panel').stop().toggle('blind', 500);
-  ) if $('#cart_panel[disabled]').length == 0;
+  )

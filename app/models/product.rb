@@ -38,10 +38,8 @@ class Product < ActiveRecord::Base
       rt = self.rating || 0
       rc = self.rating_counter || 0
 
-      self.rating = (rt * rc + points.to_i) / (rc + 1)
-      self.rating_counter = rc + 1
-
-      self.save
+      self.update_column :rating, (rt * rc + points.to_i) / (rc + 1)
+      self.update_column :rating_counter, rc + 1
     else
       return false
     end

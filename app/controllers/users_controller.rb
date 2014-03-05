@@ -2,8 +2,6 @@ class UsersController < ApplicationController
   
   # #before_action :authenticate_user!
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
   # # GET /users
   # # GET /users.json
   # def index
@@ -12,13 +10,17 @@ class UsersController < ApplicationController
 
   # # GET /users/1
   # # GET /users/1.json
+
+  def index
+    @users = User.all
+  end
+
   def show
+    id = params[:id] || current_user.to_param
+    @user = User.find(id)
   end
 
   def create
-    if session && session[:user]
-      session[:user][:id] = current
-    end
   end
 
   # # GET /users/new
@@ -27,8 +29,6 @@ class UsersController < ApplicationController
   # end
 
   # # GET /users/1/edit
-  # def edit
-  # end
 
   # # POST /users
   # # POST /users.json
@@ -60,30 +60,24 @@ class UsersController < ApplicationController
   #   end
   # end
 
-  # # DELETE /users/1
-  # # DELETE /users/1.json
-  # def destroy
-  #   begin
-  #     @user.destroy
-  #     flash[:notice] = I18n.t(:user_deleted, user_name: @user.name)
-  #   rescue Exeption => e
-  #     flash[:notice] = e.message
-  #   end
-  #   respond_to do |format|
-  #     format.html { redirect_to users_url }
-  #     format.json { head :no_content }
-  #   end
-  # end
+  # DELETE /users/1
+  # DELETE /users/1.json
+  def destroy
+    begin
+      user = User.find(params[:id])
+      user.destroy
+      flash[:notice] = I18n.t(:user_deleted, user_name: user.name)
+    rescue Exeption => e
+      flash[:notice] = e.message
+    end
+    respond_to do |format|
+      format.html { redirect_to users_url }
+      format.json { head :no_content }
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_user
-      if params[:id]
-        @user = User.find(params[:id])
-      else
-        @user = User.find(session[:user][:id])
-      end
-    end
 
   #   # Never trust parameters from the scary internet, only allow the white list through.
   #   def user_params

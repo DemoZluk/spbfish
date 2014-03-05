@@ -28,7 +28,6 @@ $(document).on 'page:change', ->
       $(this).text '▼ Каталог ▼'
 
   window.onpopstate = (event) ->
-    location.reload()
 
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}

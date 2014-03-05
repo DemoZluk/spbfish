@@ -28,7 +28,7 @@ Fishmarkt::Application.routes.draw do
 
   get 'admin' => 'admin#index'
 
-  get 'user' => 'users#show', as: 'user_root'
+  get 'profile' => 'users#show', as: 'user_root'
   devise_for :users, controllers: { sessions: 'users/sessions' }
 
   devise_scope :user do
@@ -36,6 +36,9 @@ Fishmarkt::Application.routes.draw do
     post 'login' => "users/sessions#create"
     delete 'logout' => "users/sessions#destroy"
     get 'sign_up' => "devise/registrations#new"
+    get 'profile/edit' => "devise/registrations#edit"
+    get 'users' => "users#index"
+    get '/users/:id' => "users#show"
   end
 
   get 'user_prefs' => 'store#change_user_prefs'

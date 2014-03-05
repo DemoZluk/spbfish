@@ -1,22 +1,21 @@
 %h1 Список пользователей
 
-- if notice
-  %p#notice= notice
-
 %table
   %tr
     %th Имя
+    %th email
     %th Действия
 
   - @users.each do |user|
     %tr
-      %td= user.name
+      %td= user.login
+      %td= user.email
       %td
-        = link_to 'Показать', user
+        = link_to 'Показать', user_root_path(user)
         %br
-        = link_to 'Изменить', edit_user_path(user)
+        = link_to 'Изменить', profile_edit_path(user)
         %br
-        = link_to 'Удалить', user, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        = link_to 'Удалить', users_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 

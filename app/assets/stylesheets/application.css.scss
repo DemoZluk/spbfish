@@ -93,7 +93,6 @@ form {
   right: 50%;
 
   #error {
-    display: none;
     position: relative;
     max-width: 690px;
     background: rgb(188,3,3); /* Old browsers */
@@ -162,6 +161,14 @@ form {
   #title {
     font: /*small-caps*/ 44px/44px verdana,helvetica,arial, sans-serif;
     color: #333;
+  }
+
+  #under_development {
+    font: /*small-caps*/ 20px verdana,helvetica,arial, sans-serif;
+    color: #333;
+    display: inline-block;
+    vertical-align: top;
+    margin: 5px 15px;
   }
 }
 

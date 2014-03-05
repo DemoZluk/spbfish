@@ -3,5 +3,5 @@
     - Group.where(parent_id: '').each do |group|
       = menu_for_group(group).html_safe
 
-  - if (User.exists?(id: session[:user_id])).try(:user_group) == 'admin'
+  - if current_user.admin?
     = render 'shared/admin_panel'

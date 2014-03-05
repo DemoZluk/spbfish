@@ -82,7 +82,7 @@ $vote_img_size: 24px;
   width: $vote_img_size*5;
   position: relative;
   margin-bottom: 15px;
-  background: transparent image-url('thumb_up_bg.png') left top no-repeat;
+  background: transparent image-url('/images/thumb_up_bg.png') left top no-repeat;
 
   .current {
     height: 100%;
@@ -90,7 +90,7 @@ $vote_img_size: 24px;
     top: 0;
     left: 0;
     z-index: 1;
-    background: transparent image-url('thumb_up_rating.png') left top no-repeat;
+    background: transparent image-url('/images/thumb_up_rating.png') left top no-repeat;
     opacity: 0.9;
   }
 
@@ -114,7 +114,7 @@ $vote_img_size: 24px;
       display: block;
       height: 100%;
       width: 0;
-      background: transparent image-url('thumb_up.png') left top repeat-x;
+      background: transparent image-url('/images/thumb_up.png') left top repeat-x;
       z-index: 2;
     }
 
@@ -130,7 +130,7 @@ $vote_img_size: 24px;
     position: absolute;
     top: 0;
     left: 0;
-    background: transparent image-url('thumb_up_voted.png') left top repeat-x;
+    background: transparent image-url('/images/thumb_up_voted.png') left top repeat-x;
     z-index: 3;
     opacity: 0.8;
   }
@@ -206,7 +206,7 @@ $vote_img_size: 24px;
   font: 16px Arial,sans-serif;
 }
 
-#product_card {
+.product_card {
   margin: 5px;
   padding: 10px;
   border: 1px solid #000;

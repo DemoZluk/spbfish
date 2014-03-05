@@ -20,7 +20,6 @@
 # Learn more: http://github.com/javan/whenever
 # 
 set :output, 'log/cron_jobs.log'
-set :environment, 'development'
 
 env :PATH, ENV['PATH']
 env :GEM_HOME, ENV['GEM_HOME']

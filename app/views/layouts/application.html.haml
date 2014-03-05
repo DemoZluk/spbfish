@@ -10,12 +10,11 @@
       
   %body{class: controller_name + ' ' + action_name}
     #error_wrapper
-      #error
+      #error{style: notice ? nil : 'display: none'}
         = notice || ''
 
-    - cache 'header' do
-      #header_wrapper
-        = render 'shared/header'
+    #header_wrapper
+      = render 'shared/header'
 
     #content
       - if controller_name == 'products'

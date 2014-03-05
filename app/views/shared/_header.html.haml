@@ -1,21 +1,23 @@
 #header
-  #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
-  #left_header_part
-    = link_to t('default_title'), store_path, id: 'title'
-    #phone_number
-      = image_tag 'phone.png'
-      %span 
-        +7 (800) XXX-XX-XX
-        %br/ 
-        +7 (900) XXX-XX-XX
+  - cache 'header' do
+    #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
+    #left_header_part
+      = link_to t('default_title'), store_path, id: 'title'
+      #phone_number
+        = image_tag 'phone.png'
+        %span 
+          +7 (800) XXX-XX-XX
+          %br/ 
+          +7 (900) XXX-XX-XX
+    #under_development Сайт находится в разработке
   #right_header_part
-    - unless controller_name == 'registrations'
-      #enter_form
-        - unless user_signed_in?
+    #enter_form
+      - if user_signed_in?
+        = link_to 'Профиль', user_root_path
+        = link_to 'Выйти', logout_path, method: :delete
+      - else
+        - unless ['registrations', 'sessions', 'passwords'].include?(controller_name)
           = render "shared/login_form"
-        - else
-          = link_to 'Профиль', user_root_path
-          = link_to 'Выйти', logout_path, method: :delete
     %nav#top_menu
       = render 'shared/menu_top'
     =# debug session

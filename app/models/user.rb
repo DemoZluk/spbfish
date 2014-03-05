@@ -7,6 +7,24 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   validates :email, uniqueness: {case_sensitive: false}
-  validates :email, :password, :password_confirmation, presence: true
+  validates :email, presence: true
+
+  def to_param
+    if login
+      login
+    else
+      id
+    end
+  end
+
+  def admin?
+    self.group == 'admin'
+  end
+
+  def all_orders
+    uid = id
+    umail = email
+    Order.where{(user_id == uid) | (email == umail)}
+  end
 
 end

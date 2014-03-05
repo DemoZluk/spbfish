@@ -2,7 +2,7 @@
 class CartsController < ApplicationController
   include CurrentCart
   skip_before_action :authenticate_user!, only: [:create, :show, :update, :destroy]
-  before_action :set_cart, only: [:show, :edit, :update, :destroy]
+  #before_action :set_cart, only: [:show, :edit, :update, :destroy]
   before_action :set_user, :old_cart, only: [:merge_yes, :merge_no]
   after_action :cart_user_id, only: :create
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart

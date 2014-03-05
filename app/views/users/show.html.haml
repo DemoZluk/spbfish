@@ -1,10 +1,35 @@
-- if notice
-  %p#notice= notice
-
 %h3
-  = "Привет, #{@user.login ? @user.login : @user.email}!" # greeting < users_helper.rb
-- if @user.orders.any?
-  %h2 Активные заказы
-
-  - @user.orders.each do |order|
+  = "Привет, #{current_user.login ? current_user.login : current_user.email}!" # greeting < users_helper.rb
+= link_to 'Редактировать профиль', profile_edit_path
+%h2 Заказы
+- if current_user.all_orders.active.any?
+  - current_user.all_orders.active.each do |order|
     = link_to order.created_at, order
+- else
+  У Вас нет активных заказов.
+
+%hr/ 
+
+%h2 История заказов
+- if current_user.all_orders.closed.any?
+  %table.history
+    %thead 
+      %tr 
+        %th Заказ
+        %th Товары
+        %th Дата
+        %th Сумма
+    %tbody 
+      - current_user.all_orders.closed.each do |order|
+        %tr{valign: 'top'}
+          %td= link_to order.id, order_path(order.token)
+          %td
+            %table 
+              - order.line_items.each do |item|
+                %tr 
+                  %td.right= "#{item.quantity} x"
+                  %td= link_to item.product.title, item.product
+          %td= l(order.created_at, format: :long)
+          %td.right= number_to_currency order.total_price
+- else
+  История Ваших заказов пуста.

@@ -13,9 +13,6 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery-ui
 //= require turbolinks
 //= require_tree .
-
-
-Turbolinks.enableTransitionCache()
