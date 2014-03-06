@@ -18,7 +18,11 @@ class User < ActiveRecord::Base
   end
 
   def admin?
-    self.group == 'admin'
+    if user_signed_in?
+      self.group == 'admin'
+    else
+      false
+    end
   end
 
   def all_orders
