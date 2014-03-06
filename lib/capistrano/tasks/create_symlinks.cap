@@ -4,8 +4,8 @@ namespace :deploy do
       info "Make symlink for database yaml"
       execute :ln, "-nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
 
-      info "Make symlink for images folder"
-      execute :ln, "-fs #{shared_path}/images #{release_path}/public/images"
+      # info "Make symlink for images folder"
+      # execute :ln, "-fs #{shared_path}/images #{release_path}/public/images"
     end
   end
   
