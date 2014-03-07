@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140305091320) do
+ActiveRecord::Schema.define(version: 20140307065757) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -85,7 +85,6 @@ ActiveRecord::Schema.define(version: 20140305091320) do
     t.float    "price",                                  default: 0.0, null: false
     t.string   "producer"
     t.string   "item_id"
-    t.string   "unit"
     t.string   "group_id"
     t.decimal  "rating",         precision: 2, scale: 1
     t.integer  "rating_counter"
@@ -97,6 +96,22 @@ ActiveRecord::Schema.define(version: 20140305091320) do
   create_table "properties", force: true do |t|
     t.string "property_id"
     t.string "title"
+  end
+
+  create_table "storage", force: true do |t|
+    t.integer  "product_id"
+    t.float    "amount"
+    t.string   "unit"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "storages", force: true do |t|
+    t.integer  "product_id"
+    t.float    "amount"
+    t.string   "unit"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

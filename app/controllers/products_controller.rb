@@ -1,7 +1,9 @@
 class ProductsController < ApplicationController
   include Redirect
+  include CurrentSettings
 
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
+  before_action :change_user_prefs, only: :index
 
   skip_before_action :authenticate_user!, only: [:show, :vote]
 

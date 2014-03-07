@@ -9,20 +9,8 @@ class User < ActiveRecord::Base
   validates :email, uniqueness: {case_sensitive: false}
   validates :email, presence: true
 
-  def to_param
-    if login
-      login
-    else
-      id
-    end
-  end
-
   def admin?
-    if user_signed_in?
-      self.group == 'admin'
-    else
-      false
-    end
+    group == 'admin'
   end
 
   def all_orders

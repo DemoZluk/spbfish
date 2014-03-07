@@ -22,11 +22,11 @@ Fishmarkt::Application.routes.draw do
     end
   end
 
+  get 'cart' => "carts#show"
   resources :carts do
-    get :cart, on: :member
   end
 
-  get 'admin' => 'admin#index'
+  resources :orders
 
   get 'profile' => 'users#show', as: 'user_root'
   devise_for :users, controllers: { sessions: 'users/sessions' }
@@ -46,9 +46,9 @@ Fishmarkt::Application.routes.draw do
   get 'merge_yes' => 'carts#merge_yes'
   get 'merge_no' => 'carts#merge_no'
 
-  # resources :users
+  get 'admin' => 'admin#index'
 
-  resources :orders
+  # resources :users
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

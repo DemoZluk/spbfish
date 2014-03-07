@@ -16,8 +16,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    id = params[:id] || current_user.to_param
-    @user = User.find(id)
   end
 
   def create

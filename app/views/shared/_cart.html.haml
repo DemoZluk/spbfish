@@ -3,7 +3,7 @@
     %strong Ваша корзина пуста
   - else
     - if controller_name != 'carts'
-      %h3= link_to('Корзина', cart_path(@cart.id), id: 'cart_link')
+      %h3= link_to('Корзина', cart_path, id: 'cart_link')
     %table.item_table
       %colgroup 
         %col{width: '10%'}

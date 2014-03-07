@@ -315,10 +315,12 @@ form {
       font-size: small;
     }
 
-    #tree {
+    .side-panel {
       border: 1px solid #7D7;
       border-radius: 8px;
       background: #EEE;
+      margin: 3px;
+      padding: 3px;
     }
 
     nav.menu_side ul {

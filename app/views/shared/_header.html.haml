@@ -13,7 +13,7 @@
   #right_header_part
     #enter_form
       - if user_signed_in?
-        = link_to 'Профиль', user_root_path
+        = link_to 'Личный кабинет', user_root_path
         = link_to 'Выйти', logout_path, method: :delete
       - else
         - unless ['registrations', 'sessions', 'passwords'].include?(controller_name)

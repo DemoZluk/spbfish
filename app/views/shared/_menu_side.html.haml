@@ -1,7 +1,11 @@
-%nav.menu_side
-  %ul
-    - Group.where(parent_id: '').each do |group|
-      = menu_for_group(group).html_safe
+- cache "groups/#{Group.maximum(:updated_at).utc.try(:to_s, :number)}" do
+  .side-panel
+    .show_hide_tree{'data-no-transition-cache' => true} ▼ Каталог ▼
+    %nav.menu_side
+      %ul
+        - Group.where(parent_id: '').each do |group|
+          = menu_for_group(group).html_safe
 
-  - if user_signed_in? && current_user.admin?
-    = render 'shared/admin_panel'
+
+- if user_signed_in? && current_user.admin?
+  .side-panel= render 'shared/admin_panel'

@@ -4,7 +4,7 @@
       #cart_panel{ :style => "display: #{flash[:merge_carts?] ? 'block' : 'none'};" }
         - if @cart
           = render('shared/cart', cart: @cart)
-      = link_to(url_for(@cart), remote: true, :class => 'cart_link') do
+      = link_to(cart_path, remote: true, :class => 'cart_link') do
         %span#cart_title Корзина
         #item_counter
           = render('shared/counter')
