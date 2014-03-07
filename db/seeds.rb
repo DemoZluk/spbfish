@@ -103,11 +103,11 @@ def create_products_and_values
 
       offers = Nokogiri::XML(@offers)
       amount = offers.at_xpath("//Предложение[Ид='41e99799-fdc5-11e2-81e7-bcaec546836b']/Количество").content.to_f
-      Storage.create{
+      Storage.create!(
         product_id: p.id,
         amount: amount,
         unit: product.at_css('>БазоваяЕдиница').content
-      }
+      )
 
       product.css('ЗначенияСвойства').each do |p|
         ProductPropertyValue.create(
