@@ -17,7 +17,7 @@
       = render 'shared/header'
 
     #content
-      - if controller_name == 'products' && action_name == 'index'
+      - if controller_name == 'products' && action_name == 'show'
         = yield
       - else
         #side

@@ -6,11 +6,11 @@ class Order < ActiveRecord::Base
 
   PAYMENT_TYPES = ['Самовывоз', 'Доставка']
   ORDER_STATUS = ['Активен','В пути','Отменён','Закрыт']
-  validates :name, :email, :shipping_date, presence: true
+  validates :name, :email, :shipping_date, :phone_number, presence: true
   validates :address, presence: true, unless: 'pay_type == "Самовывоз"'
   validates :pay_type, inclusion: PAYMENT_TYPES
-  validates :status, inclusion: PAYMENT_TYPES
-  validates :comment, length: {maximum: 50}
+  validates :status, inclusion: ORDER_STATUS
+  validates :comment, length: {maximum: 200}
   validate :check_date
 
   scope :active, -> { where{status >> ['Активен', 'В пути']} }

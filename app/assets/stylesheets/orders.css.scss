@@ -30,7 +30,6 @@ fieldset.order {
 .order form {
   label {
     text-align: right;
-    display: block;
   }
 
   select, textarea, input {
@@ -39,6 +38,16 @@ fieldset.order {
 
   .submit {
     margin-left: 4em;
+  }
+
+  .required {
+    color: #F00;
+    vertical-align: super;
+    font-size: 10px;
+  }
+
+  tr>td:nth-child(1) {
+    text-align: right;
   }
 
   br {

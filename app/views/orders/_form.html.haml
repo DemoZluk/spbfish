@@ -8,26 +8,33 @@
   %table
     %tr.field
       %td= f.label(:name)
+      %td.required *
       %td= f.text_field :name, size: 40, placeholder: 'Иванов Иван Иванович', required: true
     %tr.field
       %td= f.label(:address)
+      %td.required 
       %td= f.text_area :address, placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', rows: 3, cols: 55
     %tr.field
       %td= f.label(:email)
-      %td= f.email_field :email, size: 40, placeholder: "example@domain.com", required: true, value: (User.find(session[:user][:id]).email if session[:user][:id])
+      %td.required *
+      %td= f.email_field :email, size: 40, placeholder: "example@domain.com", required: true, value: (current_user.email if user_signed_in?)
     %tr.field
       %td= f.label(:phone_number)
-      %td= f.text_field :phone_number, size: 40, placeholder: "8-900-777-77-77 (не обязательно)"
+      %td.required *
+      %td= f.text_field :phone_number, size: 40, placeholder: "8-900-777-77-77", required: true
     %tr.field
       %td= f.label(:pay_type)
-      %td= f.select :pay_type, Order::PAYMENT_TYPES, prompt: 'Выберите способ оплаты'
+      %td.required *
+      %td= f.select :pay_type, Order::PAYMENT_TYPES, prompt: 'Выберите способ оплаты', required: true
     %tr.field
-      - if Time.now>Time.parse('15:00')
-        - days = 1.day.from_now
+      -# if Time.now>Time.parse('15:00')
+        -# days = 1.day.from_now
       %td= f.label(:shipping_date)
+      %td.required 
       %td= f.text_field :shipping_date, placeholder: 'гггг-мм-дд', autocomplete: 'off'#, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
     %tr.field
       %td= f.label(:comment)
-      %td= f.text_area :comment, placeholder: 'Ваши комментарии к заказу (максимум 500 символов)', rows: 3, cols: 55
+      %td.required 
+      %td= f.text_area :comment, placeholder: 'Ваши комментарии к заказу (максимум 200 символов)', rows: 3, cols: 55
   .actions
     = f.submit 'Заказать', :class => 'order primary_button'

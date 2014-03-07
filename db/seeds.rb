@@ -5,7 +5,7 @@
 require "highline/import"
 
 def main
-  open_file
+  open_files
   create_groups
   create_properties
   create_products_and_values
@@ -14,9 +14,11 @@ def main
   create_first_admin_user
 end
 
-def open_file
+def open_files
   import = File.read('xml/import.xml')
   @doc = Nokogiri::XML(import)
+
+  @offers = File.read('xml/offers.xml')
 end
 
 def create_groups
@@ -86,7 +88,7 @@ def create_products_and_values
     else
       item_id = product.at_css('>Ид').content
 
-      Product.create!(
+      p = Product.create!(
         item: product.at_css('>Артикул').content,
         title: product_title,
         long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").content,
@@ -94,11 +96,18 @@ def create_products_and_values
         producer: product.at_css('>Изготовитель>Наименование').content,
         item_id: item_id,
         price: 0,
-        unit: product.at_css('>БазоваяЕдиница').content,
         group_id: product.at_css('>Группы>Ид').content,
         permalink: permalink,
         rating: 0
       )
+
+      offers = Nokogiri::XML(@offers)
+      amount = offers.at_xpath("//Предложение[Ид='41e99799-fdc5-11e2-81e7-bcaec546836b']/Количество").content.to_f
+      Storage.create{
+        product_id: p.id,
+        amount: amount,
+        unit: product.at_css('>БазоваяЕдиница').content
+      }
 
       product.css('ЗначенияСвойства').each do |p|
         ProductPropertyValue.create(
@@ -127,8 +136,7 @@ end
 def setup_prices
   puts "Setting prices"
 
-  offers = File.read('xml/offers.xml')
-  prices = Nokogiri::XML(offers).css('Предложение')
+  prices = Nokogiri::XML(@offers).css('Предложение')
   if prices.size > 0
     prices_progress = ProgressBar.create(total: prices.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
     prices.each do |offer|
