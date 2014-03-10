@@ -108,3 +108,8 @@ gem 'ruby-progressbar'
 gem 'highline', "~> 1.6"
 
 gem 'whenever', :require => false
+
+gem 'bootstrap-sass'
+group :development do
+  gem 'rails_layout'
+end
