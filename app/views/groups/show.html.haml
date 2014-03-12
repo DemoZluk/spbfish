@@ -1,19 +1,25 @@
-- @page_title = @group.title
-- if notice
-  %p#notice= notice
-%h1= @group.title# + (', Страница: ' + params[:page].to_s if params[:page]).to_s
+#side
+  = render 'shared/menu_side'
+  - if @products
+    #filters
+      = render 'shared/filter'
+#main
+  - @page_title = @group.title
+  - if notice
+    %p#notice= notice
+  %h1= @group.title# + (', Страница: ' + params[:page].to_s if params[:page]).to_s
 
-= render 'children'
-= @par
-.control
-  = render 'shared/control'
-#product_index
-  - if @products.any?
-    = render @products
-  - else
-    %p Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
+  = render 'children'
+  = @par
+  .control
+    = render 'shared/control'
+  #product_index
+    - if @products.any?
+      = render @products
+    - else
+      %p Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
 
-#loading
-  #notification
-    = image_tag 'loading.gif', alt: 'loading', id: 'loading_gif'
-    %p Идёт загрузка, пожалуйста подождите
+  #loading
+    #notification
+      = image_tag 'loading.gif', alt: 'loading', id: 'loading_gif'
+      %p Идёт загрузка, пожалуйста подождите

@@ -1,12 +1,21 @@
-- cache do
-  %ul.parent
-    %li= link_to 'Каталог', store_path
-    %li= link_to 'О нас', store_path
-    %li= link_to 'Контакты', store_path
+%ul.parent
+  
+  - if user_signed_in? && current_user.admin?
     %li
-      = link_to 'Помощь', store_path
+      = link_to 'Панель администратора', admin_path, class: 'btn btn-gray'
       %ul.child
-        %li= link_to 'Оплата', store_path
-        %li= link_to 'Доставка', store_path
-        %li= link_to 'Гарантия', store_path
-    %li= link_to 'Отзывы и пожелания', store_path
+        %li= link_to('Заказы', orders_path)
+        %li= link_to('Товары', products_path)
+        %li= link_to('Корзины', carts_path)
+        %li= link_to('Пользователи', users_path)
+        %li= link_to('Статьи', articles_path)
+  %li= link_to 'Каталог', store_path, class: 'btn btn-gray'
+  %li= link_to 'О нас', store_path, class: 'btn btn-gray'
+  %li= link_to 'Контакты', store_path, class: 'btn btn-gray'
+  %li
+    = link_to 'Помощь', store_path, class: 'btn btn-gray'
+    %ul.child
+      %li= link_to 'Оплата', store_path
+      %li= link_to 'Как получить', store_path
+      %li= link_to 'Гарантия', store_path
+  %li= link_to 'Отзывы и пожелания', store_path, class: 'btn btn-gray'

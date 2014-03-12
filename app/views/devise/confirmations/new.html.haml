@@ -1,0 +1,11 @@
+.authform
+  %h4 Отправить инструкции по подтверждению пароля
+  = form_for(resource, :as => resource_name, :url => confirmation_path(resource_name), :html => { :method => :post }) do |f|
+    = devise_error_messages!
+    .form-group
+      = f.label :email
+      = f.email_field :email, {:autofocus => true, id: 'email', placeholder: 'Почта', class: 'form-control'}
+
+    %div= f.submit "Отправить заново", class: 'button right'
+
+    = render "devise/shared/links"

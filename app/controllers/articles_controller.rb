@@ -26,6 +26,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
+    article_params.alias ||= article_params.title.mb_chars.parameterize
     @article = Article.new(article_params)
 
     respond_to do |format|
@@ -71,6 +72,6 @@ class ArticlesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:title, :body, :author)
+      params.require(:article).permit(:title, :body, :author, :alias)
     end
 end

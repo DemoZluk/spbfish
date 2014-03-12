@@ -11,10 +11,10 @@ ru:
 
   views:
     pagination:
-      first: '<<'
+      first: '&laquo;'
       previous: '<'
       next: '>'
-      last: '>>'
+      last: '&raquo;'
       truncate: ..
 
   store:
@@ -29,12 +29,14 @@ ru:
     index:
       title: Панель администратора
 
+
   products:
     vote_feedback: Спасибо за участие.
     vote_error: "Не удалось проголовать, возможно, Вы уже голосовали."
 
   activerecord:
     models:
+      user: Пользователь
       order: Заказ
     attributes:
       order:
@@ -45,17 +47,20 @@ ru:
         shipping_date: Дата доставки
         phone_number: Номер телефона
         comment: Комментарий
-      user:
+      user: 
+        name: "Пользователь"
         username: Имя
         login: Логин
         email: Почта
         password: Пароль
         remember_me: Запомнить
-        password_confirmation: Повтор пароля
+        password_confirmation: Пароль
+        current_password: Текущий пароль
       article:
         title: Заголовок
         body: Тело
         author: Автор
+        alias: Ссылка
 
   number:
     currency:
@@ -74,10 +79,7 @@ ru:
         pay_type: Тип оплаты
         shipping_date: Дата доставки
       user:
-        email: Почта
-        password: Пароль
-        remember_me: Запомнить
-        password_confirmation: Повтор пароля
+        password_confirmation: Повторите пароль
 
   from: FISHmarkt <mail@fishmarkt.ru>
   sign: FISHmarkt
@@ -101,7 +103,7 @@ ru:
 
   devise:
     confirmations:
-      confirmed: "Ваша учётная запись подтверждена. Теперь вы вошли в систему."
+      confirmed: "Ваша учётная запись подтверждена. Теперь Вы можете войти в систему."
       send_instructions: "В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
       send_paranoid_instructions: "Если ваш адрес email есть в нашей базе данных, то в течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
     failure:
@@ -139,6 +141,7 @@ ru:
       signed_up_but_unconfirmed: "В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
       updated: "Ваша учётная запись изменена."
       update_needs_confirmation: "Ваш аккаунт успешно обновлен, но необходимо подтвердить ваш новый адрес email. Пожалуйста, проверьте свою электронную почту и нажмите на ссылку \"Подтвердить\", чтобы завершить обновления email."
+      recaptcha_falure: "Необходимо заполнить recaptcha"
     sessions:
       signed_in: "Вход в систему выполнен."
       signed_out: "Выход из системы выполнен."

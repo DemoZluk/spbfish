@@ -5,7 +5,7 @@
   - else
     .vote
       - 1.upto(5) do |i|
-        = link_to '', vote_product_path(product, points: i), title: "Оценить на #{i}", class: "rate_#{i}", remote: true
+        = link_to '', vote_product_path(product, points: i), title: "Оценить на #{i}", class: "rate_#{i}", remote: true, tabindex: '-1'
       .vote_bg
 
   .current{style: "width: #{((product.rating || 0)/5*120).to_i}px"}

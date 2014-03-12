@@ -1,6 +1,9 @@
 // Place all the styles related to the Store controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$side_width: 200px;
+$side_padding: 15px;
+$side_margin: 5px;
 
 .store, .groups {
   h1 {
@@ -25,9 +28,14 @@
       background: #EEE;
     }
 
+    a:visited {
+      color: #74F;
+    }
+
     h3 {
       font-size: 120%;
       font-family: sans-serif;
+      font-weight: bold;
       margin: auto;
       color: #227;
       box-sizing: border-box;
@@ -80,4 +88,112 @@
       }
     }
   }
+}
+
+#filters {
+  input[type=text] {
+    width: 45px;
+    text-align: center;
+  }
+}
+
+.show_hide_tree {
+  cursor: pointer;
+  padding: 3px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 8px;
+
+  &.active {
+    border-bottom: 1px dotted rgba(0, 255, 0, 0.5);
+    border-radius: 8px 8px 0px 0px;
+  }
+}
+
+#side {
+  border: 1px solid #555;
+  border-radius: 6px;
+  float: left;
+  margin: $side_margin;
+  margin-left: 0;
+  padding: 10px $side_padding;
+  width: $side_width;
+  min-height: 150px;
+ 
+  input {
+    font-size: small;
+  }
+
+  .side-panel {
+    border: 1px solid #7D7;
+    border-radius: 8px;
+    background: #EEE;
+    margin: 3px;
+    padding: 3px;
+  }
+
+  nav.menu_side ul {
+    display: none;
+    margin: 0px;
+    padding: 3px;
+    
+    li {
+      position: relative;
+      list-style: none;
+      border: 1px dotted transparent;
+      border-radius: 3px;
+
+      &:hover {
+        border-color: #AAA;
+      }
+
+      a {
+        display: block;
+        height: 100%;
+        width: 95%;
+        font-size: small;
+        padding: 5px;
+      }
+    }
+  }
+
+  .parent:after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    right: 0px;
+    height: 0px;
+    border-width: 4px;
+    border-color: transparent transparent transparent #000;
+    border-style: solid;
+  }
+
+  ul.child {
+    background: #EEE;
+    border: 1px solid #7D7;
+    position: absolute;
+    z-index: 9999;
+    right: -($side_width);
+    top: -1px;
+    width: $side_width;
+    border-radius: 0px 8px 8px 8px;
+  }
+
+  li.parent:hover>.child {
+    display: block;
+  }
+  
+  .count {
+    font-size: 8px;
+    vertical-align: sub;
+    color: #666;
+  }
+}
+
+#main {
+  position: relative;
+  margin-left: $side_width+$side_margin;
+  padding: 1em 1em 3em 1em;
+  background: #FFF;
+  min-height: 100%;
 }

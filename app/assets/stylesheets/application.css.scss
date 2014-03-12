@@ -8,7 +8,8 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require jquery.ui.all
+ *= require jquery.ui.datepicker
+ *= require jquery.ui.slider
  *= require_self
  *= require_tree .
  */ 
@@ -57,23 +58,6 @@ input[type='checkbox'], input[type='checkbox']~label {
   vertical-align: middle;
 }
 
-a {
-  text-decoration: none;
-  color: #227;
-
-  &:active {
-    color: #33B;
-  }
-
-  &:hover {
-    //text-shadow: 0px 0px 8px rgba(4, 4, 128, .4);
-  }
-
-  &:visited {
-    color: #339;
-  }
-}
-
 form {
   margin-bottom: 0px;
 }
@@ -103,7 +87,7 @@ form {
     font-size: 16px;
     font-weight: bold;
     text-align: center;
-    padding: 3px 10px;
+    padding: 10px 10px;
     border-radius: 0px 0px 10px 10px;
     box-shadow: 0px 1px 5px #000;
 
@@ -130,10 +114,11 @@ form {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
+  position: relative;
 
   #logo {
     display: inline-block;
-    img { height: 90px; width: 120px }
+    img { height: 135px; width: 180px }
   }
 
   #phone_number {
@@ -180,17 +165,30 @@ form {
 
 #right_header_part {
   display: inline-block;
+  bottom: 0px;
   float: right;
-}
-
-#enter_form {
+  height: 100%;
   text-align: right;
+
+  #enter_form {
+    display: inline-block;
+    text-align: right;
+    margin-bottom: 40px;
+  }
+
 }
 
-#top_menu {
-  top: 90px;
-  right: 30px;
+#top_menu_wrapper {
   position: absolute;
+  right: 10px;
+  bottom: 10px;
+}
+#top_menu {
+  display: block;
+
+  li:hover {
+    text-decoration: underline;
+  }
 
   ul {
     margin: 0;
@@ -199,17 +197,11 @@ form {
 
     li {
       position: relative;
-      font-size: 14px;
-      text-align: center;
-      list-style: none;
       
       a {
         display: block;
-        padding: 5px 10px;
-      }
-
-      a:hover {
-        color: #FFF;
+        color: #000;
+        text-align: center;
       }
     }
 
@@ -217,7 +209,6 @@ form {
 
       &>li {
         display: inline-block;
-        border-radius: 0px 10px;
 
         &:hover>ul.child {
           display: block;
@@ -227,19 +218,31 @@ form {
   }
   
   ul.parent>li, ul.child {
-    border: 1px solid #43AA43;
-    background: rgb(152,224,176); /* Old browsers */
-    @include grad(rgba(152,224,176,1), 0%, rgba(44,224,20,1) , 50%, rgba(5,209,2,1), 51%, rgba(94,229,139,1), 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#98e0b0', endColorstr='#5ee58b',GradientType=0 ); /* IE6-9 */
-    box-shadow: 2px 2px 3px rgba(21, 163, 21, 0.55);
+    border: 2px solid #555;
+    border-radius: 6px;
+    //background: rgb(152,224,176); /* Old browsers */
+    //@include grad(rgba(152,224,176,1), 0%, rgba(44,224,20,1) , 50%, rgba(5,209,2,1), 51%, rgba(94,229,139,1), 100%);
+    //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#98e0b0', endColorstr='#5ee58b',GradientType=0 ); /* IE6-9 */
+    box-shadow: 2px 2px 3px rgba(65, 65, 65, 0.55);
   }
 
   ul.child {
     position: absolute;
     top: 28px;
-    right: -1px;
+    right: -2px;
     display: none;
-    border-radius: 10px 0px 10px 10px;
+    border-radius: 4px 0px 4px 4px;
+    background: #CCC;
+
+    li {
+      a {
+        padding: 8px;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px dotted;
+      }
+    }
   }
 }
 
@@ -275,118 +278,10 @@ form {
 }
 
 #content {
-  $side_width: 170px;
-  $side_padding: 15px;
-  $side_margin: 5px;
+  margin: 5px;
   position: relative;
   //background: #161;
   min-height: 100%;
-
-  #filters {
-    input[type=text] {
-      width: 45px;
-      text-align: center;
-    }
-  }
-
-  .show_hide_tree {
-    cursor: pointer;
-    padding: 3px;
-    text-align: center;
-    font-size: 18px;
-    border-radius: 8px;
-
-    &.active {
-      border-bottom: 1px dotted rgba(0, 255, 0, 0.5);
-      border-radius: 8px 8px 0px 0px;
-    }
-  }
-
-  #side {
-    border: 1px solid #555;
-    border-radius: 3px;
-    float: left;
-    margin: $side_margin;
-    padding: 10px $side_padding;
-    width: $side_width;
-    min-height: 150px;
-   
-    input {
-      font-size: small;
-    }
-
-    .side-panel {
-      border: 1px solid #7D7;
-      border-radius: 8px;
-      background: #EEE;
-      margin: 3px;
-      padding: 3px;
-    }
-
-    nav.menu_side ul {
-      display: none;
-      margin: 0px;
-      padding: 3px;
-      
-      li {
-        position: relative;
-        list-style: none;
-        border: 1px dotted transparent;
-        border-radius: 3px;
-
-        &:hover {
-          border-color: #AAA;
-        }
-
-        a {
-          display: block;
-          height: 100%;
-          width: 95%;
-          font-size: small;
-          padding: 5px;
-        }
-      }    }
-
-    .parent:after {
-      content: '';
-      position: absolute;
-      top: 40%;
-      right: 0px;
-      height: 0px;
-      border-width: 4px;
-      border-color: transparent transparent transparent #000;
-      border-style: solid;
-    }
-
-    ul.child {
-      background: #EEE;
-      border: 1px solid #7D7;
-      position: absolute;
-      z-index: 9999;
-      right: -($side_width+5);
-      top: 50%;
-      width: $side_width;
-      border-radius: 0px 8px 8px 8px;
-    }
-
-    li.parent:hover>.child {
-      display: block;
-    }
-    
-    .count {
-      font-size: 8px;
-      vertical-align: sub;
-      color: #666;
-    }
-  }
-
-  #main {
-    position: relative;
-    margin-left: $side_width+($side_padding+$side_margin)*2;
-    padding: 1em 1em 3em 1em;
-    background: #FFF;
-    min-height: 100%;
-  }
 }
 
 #time {
@@ -417,4 +312,32 @@ form {
   font: {
     weight: bold;
   };
+}
+
+#form {
+
+  .modal-dialog {
+    height: 300px;
+    max-width: 365px;
+  }
+
+  .modal-body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .authform {
+    padding: 0;
+  }
+
+  form {
+    margin: 0;
+  }
+
+  button.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 15px;
+  }
 }

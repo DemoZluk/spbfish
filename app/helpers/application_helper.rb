@@ -12,14 +12,19 @@ module ApplicationHelper
     end
   end
 
+  def parent_layout(layout)
+    content_for :layout, self.output_buffer
+    self.output_buffer = render(:file => "layouts/#{layout}")
+  end
+
   def resource_name
     :user
   end
-
+ 
   def resource
     @resource ||= User.new
   end
-
+ 
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
   end

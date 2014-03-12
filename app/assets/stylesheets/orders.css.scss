@@ -3,12 +3,12 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 fieldset.order {
-  background: #efe;
+  max-width: 520px;
 
   .ui-datepicker-trigger {
     position: relative;
     right: 26px;
-    top: 6px;
+    top: -2px;
     margin: 4px;
     cursor: pointer;
     box-shadow: 1px 1px 1px #000;
@@ -16,7 +16,7 @@ fieldset.order {
 
   .ui-datepicker-trigger:active, #order_shipping_date:focus~.ui-datepicker-trigger {
     right: 25px;
-    top: 7px;
+    top: -1px;
     box-shadow: none;
   }
 
@@ -34,6 +34,7 @@ fieldset.order {
 
   select, textarea, input {
     margin-left: 0.5em;
+    margin: 2px;
   }
 
   .submit {

@@ -2,30 +2,29 @@
 %html
   %head
     %title= page_title # Application helper
-    %meta{name: 'description', content: (yield(:description) || t(:default_description))}
-    %meta{name: 'keywords', content: (yield(:keywords) || t(:default_keywords))}
+    %meta{name: 'description', content: (yield(:description).presence || t(:default_description))}
+    %meta{name: 'keywords', content: (yield(:keywords).presence || t(:default_keywords))}
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true, defer: true
     = csrf_meta_tags
       
-  %body{class: controller_name + ' ' + action_name}
+  %body{class: "#{controller_name} #{action_name}"}
+    #form.modal.fade
+      .modal-dialog
+        .modal-content
+          .modal-body
+          %button.close{data: {dismiss: 'modal'}} &times;
+
     #error_wrapper
-      #error{style: notice ? nil : 'display: none'}
-        = notice || ''
+      #error{style: (notice || alert) ? nil : 'display: none'}
+        = notice || alert || ''
 
     #header_wrapper
       = render 'shared/header'
 
     #content
-      - if controller_name == 'products' && action_name == 'show'
-        = yield
-      - else
-        #side
-          = render 'shared/menu_side'
-          - if @products
-            #filters
-              = render 'shared/filter'
-        #main= yield
+      = yield
+
     = render 'shared/metrika.html'
     #dummy
 

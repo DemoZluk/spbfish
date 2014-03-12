@@ -35,7 +35,7 @@ Fishmarkt::Application.routes.draw do
     get 'login' => "users/sessions#new"
     post 'login' => "users/sessions#create"
     delete 'logout' => "users/sessions#destroy"
-    get 'sign_up' => "devise/registrations#new"
+    get 'sign_up' => "users/registrations#new"
     get 'profile/edit' => "devise/registrations#edit"
     get 'users' => "users#index"
     get '/users/:id' => "users#show"

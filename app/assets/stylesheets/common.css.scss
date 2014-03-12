@@ -53,12 +53,12 @@
 
 .select {
   position: relative;
-  height: 18px;
+  height: 22px;
   width: auto;
   border: 1px solid rgba(#999, 0.5);
   border-radius: 3px;
-  margin: 5px;
-  padding: 0 2px;
+  margin: 6px;
+  padding: 1px;
   cursor: default;
   @include grad(rgba(244,244,244,1), 0%, rgba(201,201,201,1), 51%, rgba(221,221,221,1), 52%, rgba(216,216,216,1), 100%);
   -webkit-user-select: none;
@@ -66,6 +66,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
 
   &:after {
     content: '';
@@ -89,8 +90,8 @@
     display: none;
     list-style: none;
     margin: 0;
-    padding: 0;
-    left: -1px;
+    padding: 1px;
+    left: 0px;
     top: 16px;
     z-index: 8;
     width: 100%;
@@ -121,7 +122,7 @@
 }
 
 .primary_button {
-  background: #F00;
+  background: #E00;
   border: none;
   // {
   //   top: outset 1px #999;
@@ -143,8 +144,7 @@
   width: 100px;
 
   &:active {
-    background: #E73232;
-    box-shadow: inset 0px 0px 10px #400;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.225) inset;
     border-radius: 3px;
     // {
     //   top: inset 1px #C00;
@@ -153,6 +153,10 @@
     //   left: inset 1px #C00000;
     //   radius: 5px;
     // };
+  }
+
+  &:hover {
+    background: #D00;
   }
 
   &:disabled {

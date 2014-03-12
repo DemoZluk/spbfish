@@ -17,17 +17,27 @@ clearForm = (form) ->
     else if (tag == 'select')
       this.selectedIndex = -1
 
-$(document).on 'page:change', ->
-
-  $('.show_hide_tree').click ->
-    $(this).toggleClass 'active'
-    $('nav.menu_side>ul').slideToggle('fast')
-    if $(this).hasClass 'active'
-      $(this).text '▲ Каталог ▲'
-    else
-      $(this).text '▼ Каталог ▼'
+$(document).on 'ready page:change', ->
 
   window.onpopstate = (event) ->
+
+    
+  $('.slider').each ->
+    obj = $(this)
+    min = parseFloat $(this).data('min')
+    max = parseFloat $(this).data('max')
+    $(this).slider({
+      range: true,
+      min: min,
+      max: max,
+      values: [obj.siblings('.min').val() || min, obj.siblings('.max').val() || max],
+      animate: 'fast'
+      slide: (event, ui) ->
+         $(this).closest('.slider').siblings('.min').val(ui.values[0])
+         $(this).closest('.slider').siblings('.max').val(ui.values[1])
+      stop: (event, ui) ->
+        $(this).closest('form').submit()
+    })
 
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}
@@ -56,28 +66,12 @@ $(document).on 'page:change', ->
   #   history.replaceState(null, null, document.URL)
 
 
-  $('.slider').each ->
-    obj = $(this)
-    min = parseFloat $(this).data('min')
-    max = parseFloat $(this).data('max')
-    $(this).slider({
-      range: true,
-      min: min,
-      max: max,
-      values: [obj.siblings('.min').val() || min, obj.siblings('.max').val() || max],
-      animate: 'fast'
-      slide: (event, ui) ->
-         $(this).closest('.slider').siblings('.min').val(ui.values[0])
-         $(this).closest('.slider').siblings('.max').val(ui.values[1])
-      stop: (event, ui) ->
-        $(this).closest('form').submit()
-    })
 
-  $('#reset_button').on 'click', (e) ->
-    e.preventDefault()
-    form = $(this).closest('form')
-    clearForm(form)
-    form.submit()
+$(document).on 'click', '#reset_button', (e) ->
+  e.preventDefault()
+  form = $(this).closest('form')
+  clearForm(form)
+  form.submit()
 
 
 
@@ -110,6 +104,14 @@ $(document).on 'click', '.select ul li', ->
   $(this).closest('form').submit()
 $(document).on 'change', '#filter input, #control_form input[type=checkbox]', ->
   $(this).closest('form').submit()
+
+$(document).on 'click', '.show_hide_tree', ->
+  $(this).toggleClass 'active'
+  $('nav.menu_side>ul').slideToggle('fast')
+  if $(this).hasClass 'active'
+    $(this).text '▲ Каталог ▲'
+  else
+    $(this).text '▼ Каталог ▼'
 
 
 # Sorting params and filtering ajax processing

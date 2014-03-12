@@ -10,17 +10,18 @@
     .slider{data: {min: @products_min, max: @products_max}}
     
     #producer
-      %h4 Производитель
-      %ul
-        - producers = products.uniq.pluck(:producer).sort
-        - producers.each do |prdcr|
-          - unless (prd_cntr = products.where{producer == prdcr}.count) == 0
-            %li
-              - checked = params[:producer].try(:index, prdcr) || (true if producers.count == 1)
-              - disabled = true if producers.count == 1
-              = check_box_tag 'producer[]', prdcr, checked, {multiple: true, id: prdcr.parameterize, disabled: disabled}
-              = label_tag prdcr.parameterize, prdcr
-              %span.count= "(#{prd_cntr})"
+      %section
+        %h4 Производитель
+        %ul
+          - prod_list = products.group{producer}
+          - prod_list.order{count(id).desc}.pluck(:producer).each do |prdcr|
+            - unless (cnt = prod_list.count{products.id}[prdcr]) == 0
+              %li
+                - checked = params[:producer].try(:index, prdcr) || (true if prdcr.length == 1)
+                - disabled = true if prdcr.length == 1
+                = check_box_tag 'producer[]', prdcr, checked, {multiple: true, id: prdcr.parameterize, disabled: disabled}
+                = label_tag prdcr.parameterize, prdcr
+                %span.count= "(#{cnt})"
     - if @group.try(:properties).try(:any?)
       - @group.properties.each do |prop|
         .filter{id: prop.title.mb_chars.parameterize('_')}

@@ -5,7 +5,3 @@
       %ul
         - Group.where(parent_id: '').each do |group|
           = menu_for_group(group).html_safe
-
-
-- if user_signed_in? && current_user.admin?
-  .side-panel= render 'shared/admin_panel'

@@ -16,8 +16,9 @@
         = link_to 'Личный кабинет', user_root_path
         = link_to 'Выйти', logout_path, method: :delete
       - else
-        - unless ['registrations', 'sessions', 'passwords'].include?(controller_name)
+        - unless [].include?(controller_name)
           = render "shared/login_form"
+  #top_menu_wrapper
     %nav#top_menu
       = render 'shared/menu_top'
     =# debug session

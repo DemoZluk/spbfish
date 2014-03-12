@@ -1,6 +1,7 @@
 class Users::SessionsController < Devise::SessionsController
   include CurrentCart
   before_action :set_cart, only: :create
+  respond_to :html, :js
 
   def merge_carts?
     if @old_cart = @user.carts.last

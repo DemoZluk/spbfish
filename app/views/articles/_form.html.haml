@@ -1,20 +1,22 @@
-= form_for @article do |f|
+= form_for @article, html: {class: 'form-horizontal', role: 'form'} do |f|
   - if @article.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@article.errors.count, "error")} prohibited this article from being saved:"
+      %h2= "#{@article.errors.count} ошибки не дали сохранить статью:"
       %ul
         - @article.errors.full_messages.each do |msg|
           %li= msg
 
-  %table
-    %tr.field
-      %td= f.label :title
-      %td= f.text_field :title
-    %tr.field
-      %td= f.label :body
-      %td= f.text_area :body
-    %tr.field
-      %td= f.label :author
-      %td= f.text_field :author, value: current_user.login || current_user.email
-    %tr.actions
-      %td= f.submit 'Сохранить'
+  .form-group
+    = f.label :title, class: 'col-sm-2 control-label'
+    .col-sm-10= f.text_field :title, class: 'form-control'
+  .form-group
+    = f.label :alias, class: 'col-sm-2 control-label'
+    .col-sm-10= f.text_field :alias, class: 'form-control'
+  .form-group
+    = f.label :body, class: 'col-sm-2 control-label'
+    .col-sm-10= f.text_area :body, class: 'form-control'
+  .form-group
+    = f.label :author, class: 'col-sm-2 control-label'
+    .col-sm-10= f.text_field :author, class: 'form-control', value: ((current_user.login.presence) ? "#{current_user.login} <#{current_user.email}>" : current_user.email)
+  .form-group
+    .col-sm-2.right= f.submit 'Сохранить', class: 'btn btn-primary'
