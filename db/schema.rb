@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20140312113745) do
     t.string   "author"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "alias"
+    t.string   "permalink"
   end
 
   create_table "carts", force: true do |t|

@@ -26,7 +26,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    article_params.alias ||= article_params.title.mb_chars.parameterize
+    article_params['permalink'] ||= article_params['title'].mb_chars.parameterize
     @article = Article.new(article_params)
 
     respond_to do |format|
@@ -45,7 +45,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
-        format.html { redirect_to @article, notice: 'Article was successfully updated.' }
+        format.html { redirect_to edit_article(@article), notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -67,11 +67,11 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.find(params[:id])
+      @article = Article.find_by(permalink: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:title, :body, :author, :alias)
+      params.require(:article).permit(:title, :body, :author, :permalink)
     end
 end

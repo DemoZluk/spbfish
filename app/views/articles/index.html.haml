@@ -1,22 +1,14 @@
 %h1 Список статей
 
-%table
-  %tr
-    %th Заколовок
-    %th Тело
-    %th Автор
-    %th
-    %th
-    %th
-
-  - @articles.each do |article|
-    %tr
-      %td= article.title
-      %td= truncate article.body
-      %td= article.author
-      %td= link_to 'Открыть', article
-      %td= link_to 'Изменить', edit_article_path(article)
-      %td= link_to 'Удалить', article, :method => :delete, :data => { :confirm => 'Уверены?' }
+- @articles.each do |article|
+  .row
+    %h3= article.title
+    .col-md-8= truncate(strip_tags(article.body), {length: 150, separator: ' '})
+    .col-md-2= "Автор: #{article.author}"
+    .col-md-2
+      = link_to 'Открыть', article_path(article.permalink)
+      = link_to 'Изменить', edit_article_path(article)
+      = link_to 'Удалить', article, :method => :delete, :data => { :confirm => 'Уверены?' }
 
 %br
 

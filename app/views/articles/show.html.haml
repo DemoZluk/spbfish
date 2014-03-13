@@ -1,10 +1,12 @@
-- if flash[:notice]
-  %p#notice= notice
+.row
+  .col-md-2.col-xs-0
+  .col-md-8.col-xs-12
+    %h2= @article.title
+    .body
+      %p= @article.body.html_safe
 
-%h2= @article.title
-%p= @article.body
-
-- if current_user
-  = link_to 'Изменить', edit_article_path(@article)
-  \ | 
-  = link_to 'К списку статей', articles_path
+    - if current_user && current_user.admin?
+      = link_to 'Изменить', edit_article_path(@article)
+      \ | 
+      = link_to 'К списку статей', articles_path
+  .col-md-2.col-xs-0

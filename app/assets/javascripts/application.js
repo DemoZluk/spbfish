@@ -16,4 +16,14 @@
 //= require jquery-ui
 //= require turbolinks
 //= require bootstrap
+//= require tinymce.min
 //= require_tree .
+
+$(document).on('redy page:change', function() {
+  tinymce.init({
+    selector: '.tinymce',
+    plugins: ["image code table fullscreen", "textcolor"],
+    toolbar: "undo redo | styleselect | bold italic underline | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen code ",
+    height: 300
+    })
+})

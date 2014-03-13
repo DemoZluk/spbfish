@@ -2,6 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.articles #content form {
-  max-width: 700px;
+.articles {
+  #content form {
+    max-width: 700px;
+  }
+
+  .body {
+    text-align: justify;
+  }
+
+  .row {
+    margin-right: auto;
+    margin-left: auto;
+  }
 }

@@ -60,7 +60,7 @@ ru:
         title: Заголовок
         body: Тело
         author: Автор
-        alias: Ссылка
+        permalink: Ссылка
 
   number:
     currency:

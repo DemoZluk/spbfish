@@ -1,7 +1,5 @@
 Fishmarkt::Application.routes.draw do
 
-  resources :articles
-
   root 'store#index', as: 'store'
 
   resources :catalog,  controller: 'groups', as: 'group' do
@@ -47,6 +45,10 @@ Fishmarkt::Application.routes.draw do
   get 'merge_no' => 'carts#merge_no'
 
   get 'admin' => 'admin#index'
+
+  resources :articles do
+  end
+  get '/:id' => 'articles#show'
 
   # resources :users
 

@@ -1,4 +1,4 @@
-= form_for @article, html: {class: 'form-horizontal', role: 'form'} do |f|
+= form_for @article, html: {role: 'form'} do |f|
   - if @article.errors.any?
     #error_explanation
       %h2= "#{@article.errors.count} ошибки не дали сохранить статью:"
@@ -7,16 +7,16 @@
           %li= msg
 
   .form-group
-    = f.label :title, class: 'col-sm-2 control-label'
-    .col-sm-10= f.text_field :title, class: 'form-control'
+    = f.label :title, class: 'control-label'
+    = f.text_field :title, class: 'form-control'
   .form-group
-    = f.label :alias, class: 'col-sm-2 control-label'
-    .col-sm-10= f.text_field :alias, class: 'form-control'
+    = f.label :permalink, class: 'control-label'
+    = f.text_field :permalink, class: 'form-control'
   .form-group
-    = f.label :body, class: 'col-sm-2 control-label'
-    .col-sm-10= f.text_area :body, class: 'form-control'
+    = f.label :body, class: 'control-label'
+    = f.text_area :body, class: 'form-control tinymce'
   .form-group
-    = f.label :author, class: 'col-sm-2 control-label'
-    .col-sm-10= f.text_field :author, class: 'form-control', value: ((current_user.login.presence) ? "#{current_user.login} <#{current_user.email}>" : current_user.email)
-  .form-group
-    .col-sm-2.right= f.submit 'Сохранить', class: 'btn btn-primary'
+    = f.label :author, class: 'control-label'
+    .row
+      .col-md-9= f.text_field :author, class: 'form-control', value: ((current_user.login.presence) ? "#{current_user.login} <#{current_user.email}>" : current_user.email)
+      .col-md-3.right= f.submit 'Сохранить', class: 'btn btn-primary'
