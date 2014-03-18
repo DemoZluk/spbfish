@@ -29,6 +29,16 @@ module StoreHelper
     end
   end
 
+  def list_item_for prdcr, cnt
+    checked = params[:producer].try(:index, prdcr) || (true if prdcr.length == 1)
+    disabled = true if prdcr.length == 1
+    li = content_tag :li do
+      check_box_tag('producer[]', prdcr, checked, {multiple: true, id: prdcr.parameterize, disabled: disabled}) + 
+      label_tag(prdcr.parameterize, prdcr) + 
+      content_tag(:span, " (#{cnt})", class: 'count')
+    end
+  end
+
   def create_thumbnail
     system("");
   end

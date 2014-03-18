@@ -17,7 +17,7 @@ clearForm = (form) ->
     else if (tag == 'select')
       this.selectedIndex = -1
 
-$(document).on 'ready page:change', ->
+$(document).on 'ready page:load', ->
 
   window.onpopstate = (event) ->
 
@@ -77,15 +77,18 @@ $(document).on 'click', '#reset_button', (e) ->
 
 #--- Ajax hooks' processing ---#
 $(document).on 'ajax:beforeSend', '#content', ->
+  $('input:not(.primary_button)').attr('disabled', true)
   $('#loading').fadeIn('fast')
 
 $(document).on 'ajax:error', (xhr, error) ->
   #console.log error
+  $('input.primary_button').attr('disabled', true)
   $('#error').html('Внимание! Произошла ошибка! Перезагрузите сраницу. Если это не в первый раз, <a href="/report_error">сообщите о ней</a> администратору!').show('blind')
 
 $(document).on 'ajaxSuccess', (data, status, xhr) ->
   $('#error').hide('blind')
   $('#loading').fadeOut('fast')
+  $('input').removeAttr('disabled')
 #------------------------------#
 
 

@@ -26,13 +26,6 @@ class Product < ActiveRecord::Base
     Product.order('updated_at').last
   end
 
-  sifter :filter_by do |params|
-
-    # if flt
-    #   puts 'flt'
-    # end
-  end
-
   def rate(points)
     if [1, 2, 3, 4, 5].include?(points.to_i)
       rt = self.rating || 0
@@ -46,7 +39,15 @@ class Product < ActiveRecord::Base
   end
 
   def image_url(item_id)
-    images.find_all_by_item_id(item_id)
+    images.where(item_id: item_id)
+  end
+
+  def desc
+    if self.description == '.'
+      long_name
+    else
+      self.description
+    end
   end
 
   private

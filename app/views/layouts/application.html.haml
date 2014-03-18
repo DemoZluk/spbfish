@@ -6,6 +6,11 @@
     %meta{name: 'keywords', content: (yield(:keywords).presence || t(:default_keywords))}
     = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
     = javascript_include_tag "application", "data-turbolinks-track" => true, defer: true
+    %noscript
+      :css
+        #side nav.menu_side>ul {
+          display: block;
+        }
     = csrf_meta_tags
       
   %body{class: "#{controller_name} #{action_name}"}

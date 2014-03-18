@@ -1,7 +1,7 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-$(document).on "page:change", ->
+$(document).on "ready page:change", ->
   $(".delete").on('click', 'input', ->
     $('.current_item').removeAttr('class');
     $(this).closest('tr').attr('class', 'current_item');
@@ -27,8 +27,19 @@ $(document).on "page:change", ->
   #   -> $('#cart').stop().hide(500)
   # )
 
-  # Show cart
-  $('#cart_block .cart_link').click( ->
-    #$('.cart_block #cart_panel').show();
-    $('#cart_block #cart_panel').stop().toggle('blind', 500);
-  )
+
+$(document).on 'click', 'input.minus', ->
+  input = $(this).closest('form').siblings('input[type=text]')
+  i = parseInt(input.val()) - 1
+  if i <= 0
+    $(this).closest('.product').slideUp('fast', ->
+      $(this).remove()
+    )
+
+$(document).on 'ajax:beforeSend', '.product', ->
+  # alert ''
+
+# Show cart
+$(document).on 'click', '#cart_block .cart_link', ->
+  #$('.cart_block #cart_panel').show();
+  $('#cart_block #cart_panel').stop().toggle('blind', 500);

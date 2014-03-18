@@ -1,14 +1,14 @@
 #encoding: utf-8
 class LineItemsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :decrement, :destroy]
+  skip_before_action :authenticate_user!, only: [:create, :decrement, :increment, :destroy]
   include CurrentCart
-  # before_action :set_cart, only: [:create]
-  before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement]
+  before_action :set_cart, only: [:index, :create, :destroy, :decrement, :increment]
+  before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement, :increment]
 
   # GET /line_items
   # GET /line_items.json
   def index
-    @line_items = LineItem.all
+    @line_items = LineItem.page(params[:page])
   end
 
   # GET /line_items/1
@@ -75,21 +75,31 @@ class LineItemsController < ApplicationController
   end
 
   def decrement
-    if @line_item
-      if @line_item.quantity > 1
-        @line_item.quantity -= 1
-        #redirect_to(cart_path(session[:cart_id]), notice: 'Product decremented successfully')
-      else
-        if @line_item.quantity == 1
-          @line_item.destroy
-          #redirect_to(cart_path(session[:cart_id]), notice: 'Product deleted')
-        else
-          invalid_line_item
-        end
+    if @line_item.try(:quantity) > 1
+      @line_item.quantity -= 1
+      #redirect_to(cart_path(session[:cart_id]), notice: 'Product decremented successfully')
+    else
+      @line_item.destroy
+    end
+
+    if @line_item.save
+      respond_to do |format|
+        format.html {redirect_to cart_path(session[:cart_id])}
+        format.js {@current_item = @line_item}
+        format.json { head :no_content }
       end
     else
       invalid_line_item
     end
+  end
+
+  def increment
+    if @line_item
+      @line_item.quantity += 1
+    else
+      invalid_line_item
+    end
+
     if @line_item.save
       respond_to do |format|
         format.html {redirect_to cart_path(session[:cart_id])}
@@ -103,7 +113,7 @@ class LineItemsController < ApplicationController
 
   def invalid_line_item
     logger.error("Позиции не существует")
-    redirect_to(cart_path, notice: 'Неверная корзина')
+    redirect_to(cart_path, notice: 'Позиции не существует')
   end
 
   private

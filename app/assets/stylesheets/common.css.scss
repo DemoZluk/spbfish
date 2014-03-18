@@ -40,8 +40,25 @@ input[type='checkbox'], input[type='checkbox']~label {
   vertical-align: middle;
 }
 
+.img-s-sq, .img-s-sq img {
+  height: 135px;
+  width: 135px;
+  display: inline-block;
+}
+
+.img-r, .img-r img {
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+
 form {
   margin-bottom: 0px;
+}
+
+.left {
+  text-align: left;
 }
 
 .center {
@@ -466,7 +483,7 @@ form {
   margin: 5px 5px 3px 5px;
   cursor: pointer;
   height: 27px;
-  width: 100px;
+  min-width: 100px;
 
   &:active {
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.225) inset;

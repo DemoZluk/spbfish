@@ -4,7 +4,7 @@ module CurrentCart
   private
   
     def set_cart
-      @cart = Cart.find (params[:id] ? params[:id] : session[:cart_id])
+      @cart = Cart.find (((controller_name == 'carts') && params[:id]) ? params[:id] : session[:cart_id])
     rescue ActiveRecord::RecordNotFound
       @cart = Cart.create(user_id: (session[:user][:id] if session[:user]))
       puts session[:cart_id] = @cart.id

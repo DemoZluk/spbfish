@@ -14,7 +14,7 @@
   %b Pay type:
   = @order.pay_type
 
-= render('shared/cart', cart: @order)
+= render(template: 'cart/show', cart: @order)
 
 = link_to 'Изменить', edit_order_path(@order)
 \|

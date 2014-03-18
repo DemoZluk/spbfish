@@ -13,15 +13,18 @@
       %section
         %h4 Производитель
         %ul
-          - prod_list = products.group{producer}
-          - prod_list.order{count(id).desc}.pluck(:producer).each do |prdcr|
-            - unless (cnt = prod_list.count{products.id}[prdcr]) == 0
-              %li
-                - checked = params[:producer].try(:index, prdcr) || (true if prdcr.length == 1)
-                - disabled = true if prdcr.length == 1
-                = check_box_tag 'producer[]', prdcr, checked, {multiple: true, id: prdcr.parameterize, disabled: disabled}
-                = label_tag prdcr.parameterize, prdcr
-                %span.count= "(#{cnt})"
+          - prod_list = products.group{producer}.order{count(id).desc}.pluck(:producer)
+          - prod_list[0..5].each do |prdcr|
+            - unless (cnt = products.where(producer: prdcr).count) == 0
+              = list_item_for prdcr, cnt
+          - if prod_list.length > 5
+            .show_more
+              .head Ещё
+              .body
+                - prod_list.from(6).each do |prdcr|
+                  - unless (cnt = products.where(producer: prdcr).count) == 0
+                    = list_item_for prdcr, cnt
+
     - if @group.try(:properties).try(:any?)
       - @group.properties.each do |prop|
         .filter{id: prop.title.mb_chars.parameterize('_')}
@@ -45,4 +48,5 @@
                       %span.count= "(#{val_cntr})"
                 - if vals.length > 5
                   .show_more Показать ещё
+    = submit_tag 'Применить', name: 'commit'
     = submit_tag 'Сбросить все', {name: 'reset', id: 'reset_button', type: :reset}

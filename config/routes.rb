@@ -17,12 +17,13 @@ Fishmarkt::Application.routes.draw do
   resources :line_items do
     member do
       post 'decrement'
+      post 'increment'
     end
   end
 
   get 'cart' => "carts#show"
-  resources :carts do
-  end
+  delete 'cart' => "carts#destroy"
+  resources :carts
 
   resources :orders
 

@@ -1,8 +1,20 @@
-- if notice
-  %p#notice= notice
+.container-fluid
+  %h1 Ваша корзина
+  .row
+    .col-xs-12.col-lg-8
+      = paginate @line_items if @line_items
+  .row
+    .col-xs-12.col-lg-8= render "line_items"
+  .row.total
+    .col-xs-6.col-lg-4.items
+      Всего товаров в корзине: 
+      %span= @cart.line_items.count
+    .col-xs-6.col-lg-4.right.grand-total
+      Итого: 
+      %span= number_to_currency @cart.total_price
 
-%h1 Ваша корзина
+    .col-xs-12.col-lg-8.right= button_to('Оформить заказ', new_order_path, class:  'order primary_button', method: :get, autocomplete: 'off')
 
-= render('shared/cart', cart: @cart)
-
-%p= link_to('Назад', :back)
+  .row
+    .col-xs-12.col-lg-8
+      = paginate @line_items if @line_items

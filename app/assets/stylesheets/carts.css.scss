@@ -3,6 +3,15 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .carts {
+  h3 {
+    display: inline-block;
+    font-size: 15px;
+    vertical-align: top;
+  }
+
+  img {
+  }
+
   .edit_cart .quantity {
       box-shadow: inset 0 0 3px #444;
       text-align: center;
@@ -34,6 +43,15 @@
     }
   }
 
+  .total {
+    margin-top: 15px;
+    font-size: 15px;
+  }
+
+  .grand-total {
+    font-weight: bold;
+  }
+
   .carts_index {
     td {
       padding: 1px 7px;
@@ -57,6 +75,75 @@
         padding: 3px 5px;
       }
     }
+  }
+
+  .product {
+    position: relative;
+    height: 85px;
+    overflow: hidden;
+    margin-top: 0.5em;
+    border: solid 1px #CCC;
+    border-radius: 10px;
+
+    &:hover {
+      border-color: #7D7;
+      background: #EEE;
+    }
+
+    .description {
+      display: inline-block;
+      width: 55%;
+      vertical-align: top;
+    }
+
+    .info_table {
+      display: inline-block;
+      float: right;
+
+      td {
+        padding: 3px 6px;
+      }
+
+      .sum td:nth-child(even) {
+        min-width: 130px;
+      }
+    }
+
+    .quantity {
+      input[type=text] {
+        text-align: center;
+        border-radius: 0px;
+        margin: 0;
+        height: 25px;
+        border: 1px solid #777;
+        border-width: 1px 0px;
+        -webkit-box-shadow: inset 0px 0px 3px #444;
+        -moz-box-shadow: inset 0px 0px 3px #444;
+        box-shadow: inset 0px 0px 3px #444;
+      }
+
+      .button_to {
+        margin: 0;
+        display: inline-block;
+
+        input[type=submit] {
+          border: 1px solid #777;
+          height: 25px;
+          width: 25px;
+          background: #AAA;
+
+          &.minus {
+            border-right: 0;
+            border-radius: 3px 0px 0px 3px;
+          }
+          &.plus {
+            border-left: 0;
+            border-radius: 0px 3px 3px 0px;
+          }
+        }
+      }
+    }
+
   }
 }
 
@@ -94,26 +181,28 @@ table.item_table {
 
 #cart_block {
   position: absolute;
-  left: 1em;
+  left: 5px;
   bottom: 0px;
-  min-width: 400px;
-  width: 30%;
+  min-width: 600px;
   //text-align: right;
   
   #cart_panel {
-    width: 120%;
+    width: 600px;
     position: relative;
-    margin-bottom: 2px;
-    left: -0.8em;
+    bottom: -1px;
 
-    &:after {
-      content: '';
-      position: absolute;
-      left: 88px;
-      bottom: -19px;
-      border-width: 10px;
-      border-color: #EEE transparent transparent transparent;
-      border-style: solid;
+    // &:after {
+    //   content: '';
+    //   position: absolute;
+    //   left: 88px;
+    //   bottom: -19px;
+    //   border-width: 10px;
+    //   border-color: #EEE transparent transparent transparent;
+    //   border-style: solid;
+    // }
+
+    a {
+      color: #B8FAC0;
     }
   }
 
@@ -121,11 +210,11 @@ table.item_table {
     right: 0px;
     width: 100%;
     //bottom: $bottom_panel_height+5px;
-    background: #EEE;
-    color: #000;
+    background: #222;
+    color: #EEE;
     padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(20, 20, 20, 1);
+    border-radius: 5px 5px 0px 0px;
+    box-shadow: 0px -3px 5px rgba(20, 20, 20, 0.3);
     box-sizing: border-box;
     -moz-box-sizing: border-box;
 
@@ -138,12 +227,23 @@ table.item_table {
       top: 10px;
       right: 15px;
     }
+
+    input {
+      color: #222;
+    }
   }
   
   .cart_link {
+    position: absolute;
+    top: -30px;
     cursor: pointer;
     display: inline-block;
     text-decoration: none;
+    color: #EEE;
+    background: #222;
+    padding: 0px 10px;
+    border-radius: 4px 4px 0px 0px;
+    box-shadow: 0px -3px 5px rgba(20, 20, 20, 0.3);
 
     #cart_title {
       padding-bottom: 1px;

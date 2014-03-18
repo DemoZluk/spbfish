@@ -4,6 +4,6 @@ $('#cart_panel').html("#{ j render('shared/cart', cart: @cart) }");
 
 $('.grand_total').html("#{ j render('shared/grand_total') }");
 
-$('.current_item').css({'background-color':'#F55'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
+$('.current_item').css({'background-color':'#5F5'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
 
 $('#item_counter span').stop().hide('fast', function() { $('#item_counter span').html("#{ j render('shared/counter') }").show('fast')});
