@@ -9,7 +9,7 @@ class Order < ActiveRecord::Base
   validates :name, :email, :shipping_date, :phone_number, presence: true
   validates :address, presence: true, unless: 'pay_type == "Самовывоз"'
   validates :pay_type, inclusion: PAYMENT_TYPES
-  validates :status, inclusion: ORDER_STATUS
+  validates :status, inclusion: ORDER_STATUS, allow_blank: true
   validates :comment, length: {maximum: 200}
   validate :check_date
 

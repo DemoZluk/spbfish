@@ -12,8 +12,10 @@
     .col-xs-6.col-lg-4.right.grand-total
       Итого: 
       %span= number_to_currency @cart.total_price
-
-    .col-xs-12.col-lg-8.right= button_to('Оформить заказ', new_order_path, class:  'order primary_button', method: :get, autocomplete: 'off')
+    
+  .row
+    .col-xs-12.col-lg-4= button_to('Очистить корзину', cart_path, method: :delete, data: {confirm: 'Вы уверены, что хотите убрать все товары из корзины?'}, class: 'btn btn-default', autocomplete: 'off')
+    .col-xs-12.col-lg-4.right= button_to('Оформить заказ', new_order_path, method: :get, class:  'btn btn-danger', autocomplete: 'off')
 
   .row
     .col-xs-12.col-lg-8

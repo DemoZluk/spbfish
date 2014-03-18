@@ -13,8 +13,8 @@
   #right_header_part
     #enter_form
       - if user_signed_in?
-        = link_to 'Личный кабинет', user_root_path
-        = link_to 'Выйти', logout_path, method: :delete
+        = link_to 'Личный кабинет', user_root_path, class: 'btn btn-link'
+        = link_to 'Выйти', logout_path, method: :delete, class: 'btn btn-link'
       - else
         - unless [].include?(controller_name)
           = render "shared/login_form"
