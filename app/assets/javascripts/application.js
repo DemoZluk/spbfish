@@ -16,10 +16,10 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require bootstrap
-//= require tinymce.min
+//= require tinymce-jquery
 //= require_tree .
 
-$(document).on('redy page:change', function() {
+$(document).on('ready page:change page:load', function() {
   tinymce.init({
     selector: '.tinymce',
     plugins: ["image code table fullscreen", "textcolor"],

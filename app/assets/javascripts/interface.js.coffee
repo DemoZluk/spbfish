@@ -19,8 +19,6 @@ clearForm = (form) ->
 
 $(document).on 'ready page:load', ->
 
-  window.onpopstate = (event) ->
-
     
   $('.slider').each ->
     obj = $(this)

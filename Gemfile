@@ -115,3 +115,5 @@ group :development do
 end
 
 gem "recaptcha"
+
+gem 'tinymce-rails'

@@ -14,7 +14,7 @@
     = f.text_field :permalink, class: 'form-control'
   .form-group
     = f.label :body, class: 'control-label'
-    = f.text_area :body, class: 'form-control tinymce'
+    = f.text_area :body, class: 'form-control tinymce', autocomplete: 'off'
   .form-group
     = f.label :author, class: 'control-label'
     .row

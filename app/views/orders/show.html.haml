@@ -1,21 +1,22 @@
-- if notice
-  %p#notice= notice
+.container-fluid.carts
+  %h1= "Заказ номер #{@order.id}"
+  .row
+    .col-xs-12.col-lg-8
+      = paginate @line_items if @line_items
+  .row
+    .col-xs-12.col-lg-8= render "carts/line_items"
+  .row.total
+    .col-xs-6.col-lg-4.items
+      Всего товаров в заказе: 
+      %span= @order.line_items.count
+    .col-xs-6.col-lg-4.right.grand-total
+      Итого: 
+      %span= number_to_currency @order.total_price
+    
+  .row
+    .col-xs-12.col-lg-4
+    .col-xs-12.col-lg-4.right
 
-%p
-  %b Name:
-  = @order.name
-%p
-  %b Address:
-  = @order.address
-%p
-  %b Email:
-  = @order.email
-%p
-  %b Pay type:
-  = @order.pay_type
-
-= render(template: 'cart/show', cart: @order)
-
-= link_to 'Изменить', edit_order_path(@order)
-\|
-= link_to 'Назад', orders_path
+  .row
+    .col-xs-12.col-lg-8
+      = paginate @line_items if @line_items

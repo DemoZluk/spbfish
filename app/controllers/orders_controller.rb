@@ -12,6 +12,7 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @line_items = @order.line_items.page
   end
 
   # GET /orders/new
@@ -19,7 +20,7 @@ class OrdersController < ApplicationController
     if @cart.line_items.empty?
       redirect_to :back, notice: I18n.t(:cart_is_empty)
     end
-    
+
     @order = Order.new
   end
 
@@ -37,7 +38,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to store_url, notice:
+        format.html { redirect_to @order, notice:
         I18n.t(:order_thanks) }
         format.json { render action: 'store#index', status: :created,
         location: @order }
