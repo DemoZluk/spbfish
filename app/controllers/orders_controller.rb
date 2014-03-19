@@ -38,8 +38,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to @order, notice:
-        I18n.t(:order_thanks) }
+        format.html { redirect_to @order, flash: {order_created: I18n.t(:order_thanks)} }
         format.json { render action: 'store#index', status: :created,
         location: @order }
         OrderNotifier.received(@order, total_price).deliver
