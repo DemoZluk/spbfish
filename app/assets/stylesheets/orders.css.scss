@@ -2,6 +2,17 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.orders {
+  div.info {
+    font-size: 14px;
+
+    h3 {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+}
+
 fieldset.order {
   max-width: 520px;
 

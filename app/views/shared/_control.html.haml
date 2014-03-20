@@ -1,15 +1,26 @@
-- action = @group.permalink rescue 'catalog'
-%form{id: 'control_form', class: 'control', name: 'preferences', action: request.path, method: 'GET', data: {remote: 'true'}}
-  %span Позиций на странице
-  #products_per_page
-    -# "Items per page" select pseudo-tag
-    = render partial: 'shared/select', locals: {current: @per_page, array: [10, 25, 50], controller: 'store', action: 'change_user_prefs', param: 'per_page', name: 'per_page'}
-  %span Сортировать по
-  #sort
-    - sort_types = ['title', 'price', 'rating']
-    -# "Order items by" select pseudo-tag
-    = render partial: 'shared/select', locals: {current: @order_by || 'title', array: sort_types, controller: controller_name, action: action_name, param: 'order_by', name: 'order_by'}
-    = check_box_tag 'descending', true, (@desc)
-    = label_tag 'descending', 'по убыванию', id: 'desc_label'
+.container-fluid
+  .row
+    #search.col-lg-5
+      = form_tag '#' do
+        .input-group
+          = text_field_tag '', '', class: 'form-control', placeholder: 'Поиск'
+          %span.input-group-btn
+            = button_tag 'Иcкать', type: 'submit', class: 'btn btn-primary'
+
+    .col-lg-7
+      .control_sort.pull-right
+        - action = @group.try(:permalink) || 'catalog'
+        %form{id: 'control_form', class: 'sort', name: 'preferences', action: request.path, method: 'GET', data: {remote: 'true'}}
+          %span Позиций на странице
+          #products_per_page
+            -# "Items per page" select pseudo-tag
+            = render partial: 'shared/select', locals: {current: @per_page, array: [10, 25, 50], controller: 'store', action: 'change_user_prefs', param: 'per_page', name: 'per_page'}
+          #sort
+            %span Сортировать по
+            - sort_types = ['title', 'price', 'rating']
+            -# "Order items by" select pseudo-tag
+            = render partial: 'shared/select', locals: {current: @order_by || 'title', array: sort_types, controller: controller_name, action: action_name, param: 'order_by', name: 'order_by'}
+            = check_box_tag 'descending', true, (@desc)
+            = label_tag 'descending', 'по убыванию', id: 'desc_label'
 
   = paginate @products if @products

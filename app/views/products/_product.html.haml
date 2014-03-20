@@ -6,7 +6,7 @@
       %h3= link_to product.title, product, target: '_blank'
       %p
         = sanitize(product.long_name).truncate(350, separator: '.', omission: '...')
-      %p= 'Производитель: ' + product.producer
+      %p= "Производитель: #{link_to(product.producer, params.merge('producer' => product.producer))}".html_safe
       .short_description
         =# link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
     .right_panel

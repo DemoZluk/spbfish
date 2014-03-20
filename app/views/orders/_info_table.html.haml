@@ -1,0 +1,11 @@
+%table.info
+  %tr
+    %td Цена
+    %td.right= number_to_currency li.price
+  %tr.quantity
+    %td Количество
+    %td
+      .text-center= li.quantity
+  %tr.sum.bold
+    %td Сумма
+    %td.right= number_to_currency(li.price * li.quantity)

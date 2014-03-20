@@ -8,14 +8,12 @@
 
   - @users.each do |user|
     %tr
-      %td= user.login
+      %td= user.information.name
       %td= user.email
       %td
-        = link_to 'Показать', user_root_path(user)
+        = link_to 'Показать', user_path(id: user)
         %br
-        = link_to 'Изменить', profile_edit_path(user)
-        %br
-        = link_to 'Удалить', users_path(user), :method => :delete, :data => { :confirm => 'Are you sure?' }
+        = link_to 'Удалить', users_path(id: user), :method => :delete, :data => { :confirm => 'Вы действительно хотите удалить пользователя?' }
 
 %br
 

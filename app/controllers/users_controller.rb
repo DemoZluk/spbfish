@@ -15,6 +15,16 @@ class UsersController < ApplicationController
   end
 
   def show
+    if params[:id]
+      if current_user.admin?
+        @user = User.find(params[:id])
+        render :show
+      else
+        redirect_to store_path, error: t('.not_admin')
+      end
+    else
+      render :show
+    end
   end
 
   def create
@@ -57,6 +67,15 @@ class UsersController < ApplicationController
   #   end
   # end
 
+  def add_data
+    if info = current_user.information
+      info.update(data)
+    else
+      current_user.create_information(data)
+    end
+    redirect_to user_root_path, notice: t('devise.registrations.updated')
+  end
+
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
@@ -74,6 +93,10 @@ class UsersController < ApplicationController
   end
 
   private
+
+    def data
+      params.require(:information).permit(:phone_number, :address, :name)
+    end
     # Use callbacks to share common setup or constraints between actions.
 
   #   # Never trust parameters from the scary internet, only allow the white list through.

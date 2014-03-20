@@ -37,11 +37,13 @@
 
     Ссылка на ваш заказ:
 
-    %a{href: order_url(@order)}= order_url(@order)
+    = link_to order_url(@order), order_url(@order, t: @order.token)
 
     %p 
       \--
       %br/ 
       FISHmarkt
+      %br/ 
       Телефоны
+      %br/ 
       И другие реквизиты

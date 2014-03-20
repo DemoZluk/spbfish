@@ -26,3 +26,7 @@
 			%strong Адрес доставки:
 			%br
 				= @order.address
+		%p
+			%strong Ссылка на заказ:
+			%br
+				= link_to order_url(@order), order_url(@order, t: @order.token)

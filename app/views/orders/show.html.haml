@@ -1,24 +1,42 @@
-= flash[:order_created]
-
+- @page_title = "Заказ номер #{@order.id}"
 .container-fluid.carts
-  %h1= "Заказ номер #{@order.id}"
+  %h1= @page_title
   .row
-    .col-xs-12.col-lg-8
-      = paginate @line_items if @line_items
-  .row
-    .col-xs-12.col-lg-8= render "carts/line_items"
-  .row.total
-    .col-xs-6.col-lg-4.items
-      Всего товаров в заказе: 
-      %span= @order.line_items.count
-    .col-xs-6.col-lg-4.right.grand-total
-      Итого: 
-      %span= number_to_currency @order.total_price
-    
-  .row
-    .col-xs-12.col-lg-4
-    .col-xs-12.col-lg-4.right
-
-  .row
-    .col-xs-12.col-lg-8
-      = paginate @line_items if @line_items
+    - if (params[:t] == @order.token) || current_user.try(:all_orders).try(:include?, @order)
+      .col-lg-4.col-lg-push-8
+        .info.container-fluid
+          %h3 Информация о заказчике
+          .row.well
+            .col-sm-4.bold
+              ФИО
+            .col-sm-8
+              = @order.name
+          .row.well
+            .col-sm-4.bold
+              email
+            .col-sm-8
+              %a{:href => "mailto:#{@order.name}<#{@order.email}>"}= @order.email
+          .row.well
+            .col-sm-4.bold
+              Телефон
+            .col-sm-8
+              = @order.phone_number
+          .row.well
+            .col-sm-4.bold
+              Адрес
+            .col-sm-8
+              = @order.address.presence || "Самовывоз"
+          = flash[:order_created]
+      .col-lg-8.col-lg-pull-4
+        = paginate @line_items if @line_items
+        = render "carts/line_items"
+        .total
+          .col-xs-6.items
+            Всего товаров в заказе: 
+            %span= @order.line_items.count
+          .col-xs-6.right.grand-total
+            Итого: 
+            %span= number_to_currency @order.total_price
+        = paginate @line_items if @line_items
+    - else
+      .info.text-danger У вас нет прав на просмотр информации об этом заказе

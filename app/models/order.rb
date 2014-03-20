@@ -16,10 +16,6 @@ class Order < ActiveRecord::Base
   scope :active, -> { where{status >> ['Активен', 'В пути']} }
   scope :closed, -> { where{status >> ['Закрыт']} }
 
-  def to_param
-    token
-  end
-
   def check_date
     if shipping_date.present? && (shipping_date < DateTime.tomorrow || shipping_date > DateTime.current+60)
       errors.add(:shipping_date, I18n.t(:please_enter_correct_date))

@@ -1,18 +1,28 @@
+- user = @user || current_user
 %h3
-  = "Привет, #{current_user.login ? current_user.login : current_user.email}!" # greeting < users_helper.rb
-= link_to 'Редактировать профиль', profile_edit_path
+  = "Привет, #{user.information.name.presence || user.email}!" # greeting < users_helper.rb
+  .btn.btn-default= link_to 'Редактировать профиль', profile_edit_path
 %h2 Заказы
-- if current_user.all_orders.active.any?
-  - current_user.all_orders.active.each do |order|
-    = link_to order.created_at, order
+- if user.all_orders.active.any?
+  %table.table.table-striped.table-hover
+    %thead 
+      %tr 
+        %th Номер
+        %th Дата
+        %th Сумма
+    - user.all_orders.active.each do |order|
+      %tr 
+        %td= order.id
+        %td= link_to order.created_at, order
+        %td.bold.right= number_to_currency order.total_price
 - else
   У Вас нет активных заказов.
 
 %hr/ 
 
 %h2 История заказов
-- if current_user.all_orders.closed.any?
-  %table.history
+- if user.all_orders.closed.any?
+  %table.history.table
     %thead 
       %tr 
         %th Заказ
@@ -20,9 +30,9 @@
         %th Дата
         %th Сумма
     %tbody 
-      - current_user.all_orders.closed.each do |order|
+      - user.all_orders.closed.each do |order|
         %tr{valign: 'top'}
-          %td= link_to order.id, order_path(order.token)
+          %td= link_to order.id, order
           %td
             %table 
               - order.line_items.each do |item|

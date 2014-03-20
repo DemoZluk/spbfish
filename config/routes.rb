@@ -28,16 +28,17 @@ Fishmarkt::Application.routes.draw do
   resources :orders
 
   get 'profile' => 'users#show', as: 'user_root'
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
 
   devise_scope :user do
+    post '/profile/add_data' => 'users#add_data', as: :add_data
     get 'login' => "users/sessions#new"
     post 'login' => "users/sessions#create"
     delete 'logout' => "users/sessions#destroy"
     get 'sign_up' => "users/registrations#new"
     get 'profile/edit' => "devise/registrations#edit"
     get 'users' => "users#index"
-    get '/users/:id' => "users#show"
+    get 'user/:id' => "users#show", as: :user
   end
 
   get 'user_prefs' => 'store#change_user_prefs'

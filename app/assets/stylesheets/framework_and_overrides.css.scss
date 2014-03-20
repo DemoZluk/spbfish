@@ -111,8 +111,6 @@ a {
 }
 
 .authform form {
-  @extend .well;
-  @extend .well-lg;
   padding-bottom: 50px;
 }
 .authform .right {

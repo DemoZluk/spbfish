@@ -5,20 +5,22 @@
       %ul
         - @order.errors.full_messages.each do |msg|
           %li= msg
+
+  - info = current_user.try :information
   .row
     .form-group.col-md-12
       = f.label(:name)
       %span.required *
-      = f.text_field :name, class: 'form-control', placeholder: 'Иванов Иван Иванович', required: true
+      = f.text_field :name, class: 'form-control', placeholder: 'Иванов Иван Иванович', required: true, value: info.try(:name)
   .row
     .form-group.col-md-6
       = f.label(:email)
       %span.required *
-      = f.email_field :email, class: 'form-control', placeholder: "example@domain.com", required: true, value: (current_user.email if user_signed_in?)
+      = f.email_field :email, class: 'form-control', placeholder: "example@domain.com", required: true, value: current_user.try(:email)
     .form-group.col-md-6
       = f.label(:phone_number)
       %span.required *
-      = f.text_field :phone_number, class: 'form-control', placeholder: "8-900-777-77-77", required: true
+      = f.text_field :phone_number, class: 'form-control', placeholder: "8-987-654-32-10", value: info.try(:phone_number), required: true
   .row
     .form-group.col-md-6
       = f.label(:pay_type)
@@ -32,7 +34,7 @@
     .form-group.col-md-6
       = f.label(:address)
       %span.required
-      = f.text_area :address, class: 'form-control', placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', rows: 3
+      = f.text_area :address, class: 'form-control', placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', rows: 3, value: info.try(:address)
     .form-group.col-md-6
       = f.label(:comment)
       %span.required 

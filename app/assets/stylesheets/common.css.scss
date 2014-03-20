@@ -326,10 +326,6 @@ form {
     margin: 0;
   }
 
-  .authform {
-    padding: 0;
-  }
-
   form {
     margin: 0;
   }
@@ -343,6 +339,10 @@ form {
 }
 
 .control {
+  margin-top: 8px;
+}
+
+.control_sort {
   select {
     display: none;
   }
@@ -358,17 +358,8 @@ form {
     float: none;
   }
 
-  #products_per_page {
-    width: 3.8em;
-    .select {
-      width: 75%;
-    }
-  }
-
-  #sort {
-    .select {
-      width: 100px;
-    }
+  .select {
+    padding-right: 10px;
   }
 }
 
