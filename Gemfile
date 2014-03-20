@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.0.0'
+ruby '2.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.0'
 
@@ -98,7 +98,7 @@ gem 'puma'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', "~> 3.7.3"
 
 gem 'passenger'
 

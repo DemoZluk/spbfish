@@ -258,7 +258,7 @@ DEPENDENCIES
   letter_opener
   mini_magick
   mysql2
-  newrelic_rpm
+  newrelic_rpm (~> 3.7.3)
   paperclip
   passenger
   puma
