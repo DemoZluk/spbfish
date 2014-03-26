@@ -3,9 +3,9 @@ class ProductsController < ApplicationController
   include CurrentSettings
 
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
-  before_action :change_user_prefs, only: :index
+  before_action :change_user_prefs, only: [:index, :search]
 
-  skip_before_action :authenticate_user!, only: [:show, :vote]
+  skip_before_action :authenticate_user!, only: [:show, :search]
 
   # GET /products
   # GET /products.json
@@ -68,27 +68,39 @@ class ProductsController < ApplicationController
   end
 
   def vote
-    @points = params[:points]
+    points = params[:points]
+    pid = @product.id
+    uid = current_user.id
 
-    session[:voted] ||= {}
+    Rating.find_or_create_by(user_id: uid, product_id: pid).update(value: points)
+    # session[:voted] ||= {}
 
-    if !session[:voted][@product.id] && @product.rate(@points)
+    # if !session[:voted][@product.id] && @product.rate(@points)
 
-      vote = {@product.id => @points}
-      session[:voted].deep_merge!(vote)
+    #   vote = {@product.id => @points}
+    #   session[:voted].deep_merge!(vote)
 
-      respond_to do |format|
-        format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_feedback')} ) }
-        format.json { render json: @product.rating }
-        format.js
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_error')} ) }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-        format.js
-      end
+    #   respond_to do |format|
+    #     format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_feedback')} ) }
+    #     format.json { render json: @product.rating }
+    #     format.js
+    #   end
+    # else
+    #   respond_to do |format|
+    #     format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_error')} ) }
+    #     format.json { render json: @product.errors, status: :unprocessable_entity }
+    #     format.js
+    #   end
+    # end
+  end
+
+  def search
+    unless params[:q].try('!=', '')
+      redirect_to store_path, notice: t('.empty_query') and return
     end
+    @search_products = Product.search(params[:q])
+    @products = current_list_of(@search_products).order(@order_by || 'title').page(params[:page]).per(@per_page)
+    render template: 'store/index'
   end
 
   def who_bought

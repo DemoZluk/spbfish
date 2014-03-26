@@ -5,14 +5,13 @@ $side_width: 200px;
 $side_padding: 15px;
 $side_margin: 5px;
 
-.store, .groups {
-  h1 {
-    margin: auto;
-    padding-bottom: 0.5em;
-    font: 25px sans-serif;
-    color: #226;
-    border-bottom: 3px dotted #77d;
-  }
+
+h1.underlined {
+  margin: auto;
+  padding-bottom: 0.5em;
+  font: 25px sans-serif;
+  color: #226;
+  border-bottom: 3px dotted #77d;
 }
 
 /* An entry in the store catalog */

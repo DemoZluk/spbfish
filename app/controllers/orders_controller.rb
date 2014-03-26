@@ -1,8 +1,8 @@
 #encoding: utf-8
 class OrdersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :new, :create]
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_action :check_if_empty, only: [:create, :edit]
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :check_if_empty]
+  before_action :check_if_empty, only: [:edit]
   #before_action :check_date, only: [:create, :update]
 
   # GET /orders
@@ -82,14 +82,15 @@ class OrdersController < ApplicationController
     end
   end
 
-  def check_if_empty
-    redirect_to(store_path, notice: t('.order_is_empty')) if @order.line_items.empty?
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
+    end
+
+    def check_if_empty
+      order = Order.find(params[:id])
+      redirect_to(store_path, notice: t('.order_is_empty')) if order.line_items.empty?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

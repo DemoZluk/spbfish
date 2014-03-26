@@ -1,5 +1,5 @@
 class Product < ActiveRecord::Base
-  belongs_to :group, touch: true
+  belongs_to :group
 
   has_many :line_items
   has_many :orders, through: :line_items
@@ -7,6 +7,7 @@ class Product < ActiveRecord::Base
   has_many :product_property_values
   has_many :properties, through: :product_property_values
   has_many :values, through: :product_property_values
+  has_many :ratings
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
@@ -48,6 +49,18 @@ class Product < ActiveRecord::Base
     else
       self.description
     end
+  end
+
+  def avg_rating
+    if ratings.any?
+      ratings.to_a.sum{|r| r.value}/ratings.count
+    else
+      0
+    end
+  end
+
+  def self.search(string)
+    self.where{(title.like_any ["%#{string}%", "%#{string.mb_chars.parameterize}%"]) | (long_name.like_any ["%#{string}%", "%#{string.mb_chars.parameterize}%"]) | (description.like_any ["%#{string}%", "%#{string.mb_chars.parameterize}%"])}
   end
 
   private

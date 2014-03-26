@@ -1,14 +1,16 @@
 module ApplicationHelper
 
-  def values_of property
+  def values_of prop
 
     # !!! Optimize later
 
     if @group
-      prop_id = property.id
-      product_ids = @group.products.pluck(:id).uniq
-      value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.uniq.pluck(:value_id)
-      Value.where{id >> value_ids}.order_by_products_count#.joins{products}.uniq.group{id}#.order{count(products.id).desc}
+      prods = @group.products
+      Value.joins{products}.merge(prods).where{property_id == prop.id}.group{title}
+      # prop_id = property.id
+      # product_ids = @group.products.pluck(:id).uniq
+      # value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.uniq.pluck(:value_id)
+      # Value.where{id >> value_ids}.order_by_products_count#.joins{products}.uniq.group{id}#.order{count(products.id).desc}
     end
   end
 
@@ -45,7 +47,7 @@ module ApplicationHelper
   end
 
   def selection_label(current)
-    if current.to_i == 0
+    if current && (current.to_i == 0)
       label = I18n.t('selection_labels.' + current.match(/[.\w]+/).to_s.sub('products.', ''))
     else
       label = current

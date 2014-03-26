@@ -22,7 +22,7 @@ def open_files
 end
 
 def create_groups
-  p "Creating groups"
+  puts "Creating groups"
 
   groups = @doc.xpath('//Группы/descendant::Группа')
   groups_progress = ProgressBar.create(total: groups.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -45,18 +45,18 @@ def create_groups
     groups_progress.increment
   end
 
-  p "End"
+  puts "End"
 end
 
 def create_properties
-  p "Creating Properties"
+  puts "Creating Properties"
 
   props = @doc.css('Свойство')
   props_progress = ProgressBar.create(total: props.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   props.each do |p|
     id = p.at_css('Ид').content
     title = p.at_css('Наименование').content
-    Property.create(
+    prop = Property.create(
       property_id: id,
       title: title
     )
@@ -65,17 +65,17 @@ def create_properties
       Value.create(
         value_id: v.at_css('ИдЗначения').content,
         title: v.at_css('Значение').content,
-        property_id: id
+        property_id: prop.id
       )
     end
     props_progress.increment
   end
 
-  p "End"  
+  puts "End"  
 end
 
 def create_products_and_values
-  p "Creating Products and Values"
+  puts "Creating Products and Values"
 
   prods = @doc.css('Товар')
   prods_progress = ProgressBar.create(total: prods.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -88,7 +88,7 @@ def create_products_and_values
     else
       item_id = product.at_css('>Ид').content
 
-      p = Product.create!(
+      prod = Product.create!(
         item: product.at_css('>Артикул').content,
         title: product_title,
         long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").content,
@@ -97,26 +97,24 @@ def create_products_and_values
         item_id: item_id,
         price: 0,
         group_id: product.at_css('>Группы>Ид').content,
-        permalink: permalink,
-        rating: 0
+        permalink: permalink
       )
 
       offers = Nokogiri::XML(@offers)
-      amount = offers.at_xpath("//Предложение[Ид='#{p.item_id}']/Количество").try(:content).to_f
+      amount = offers.at_xpath("//Предложение[Ид='#{prod.item_id}']/Количество").try(:content).to_f
       Storage.create!(
-        product_id: p.id,
+        product_id: prod.id,
         amount: amount,
         unit: product.at_css('>БазоваяЕдиница').content
       )
 
       product.css('ЗначенияСвойства').each do |p|
-        ProductPropertyValue.create(
+        ProductPropertyValue.create!(
           product_id: Product.find_by(item_id: item_id).id,
-          property_id: Property.find_by(property_id: p.at_css('Ид').content).id,
-          value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id)
+          value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id),
+          property_id: Property.find_by(property_id: p.at_css('Ид').content).id
         )
-
-      #prods_progress.log 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
+        #prods_progress.log 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
       end
 
       product.css('Картинка').each do |img|
@@ -130,7 +128,7 @@ def create_products_and_values
     prods_progress.increment
   end
 
-  p "End"
+  puts "End"
 end
 
 def setup_prices
@@ -162,12 +160,12 @@ def setup_prices
     end
   end
 
-  p "End"
+  puts "End"
 end
 
 
 def add_values_to_values
-  p "Populating value attribute"
+  puts "Populating value attribute"
 
   values_progress = ProgressBar.create(total: Value.all.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   Value.all.each do |val|
@@ -176,7 +174,7 @@ def add_values_to_values
     values_progress.increment
   end
 
-  p "End"
+  puts "End"
 end
 
 def create_first_admin_user

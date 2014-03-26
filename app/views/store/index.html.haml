@@ -1,22 +1,29 @@
 .container-fluid
   .row
-    .col-lg-2.col-md-3.col-sm-3#side
+    .col-lg-2.col-md-3.col-sm-3.col-xs-7#side
       = render 'shared/menu_side'
       - if @products
         #filters
           = render 'shared/filter'
-    .col-lg-10.col-md-9.col-sm-9#main
-      %h1= 'Каталог'
+    .col-lg-10.col-md-9.col-sm-9.col-xs-12#main
+      %h1.underlined
+        - if action_name == 'search'
+          = "Поиск: #{params[:q] || ''}"
+        - else
+          = t('.title')
 
       .control= render 'shared/control'
       #product_index
-        = render(@products) || 'Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.'
+        - if @products.any?
+          = render @products 
+        - else
+          %p.warning Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
 
       #loading
         #notification
           = image_tag 'loading.gif', alt: 'loading', id: 'loading_gif'
           %p Идёт загрузка, пожалуйста подождите
 
--#.bottom_control
--#  #previous= link_to_previous_page @products, '<< Назад'
--#  #next= link_to_next_page @products, 'Далее >>'
+      -# .bottom_control
+      -#   = link_to_previous_page @products, '<< Назад', class: 'pull-left btn btn-default'
+      -#   = link_to_next_page @products, 'Далее >>', class: 'pull-right btn btn-default'

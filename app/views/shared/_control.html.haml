@@ -1,11 +1,11 @@
 .container-fluid
   .row
     #search.col-lg-5
-      = form_tag '#' do
+      = form_tag search_path, method: 'GET' do
         .input-group
-          = text_field_tag '', '', class: 'form-control', placeholder: 'Поиск'
+          = text_field_tag 'q', params[:q], class: 'form-control', placeholder: 'Поиск', autocomplete: 'off'
           %span.input-group-btn
-            = button_tag 'Иcкать', type: 'submit', class: 'btn btn-primary'
+            = button_tag 'Иcкать', type: 'submit', class: 'btn btn-primary', name: nil
 
     .col-lg-7
       .control_sort.pull-right
@@ -20,7 +20,7 @@
             - sort_types = ['title', 'price', 'rating']
             -# "Order items by" select pseudo-tag
             = render partial: 'shared/select', locals: {current: @order_by || 'title', array: sort_types, controller: controller_name, action: action_name, param: 'order_by', name: 'order_by'}
-            = check_box_tag 'descending', true, (@desc)
+            = check_box_tag 'descending', true, (@desc), autocomplete: 'off'
             = label_tag 'descending', 'по убыванию', id: 'desc_label'
 
   = paginate @products if @products

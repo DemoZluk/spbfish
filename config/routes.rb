@@ -13,6 +13,7 @@ Fishmarkt::Application.routes.draw do
     get :who_bought, on: :member
     get :vote, on: :member
   end
+  get '/search' => 'products#search'
 
   resources :line_items do
     member do

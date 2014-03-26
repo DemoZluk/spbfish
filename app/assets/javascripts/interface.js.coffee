@@ -17,7 +17,7 @@ clearForm = (form) ->
     else if (tag == 'select')
       this.selectedIndex = -1
 
-$(document).on 'ready page:load', ->
+$(document).on 'page:change page:load ready', ->
 
     
   $('.slider').each ->
@@ -118,10 +118,13 @@ $(document).on 'click', '.show_hide_tree', ->
 # Sorting params and filtering ajax processing
 $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, settings) ->
   arr = $.map $('#filters form, .control form').serializeArray(), (e) ->
-    if e.value == '' then null else e
+    if (e.value == '' || $.inArray(e.name, ['authenticity_token', 'utf8']) != -1) then null else e
   filters = $.param arr
   settings.url = this.action + '?' + filters
   history.pushState('document', document.title, settings.url)
+
+$(document).on 'click', '#close_cart', ->
+  $('#cart_panel').hide('blind')
 
   # $('#price-slider').slider({
   #   range: true,

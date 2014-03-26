@@ -4,7 +4,7 @@ class Order < ActiveRecord::Base
   has_many :line_items, dependent: :destroy
   belongs_to :user
 
-  PAYMENT_TYPES = ['Самовывоз', 'Доставка']
+  PAYMENT_TYPES = ['Наличный', 'Безналичный']
   ORDER_STATUS = ['Активен','В пути','Отменён','Закрыт']
   validates :name, :email, :shipping_date, :phone_number, presence: true
   validates :address, presence: true, unless: 'pay_type == "Самовывоз"'

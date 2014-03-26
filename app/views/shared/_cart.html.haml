@@ -18,7 +18,7 @@
         %td
         %td.clear_cart= button_to('×', cart_path, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)
     = paginate(lis, param_name: 'li_page', remote: true, params: {controller: 'line_items', action: 'index'})
-  = link_to '×', '', onClick: "$('#cart_panel').hide('blind'); return false", id: 'close_cart', class: 'close' unless controller_name == 'carts'
+  = content_tag :div, '×', id: 'close_cart', class: 'close' unless controller_name == 'carts'
 -# = link_to('Изменить', edit_cart_path(cart))
 -# \|
 -# = link_to('Назад', carts_path)

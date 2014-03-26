@@ -68,6 +68,7 @@ class ArticlesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_article
       @article = Article.find_by(permalink: params[:id])
+      redirect_to store_path, notice: t('.article_doesnt_exist') unless @article
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

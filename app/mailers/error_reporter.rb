@@ -1,5 +1,5 @@
 class ErrorReporter < ActionMailer::Base
-  default from: "mail@spbfish.ru"
+  default from: "mail@fishmarkt.ru"
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -7,6 +7,6 @@ class ErrorReporter < ActionMailer::Base
   #   en.error_reporter.report_error.subject
   #
   def report_error
-    mail to: 'mail@spbfish.ru', subject: '[Test] Error report'
+    mail to: 'mail@fishmarkt.ru', subject: '[Test] Error report'
   end
 end

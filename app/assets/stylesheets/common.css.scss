@@ -245,6 +245,12 @@ form {
   }
 }
 
+.warning {
+  color: #F64;
+  font-size: 14px;
+  margin: 15px;
+}
+
 #loading {
   position: absolute;
   display: none;
@@ -278,7 +284,7 @@ form {
 
 #content {
   margin: 5px;
-  margin-bottom: $bottom_panel_height+5;
+  margin-bottom: $bottom_panel_height+35;
   position: relative;
   //background: #161;
   min-height: 100%;
@@ -500,15 +506,6 @@ form {
 }
 
 .bottom_control {
+  margin: 10px 15px 35px;
   position: relative;
-
-  #previous {
-    float: left;
-    margin: 5px;
-  }
-
-  #next {
-    float: right;
-    margin: 5px;
-  }
 }

@@ -8,7 +8,7 @@
 
   - @users.each do |user|
     %tr
-      %td= user.information.name
+      %td= user.information.try :name
       %td= user.email
       %td
         = link_to 'Показать', user_path(id: user)

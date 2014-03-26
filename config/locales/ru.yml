@@ -40,8 +40,14 @@ ru:
 
 
   products:
+    search:
+      empty_query: Параметры поиска не заданы
     vote_feedback: Спасибо за участие.
     vote_error: "Не удалось проголовать, возможно, Вы уже голосовали."
+
+  articles:
+    show:
+      article_doesnt_exist: Страницы не существует
 
   activerecord:
     models:
