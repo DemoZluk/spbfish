@@ -1,4 +1,5 @@
 .entry{id: product.permalink}
+  - query ||= nil
   =# link_to image_tag(image_thumb_helper(product), alt: product.permalink), product
   - cache product do
     = render 'shared/image', product: product

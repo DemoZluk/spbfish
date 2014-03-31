@@ -1,4 +1,8 @@
 - user = @user || current_user
+- if flash[:warning]
+  .alert.alert-warning.alert-dismissable
+    %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
+    = flash[:warning]
 %h3
   = "Привет, #{user.information.try(:name).presence || user.email}!" # greeting < users_helper.rb
   .btn.btn-default= link_to 'Редактировать профиль', profile_edit_path
@@ -7,14 +11,23 @@
   %table.table.table-striped.table-hover
     %thead 
       %tr 
-        %th Номер
-        %th Дата
-        %th Сумма
+        %th.center Номер
+        %th.center Дата
+        %th.center Товары
+        %th.center Сумма
+        %th.center Отменить
     - user.all_orders.active.each do |order|
       %tr 
-        %td= order.id
-        %td= link_to order.created_at, order
+        %td= link_to order.id, order
+        %td= link_to order.created_at.to_formatted_s(format = :db), order
+        %td
+          %table 
+            - order.line_items.each do |item|
+              %tr 
+                %td.right= "#{item.quantity} × "
+                %td= link_to item.product.title, item.product
         %td.bold.right= number_to_currency order.total_price
+        %td.right= link_to "×", cancel_order_path(order), data: { :confirm => 'Вы уверены?' }, class: 'bold btn btn-link'
 - else
   У Вас нет активных заказов.
 
@@ -22,24 +35,24 @@
 
 %h2 История заказов
 - if user.all_orders.closed.any?
-  %table.history.table
+  %table.history.table.table-striped.table-hover
     %thead 
       %tr 
-        %th Заказ
-        %th Товары
-        %th Дата
-        %th Сумма
+        %th.center Номер
+        %th.center Дата
+        %th.center Товары
+        %th.center Сумма
     %tbody 
       - user.all_orders.closed.each do |order|
         %tr{valign: 'top'}
           %td= link_to order.id, order
+          %td= link_to order.created_at.to_formatted_s(format = :db), order
           %td
             %table 
               - order.line_items.each do |item|
                 %tr 
-                  %td.right= "#{item.quantity} x"
+                  %td.right= "#{item.quantity} × "
                   %td= link_to item.product.title, item.product
-          %td= l(order.created_at, format: :long)
-          %td.right= number_to_currency order.total_price
+          %td.bold.right= number_to_currency order.total_price
 - else
   История Ваших заказов пуста.

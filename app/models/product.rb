@@ -28,17 +28,17 @@ class Product < ActiveRecord::Base
     Product.order('updated_at').last
   end
 
-  def rate(points)
-    if [1, 2, 3, 4, 5].include?(points.to_i)
-      rt = self.rating || 0
-      rc = self.rating_counter || 0
+  # def rate(points)
+  #   if [1, 2, 3, 4, 5].include?(points.to_i)
+  #     rt = self.rating || 0
+  #     rc = self.rating_counter || 0
 
-      self.update_column :rating, (rt * rc + points.to_i) / (rc + 1)
-      self.update_column :rating_counter, rc + 1
-    else
-      return false
-    end
-  end
+  #     self.update_column :rating, (rt * rc + points.to_i) / (rc + 1)
+  #     self.update_column :rating_counter, rc + 1
+  #   else
+  #     return false
+  #   end
+  # end
 
   def image_url(item_id)
     images.where(item_id: item_id)

@@ -14,7 +14,7 @@ class Order < ActiveRecord::Base
   validate :check_date
 
   scope :active, -> { where{status >> ['Активен', 'В пути']} }
-  scope :closed, -> { where{status >> ['Закрыт']} }
+  scope :closed, -> { where{status >> ['Отменён', 'Закрыт']} }
 
   def check_date
     if shipping_date.present? && (shipping_date < DateTime.tomorrow || shipping_date > DateTime.current+60)

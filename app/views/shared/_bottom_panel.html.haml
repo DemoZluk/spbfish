@@ -11,5 +11,3 @@
           = render('shared/cart', cart: @cart)
       
       = button_to('Заказать', new_order_path, style: ((controller_name == 'orders') ? ("display: none") : false), class:  'order primary_button', method: :get, autocomplete: 'off')
-  
-  #time= DateTime.now.to_formatted_s(format = :db)

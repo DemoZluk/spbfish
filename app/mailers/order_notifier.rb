@@ -16,7 +16,12 @@ class OrderNotifier < ActionMailer::Base
   def order(order, total_price)
     @order = order
     @total_price = total_price
-    mail to: 'mail@fishmarkt.ru', subject: '[Test] ' + I18n.t(:user_made_order,user_name: @order.name)
+    mail to: 'mail@fishmarkt.ru', subject: "[#{I18n.t('active_record.models.order')}] " + t('.user_made_order', user_name: @order.name)
+  end
+  
+  def order_canceled(order)
+    @order = order
+    mail to: "mail@fishmarkt.ru", subject: "[#{t('.active_record.models.order')}] " + t('.user_canceled_order', user_name: @order.name)
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml

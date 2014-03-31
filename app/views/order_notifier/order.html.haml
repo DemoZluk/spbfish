@@ -29,6 +29,10 @@
 			%br
 				= @order.address
 		%p
+			%strong Телефон:
+			%br
+				= @order.phone_number
+		%p
 			%strong Ссылка на заказ:
 			%br
 				= link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)

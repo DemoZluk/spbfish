@@ -26,7 +26,9 @@ Fishmarkt::Application.routes.draw do
   delete 'cart' => "carts#destroy"
   resources :carts
 
-  resources :orders
+  resources :orders do
+    get 'cancel', on: :member
+  end
 
   get 'profile' => 'users#show', as: 'user_root'
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }

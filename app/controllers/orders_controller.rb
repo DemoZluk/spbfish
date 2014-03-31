@@ -1,7 +1,7 @@
 #encoding: utf-8
 class OrdersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :new, :create]
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :check_if_empty]
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :check_if_empty, :cancel]
   before_action :check_if_empty, only: [:edit]
   #before_action :check_date, only: [:create, :update]
 
@@ -75,9 +75,20 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
+    number = @order.id
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url }
+      format.html { redirect_to :back, flash: { warning: "Заказ № #{number} удалён"} }
+      format.json { head :no_content }
+    end
+  end
+
+  def cancel
+    number = @order.id
+    @order.update_column(:status, 'Отменён')
+    OrderNotifier.order_canceled(@order).deliver
+    respond_to do |format|
+      format.html { redirect_to :back, flash: { warning: "Заказ № #{number} отменён"} }
       format.json { head :no_content }
     end
   end
@@ -86,6 +97,8 @@ class OrdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      redirect_to store_path, notice: t('.no_such_order')
     end
 
     def check_if_empty

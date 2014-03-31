@@ -1,0 +1,20 @@
+%html
+	%head
+		%meta{:content => "text/html; charset=utf-8"}/ 
+		%link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/
+
+	%body.email
+		%p= "Пользователь #{@order.name} отменил заказ № #{@order.id}"
+
+		%p
+			%strong Адрес доставки:
+			%br
+				= @order.address
+		%p
+			%strong Телефон:
+			%br
+				= @order.phone_number
+		%p
+			%strong Ссылка на заказ:
+			%br
+				= link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)
