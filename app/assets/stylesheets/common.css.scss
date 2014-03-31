@@ -290,6 +290,51 @@ form {
   min-height: 100%;
 }
 
+.primary_button {
+  background: #E00;
+  border: none;
+  // {
+  //   top: outset 1px #999;
+  //   right: outset 1px #C00000;
+  //   bottom: outset 1px #C00;
+  //   left: outset 1px #666;
+  //   radius: 5px;
+  // };
+  border-radius: 3px;
+  color: #EEE;
+  font: 14px Arial;
+  font-weight: bold;
+  padding: 4px 6px;
+  // box-shadow: 1px 1px 3px #700;
+  outline: none;
+  margin: 3px 5px 3px 0px;
+  cursor: pointer;
+  height: 28px;
+  min-width: 100px;
+
+  &:active {
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.225) inset;
+    border-radius: 3px;
+    // {
+    //   top: inset 1px #C00;
+    //   right: inset 1px #666;
+    //   bottom: inset 1px #999;
+    //   left: inset 1px #C00000;
+    //   radius: 5px;
+    // };
+  }
+
+  &:hover {
+    background: #D00;
+  }
+
+  &:disabled {
+    background: #999;
+    box-shadow: inset 0px 0px 20px #777;
+    border-radius: 3px;
+  }
+}
+
 #time {
   position: absolute;
   color: #bfb;
@@ -383,6 +428,19 @@ form {
   }
 }
 
+#search_help {
+  cursor: help;
+  position: absolute;
+  top: 10px;
+  right: 85px;
+  z-index: 9;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .price {
   width: 100%;
   display: inline-block;
@@ -419,27 +477,23 @@ form {
 
   &:hover {
     border: 1px solid rgba(#999, 0.8);
-    -webkit-box-shadow: 0 0 3px #999;
-    -moz-box-shadow: 0 0 3px #999;
-    box-shadow: 0 0 3px #999;
+    cursor: pointer;
   }
 
   ul {
     position: absolute;
     display: none;
     list-style: none;
-    margin: 0;
-    padding: 1px;
-    left: 0px;
-    top: 16px;
+    margin: 0px;
+    padding: 0px;
+    padding-top: 2px;
+    padding-right: 10px;
+    left: -1px;
+    top: 17px;
     z-index: 8;
-    width: 100%;
     border: 1px solid rgba(#999, 0.8);
-    -webkit-box-shadow: 0 1px 1px #999;
-    -moz-box-shadow: 0 1px 1px #999;
-    box-shadow: 0 1px 1px #999;
     border-top: 0;
-    border-radius: 0 0 3px 3px;
+    border-radius: 0 3px 3px 3px;
     @include grad(rgba(216,216,216,1), 0%, rgba(221,221,221,1), 51%, rgba(201,201,201,1), 52%, rgba(244,244,244,1), 100%);
 
     li {
@@ -460,49 +514,9 @@ form {
   }
 }
 
-.primary_button {
-  background: #E00;
-  border: none;
-  // {
-  //   top: outset 1px #999;
-  //   right: outset 1px #C00000;
-  //   bottom: outset 1px #C00;
-  //   left: outset 1px #666;
-  //   radius: 5px;
-  // };
-  border-radius: 3px;
-  color: #EEE;
-  font: 14px Arial;
-  font-weight: bold;
-  padding: 4px 6px;
-  // box-shadow: 1px 1px 3px #700;
-  outline: none;
-  margin: 5px 5px 3px 5px;
-  cursor: pointer;
-  height: 27px;
-  min-width: 100px;
-
-  &:active {
-    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.225) inset;
-    border-radius: 3px;
-    // {
-    //   top: inset 1px #C00;
-    //   right: inset 1px #666;
-    //   bottom: inset 1px #999;
-    //   left: inset 1px #C00000;
-    //   radius: 5px;
-    // };
-  }
-
-  &:hover {
-    background: #D00;
-  }
-
-  &:disabled {
-    background: #999;
-    box-shadow: inset 0px 0px 20px #777;
-    border-radius: 3px;
-  }
+.add_to_cart_wrapper form {
+  width: 140px;
+  margin-bottom: 10px;
 }
 
 .bottom_control {

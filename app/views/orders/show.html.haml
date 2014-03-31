@@ -1,5 +1,9 @@
-- @page_title = "Заказ номер #{@order.id}"
+- @page_title = "Заказ № #{@order.id}"
 .container-fluid.carts
+  - if flash[:order_created]
+    .alert.alert-success.alert-dismissable
+      %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
+      = flash[:order_created]
   %h1= @page_title
   .row
     - if (params[:t] == @order.token) || current_user.try(:all_orders).try(:include?, @order)
@@ -26,7 +30,6 @@
               Адрес
             .col-sm-8
               = @order.address.presence || "Самовывоз"
-          = flash[:order_created]
       .col-lg-8.col-lg-pull-4
         = paginate @line_items if @line_items
         = render "carts/line_items"

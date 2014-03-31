@@ -13,11 +13,13 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery.turbolinks
-//= require turbolinks
 //= require jquery_ujs
 //= require bootstrap
 //= require tinymce-jquery
+//= require turbolinks
 //= require_tree .
+
+Turbolinks.enableTransitionCache();
 
 $(document).on('ready page:change page:load', function() {
   tinymce.init({

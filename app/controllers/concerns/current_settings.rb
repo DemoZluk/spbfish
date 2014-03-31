@@ -29,22 +29,10 @@ module CurrentSettings
 
     set_min_max_price_for products
 
-    products = products.where(price: @min_price..@max_price)
+    products = products.where(price: @min_price..@max_price).includes{values}
 
-    if producers = params[:producer]
-      products = products.where{producer >> producers}
-    end
-
-
-    # if (rng = params[:r].try :values) && rng.flatten.reject{|e| e.empty?}.any?
-    #   rng.each do |r|
-    #     rmin = r[0].to_i
-    #     rmax = (r[1].presence || 9999999).to_i
-    #     products = products.joins{values}.where{(product_property_values.property_id == r[0]) & ((values.title >= rmin) & (values.title <= rmax) | (product_property_values.value_id == nil))}
-    #   end
-    # end
-
-    products = products.joins{values}.uniq
+    producers = params[:producer]
+    products = products.where{producer >> producers} if producers
 
     query = []
 

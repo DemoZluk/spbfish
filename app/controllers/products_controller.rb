@@ -95,8 +95,8 @@ class ProductsController < ApplicationController
   end
 
   def search
-    unless params[:q].try('!=', '')
-      redirect_to store_path, notice: t('.empty_query') and return
+    if params[:q].length < 3
+      redirect_to :back, notice: t('.query_too_short') and return
     end
     @search_products = Product.search(params[:q])
     @products = current_list_of(@search_products).order(@order_by || 'title').page(params[:page]).per(@per_page)

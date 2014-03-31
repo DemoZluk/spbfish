@@ -15,17 +15,19 @@
       %thead 
         %tr
           %th Название
+          %th Цена
           %th Кол-во
           %th Сумма
       %tbody 
         - @order.line_items.each do |line_item|
           %tr
             %td= line_item.product.long_name
+            %td.right= line_item.price
             %td.quantity.right= line_item.quantity
             %td.price.right= number_to_currency(line_item.total_price)
       %tfoot 
         %tr.bold
-          %td{ :colspan => 2 } Итого
+          %td{ :colspan => 3 } Итого
           %td.right= number_to_currency(@total_price)
 
     %p Как только товар будет готов к отгрузке вы получите ещё одно письмо.
@@ -37,7 +39,7 @@
 
     Ссылка на ваш заказ:
 
-    = link_to order_url(@order), order_url(@order, t: @order.token)
+    = link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)
 
     %p 
       \--

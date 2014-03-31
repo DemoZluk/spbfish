@@ -1,6 +1,6 @@
 - cache "groups/#{Group.maximum(:updated_at).utc.try(:to_s, :number)}" do
   .side-panel
-    .show_hide_tree{'data-no-transition-cache' => true} ▼ Каталог ▼
+    .show_hide_tree ▼ Каталог ▼
     %nav.menu_side
       %ul
         - Group.where(parent_id: '').each do |group|

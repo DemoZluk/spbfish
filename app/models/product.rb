@@ -8,6 +8,7 @@ class Product < ActiveRecord::Base
   has_many :properties, through: :product_property_values
   has_many :values, through: :product_property_values
   has_many :ratings
+  has_many :storages
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
@@ -59,8 +60,9 @@ class Product < ActiveRecord::Base
     end
   end
 
-  def self.search(string)
-    self.where{(title.like_any ["%#{string}%", "%#{string.mb_chars.parameterize}%"]) | (long_name.like_any ["%#{string}%", "%#{string.mb_chars.parameterize}%"]) | (description.like_any ["%#{string}%", "%#{string.mb_chars.parameterize}%"])}
+  def self.search(query)
+    string = "#{query} #{ActiveSupport::Inflector.transliterate(query)}".split.map{|s| "%#{s.gsub('+', ' ').gsub('*', '%')}%"}
+    self.where{(title.like_any string) | (long_name.like_any string) | (description.like_any string) | (item.like_any string)}
   end
 
   private

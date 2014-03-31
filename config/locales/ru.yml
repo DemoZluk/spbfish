@@ -42,6 +42,7 @@ ru:
   products:
     search:
       empty_query: Параметры поиска не заданы
+      query_too_short: Запрос на поиск слишком короткий.
     vote_feedback: Спасибо за участие.
     vote_error: "Не удалось проголовать, возможно, Вы уже голосовали."
 
@@ -101,7 +102,7 @@ ru:
   mail_subject: '[FISHmarkt] '
   order_received: Подтверждение заказа
   order_shipped: Отправка заказа
-  order_thanks: Спасибо за ваш заказ.
+  order_thanks: "Ваш заказ принят. Для подтверждения заказа с Вами свяжется наш менеджер."
 
   please_enter_correct_date: ' задана неверно.'
   user_made_order: "Пользователь %{user_name} сделал заказ"

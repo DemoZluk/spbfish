@@ -18,7 +18,6 @@ clearForm = (form) ->
       this.selectedIndex = -1
 
 $(document).on 'page:change page:load ready', ->
-
     
   $('.slider').each ->
     obj = $(this)
@@ -36,6 +35,9 @@ $(document).on 'page:change page:load ready', ->
       stop: (event, ui) ->
         $(this).closest('form').submit()
     })
+
+
+  $('#search_help').tooltip({container: 'body'})
 
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}
@@ -91,11 +93,8 @@ $(document).on 'ajaxSuccess', (data, status, xhr) ->
 
 
 # Control selections
-$(document).on {mouseenter: ->
-  $(this).find('ul').stop().show('blind', 'fast')
-mouseleave: ->
-  $(this).find('ul').stop().hide('blind', 'fast')}
-, '.select'
+$(document).on 'click', '.select', ->
+  $(this).find('ul').stop().slideToggle('fast')
 
 
 # Block interface with notification on ajax event
@@ -106,13 +105,10 @@ $(document).on 'click', '.select ul li', ->
 $(document).on 'change', '#filter input, #control_form input[type=checkbox]', ->
   $(this).closest('form').submit()
 
-$(document).on 'click', '.show_hide_tree', ->
+$(document).on 'click', '.show_hide_tree, nav.menu_side a', ->
   $(this).toggleClass 'active'
+  obj = $(this).closest('.show_hide_tree')
   $('nav.menu_side>ul').slideToggle('fast')
-  if $(this).hasClass 'active'
-    $(this).text '▲ Каталог ▲'
-  else
-    $(this).text '▼ Каталог ▼'
 
 
 # Sorting params and filtering ajax processing

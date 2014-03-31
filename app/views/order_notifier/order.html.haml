@@ -11,12 +11,14 @@
 		%table.order
 			%tr
 				%th Кол-во
+				%th Цена
 				%th Название
 				%th Сумма
 			- @order.line_items.each do |line_item|
 				%tr
 					%td.right= line_item.quantity
 					%td= line_item.product.long_name
+					%td.right= line_item.price
 					%td.right= number_to_currency(line_item.total_price)
 			%tr
 				%td{ :colspan => 2 } Итого
@@ -29,4 +31,4 @@
 		%p
 			%strong Ссылка на заказ:
 			%br
-				= link_to order_url(@order), order_url(@order, t: @order.token)
+				= link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)

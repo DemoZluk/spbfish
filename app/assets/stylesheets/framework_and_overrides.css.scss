@@ -68,7 +68,7 @@ a {
   }
 }
 
-input:focus {
+input:focus, button:focus {
   outline: none !important;
 }
 
@@ -86,8 +86,8 @@ a {
 }
 
 .pagination {
-  display: block;
-  margin: 5px 0px;
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 
 .btn-yellow {
@@ -137,4 +137,9 @@ a {
   @extend .btn;
   @extend .btn-primary;
   @extend .btn-xs;
+}
+
+.input-group .form-control:not(:first-child):not(:last-child).add_amount.form-control {
+  text-align: center;
+  border-radius: 3px 0px 0px 3px;
 }

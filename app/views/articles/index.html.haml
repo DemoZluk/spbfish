@@ -1,4 +1,6 @@
-%h1 Список статей
+%h1
+  Список статей
+  = link_to 'Добавить статью', new_article_path, class: 'btn btn-default'
 
 - @articles.each do |article|
   .row
@@ -12,4 +14,4 @@
 
 %br
 
-= link_to 'Добавить статью', new_article_path
+

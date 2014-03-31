@@ -7,23 +7,31 @@
           = render 'shared/filter'
     .col-lg-10.col-md-9.col-sm-9.col-xs-12#main
       %h1.underlined
+        - query = ("#{params[:q]} #{params[:q].try(:parameterize, '_')}".split.map{|s| s.gsub('*', '').gsub('+', ' ')}).select(&:present?)
         - if action_name == 'search'
           = "Поиск: #{params[:q] || ''}"
         - else
           = t('.title')
 
-      .control= render 'shared/control'
+      .control
+        = render 'shared/control'
+
+        .text-center= paginate @products if @products
       #product_index
         - if @products.any?
-          = render @products 
+          = render @products, query: query
         - else
-          %p.warning Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
+          %p.warning.alert.alert-warning Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
 
       #loading
         #notification
           = image_tag 'loading.gif', alt: 'loading', id: 'loading_gif'
           %p Идёт загрузка, пожалуйста подождите
 
-      -# .bottom_control
+      - if @products.length > @per_page.to_i
+        .bottom_control.container-fluid
+          .row
+            .col-xs-12.col-sm-offset-4.col-sm-4.btn.btn-lg.bold.btn-yellow#more_products= "Ещё"
+
       -#   = link_to_previous_page @products, '<< Назад', class: 'pull-left btn btn-default'
       -#   = link_to_next_page @products, 'Далее >>', class: 'pull-right btn btn-default'
