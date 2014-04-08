@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class ArticlesControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
   setup do
+    sign_in users :one
     @article = articles(:one)
   end
 
@@ -18,10 +20,8 @@ class ArticlesControllerTest < ActionController::TestCase
 
   test "should create article" do
     assert_difference('Article.count') do
-      post :create, article: { author: @article.author, body: @article.body, title: @article.title }
+      post :create, article: { author: @article.author, body: @article.body, title: @article.title, permalink: 'a_3' }
     end
-
-    assert_redirected_to article_path(assigns(:article))
   end
 
   test "should show article" do
@@ -36,7 +36,6 @@ class ArticlesControllerTest < ActionController::TestCase
 
   test "should update article" do
     patch :update, id: @article, article: { author: @article.author, body: @article.body, title: @article.title }
-    assert_redirected_to article_path(assigns(:article))
   end
 
   test "should destroy article" do

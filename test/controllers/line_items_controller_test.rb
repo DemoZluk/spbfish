@@ -2,7 +2,9 @@
 require 'test_helper'
 
 class LineItemsControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
   setup do
+    sign_in users :one
     @line_item = line_items(:one)
   end
 

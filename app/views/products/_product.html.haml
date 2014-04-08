@@ -4,7 +4,7 @@
   - cache product do
     = render 'shared/image', product: product
   .description
-    %h3= link_to highlight(product.title, query), product, target: '_blank'
+    %h3= link_to highlight(product.title, query), product_path(product, q: params[:q]), target: '_blank'
     %p
       = highlight(sanitize(product.long_name).truncate(350, separator: '.', omission: '...'), query)
     %p

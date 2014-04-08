@@ -15,7 +15,7 @@ ru:
       previous: '<'
       next: '>'
       last: '&raquo;'
-      truncate: ..
+      truncate: ...
 
   store:
     index:
@@ -32,6 +32,10 @@ ru:
   users:
     show:
       not_admin: Для просмотра этой страницы необходимо иметь права администратора
+    index:
+      admin: Администраторы
+      content_manager: Контент-менеджеры
+      orders_manager: Менеджеры заказов
 
   orders:
     show:
@@ -99,10 +103,14 @@ ru:
         name: ФИО
         address: Адрес
         email: Почта
-        pay_type: Тип оплаты
+        pay_type: Способ оплаты
         shipping_date: Дата доставки
       user:
         password_confirmation: Повторите пароль
+
+  unauthorized:
+    manage:
+      all: Нет доступа к данной странице
 
   from: FISHmarkt <mail@fishmarkt.ru>
   sign: FISHmarkt
@@ -159,6 +167,8 @@ ru:
       updated: "Ваш пароль изменён. Теперь вы вошли в систему."
       updated_not_active: "Пароль успешно изменён."
     registrations:
+      new: Регистрация нового пользователя
+      edit: Изменение настроек
       destroyed: "До свидания! Ваша учётная запись удалена. Надеемся снова увидеть вас."
       signed_up: "Добро пожаловать! Вы успешно зарегистрировались."
       signed_up_but_inactive: "Вы успешно зарегистрировались. Тем не менее, вы не можете войти, потому что ваша учетная запись не активирована."
@@ -168,6 +178,7 @@ ru:
       update_needs_confirmation: "Ваш аккаунт успешно обновлен, но необходимо подтвердить ваш новый адрес email. Пожалуйста, проверьте свою электронную почту и нажмите на ссылку \"Подтвердить\", чтобы завершить обновления email."
       recaptcha_falure: "Необходимо заполнить recaptcha"
     sessions:
+      new: 'Вход в систему'
       signed_in: "Вход в систему выполнен."
       signed_out: "Выход из системы выполнен."
     unlocks:

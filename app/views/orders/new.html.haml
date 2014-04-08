@@ -1,7 +1,8 @@
 %h1 Оформить заказ
 
-%fieldset.order
+%fieldset.order.container-fluid
   %legend Информация по заказу
-  = render 'form'
+  .col-sm-offset-3.col-sm-6
+    = render 'form'
   
-= link_to 'Назад', :back
+    = link_to 'Назад', :back, class: 'btn btn-default'

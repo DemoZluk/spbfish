@@ -21,6 +21,7 @@ module CurrentSettings
   # if group is present, else list all products
   def current_list_of products
     prod = filter products
+    @total = products.count
     @products = prod.page(params[:page]).per(@per_page)
     # redirect_to store_path, notice: 'No results' if @products.empty?
   end

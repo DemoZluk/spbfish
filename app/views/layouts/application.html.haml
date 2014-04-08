@@ -13,7 +13,7 @@
         }
     = csrf_meta_tags
       
-  %body{class: "#{controller_name} #{action_name}"}
+  %body{class: "#{controller_name} #{action_name}", id: 'top'}
     #form.modal.fade
       .modal-dialog
         .modal-content
@@ -21,8 +21,8 @@
           %button.close{data: {dismiss: 'modal'}} &times;
 
     #error_wrapper
-      #error{style: (notice || alert) ? nil : 'display: none'}
-        = notice || alert || ''
+      #error{style: (flash.any?) ? nil : 'display: none'}
+        = flash[:error] || notice || alert || ''
 
     #header_wrapper
       = render 'shared/header'

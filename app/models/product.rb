@@ -61,8 +61,13 @@ class Product < ActiveRecord::Base
   end
 
   def self.search(query)
-    string = "#{query} #{ActiveSupport::Inflector.transliterate(query)}".split.map{|s| "%#{s.gsub('+', ' ').gsub('*', '%')}%"}
-    self.where{(title.like_any string) | (long_name.like_any string) | (description.like_any string) | (item.like_any string)}
+    string = [query, ActiveSupport::Inflector.transliterate(query)].map{|s| "%#{s.gsub('+', ' ').gsub('*', '%')}%"}
+    self.where{
+      (title.like_any string) |
+      (long_name.like_any string) |
+      (description.like_any string) |
+      (item.like_any string)
+    }
   end
 
   private

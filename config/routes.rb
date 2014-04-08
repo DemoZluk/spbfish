@@ -24,6 +24,7 @@ Fishmarkt::Application.routes.draw do
 
   get 'cart' => "carts#show"
   delete 'cart' => "carts#destroy"
+  get 'cart/:cid/edit' => "carts#edit", as: :edit_cart
   resources :carts
 
   resources :orders do

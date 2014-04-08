@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  id: MyString
-  title: MyString
-  parent_id: MyString
+  id: 1
+  title: group_1
+  parent_id: nil
 
 two:
-  id: MyString
-  title: MyString
-  parent_id: MyString
+  id: 2
+  title: group_2
+  parent_id: 1

@@ -9,6 +9,8 @@
 one:
   email: user@example.com
   encrypted_password: password1
+  group: 'admin'
+  confirmed_at: 2014-01-01
 
 two:
   email: user2@example.com

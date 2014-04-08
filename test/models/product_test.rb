@@ -12,7 +12,7 @@ class ProductTest < ActiveSupport::TestCase
 
   test "product price must be positive" do
     product = Product.new(title: "My Book Title",
-    description: "yyy")
+    description: "yyy", price: 1)
     
     # product.price = -1
     # assert product.invalid?
@@ -24,7 +24,6 @@ class ProductTest < ActiveSupport::TestCase
     # assert_equal ["must be greater than or equal to 0.01"],
     # product.errors[:price]
 
-    product.price = 1
     assert product.valid?
   end
 

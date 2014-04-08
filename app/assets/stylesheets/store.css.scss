@@ -24,8 +24,8 @@ h1.underlined {
   border-radius: 10px;
 
   &:hover {
-    border-color: #7D7;
-    background: #EEE;
+    border-color: #357EBD;
+    background: #F5F5F5;
   }
 
   a:visited {
@@ -123,9 +123,9 @@ h1.underlined {
   }
 
   .side-panel {
-    border: 1px solid #7D7;
+    border: 1px solid #357EBD;
     border-radius: 8px;
-    background: #EEE;
+    background: #F5F5F5;
     margin: 3px;
     padding: 3px;
   }
@@ -168,7 +168,7 @@ h1.underlined {
 
   ul.child {
     background: #EEE;
-    border: 1px solid #7D7;
+    border: 1px solid #357EBD;
     position: absolute;
     z-index: 9999;
     right: -($side_width);

@@ -5,6 +5,7 @@ one:
   description: MyText
   price: 993.99
   permalink: MyString
+  group_id: 2
 
 two:
   title: MyString

@@ -2,23 +2,13 @@
 
 $bottom_panel_height: 35px;
 
-html, body {
-  width: 100%;
-  margin: {
-    top: 0px;
-    right: 0px;
-    bottom: $bottom_panel_height;
-    left: 0px;
-  }
+h1, h2, h3 {
+  margin: 5px auto;
+  padding: 5px 0px;
+}
 
-  h1, h2, h3 {
-    margin: 5px auto;
-    padding: 5px 0px;
-  }
-
-  h1 {
-    margin-bottom: 15px;
-  }
+h1 {
+  margin-bottom: 15px;
 }
 
 ul {
@@ -99,7 +89,7 @@ form {
 #header_wrapper {
   border: 4px solid #7A2210;
   padding: 7px;
-  margin: 5px;
+  margin-bottom: 5px;
   border-radius: 10px;
 }
 
@@ -196,6 +186,10 @@ form {
 
     li {
       position: relative;
+
+      span {
+        display: block;
+      }
       
       a {
         display: block;
@@ -283,8 +277,6 @@ form {
 }
 
 #content {
-  margin: 5px;
-  margin-bottom: $bottom_panel_height+35;
   position: relative;
   //background: #161;
   min-height: 100%;
@@ -363,6 +355,10 @@ form {
   font: {
     weight: bold;
   };
+
+  .back-to-top {
+    color: #B8FAC0;
+  }
 }
 
 #form {

@@ -1,19 +1,26 @@
 %h1 Список пользователей
 
-%table
-  %tr
-    %th Имя
-    %th email
-    %th Действия
-
-  - @users.each do |user|
+%table.table
+  %thead
     %tr
-      %td= user.information.try :name
-      %td= user.email
-      %td
-        = link_to 'Показать', user_path(id: user)
-        %br
-        = link_to 'Удалить', users_path(id: user), :method => :delete, :data => { :confirm => 'Вы действительно хотите удалить пользователя?' }
+      %th Имя
+      %th email
+      %th Группы
+      %th Действия
+  %tbody
+    - @users.each do |user|
+      %tr
+        %td= user.information.try :name
+        %td= user.email
+        %td
+          %table
+            - user.roles.each do |role|
+              %tr
+                %td= t(".#{role.name}")
+        %td
+          = link_to 'Профиль', user_path(id: user)
+          %br
+          = link_to 'Удалить', users_path(id: user), :method => :delete, :data => { :confirm => 'Вы действительно хотите удалить пользователя?' }
 
 %br
 

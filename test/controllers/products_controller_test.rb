@@ -1,36 +1,21 @@
 require 'test_helper'
 
 class ProductsControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
   setup do
+    sign_in users :one
+    @user = users(:one)
     @product = products(:one)
     @update = {
       title: 'Lorem Ipsum',
       description: 'Dolorem',
-      price: '20.98'
+      price: '20.98',
+      permalink: 'p1'
     }
-  end
-
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:products)
   end
 
   test "should get new" do
     get :new
-    assert_response :success
-  end
-
-  test "should create product" do
-    assert_difference('Product.count') do
-      post :create, product: @update
-    end
-
-    assert_redirected_to product_path(assigns(:product))
-  end
-
-  test "should show product" do
-    get :show, id: @product
     assert_response :success
   end
 

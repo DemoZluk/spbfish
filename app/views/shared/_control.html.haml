@@ -4,7 +4,7 @@
       = form_tag search_path, method: 'GET' do
         .input-group
           = text_field_tag 'q', params[:q], class: 'form-control', placeholder: 'Поиск', autocomplete: 'off'
-          %span#search_help.glyphicon.glyphicon-question-sign{data: {toggle: 'tooltip', placement: 'top'}, title: 'Для поиска словосочетаний используйте знак плюс(+), например: aleas+super найдёт только ALEAS Super'}
+          %span#search_help.glyphicon.glyphicon-question-sign{data: {toggle: 'tooltip', placement: 'top'}, title: 'Для поиска можно использовать звёздочку(*), например: "акварум*20" отыщет "Аквариум Aquael Shrimp Set 20 l", а также "Аквариум Dennerle NanoCube Complete 20 l"'}
           %span.input-group-btn
             = button_tag 'Иcкать', type: 'submit', class: 'btn btn-primary', name: nil
 

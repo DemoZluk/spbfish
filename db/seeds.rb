@@ -5,12 +5,13 @@
 require "highline/import"
 
 def main
-  open_files
-  create_groups
-  create_properties
-  create_products_and_values
-  setup_prices
-  add_values_to_values
+  # open_files
+  # create_groups
+  # create_properties
+  # create_products_and_values
+  # setup_prices
+  # add_values_to_values
+  # init_roles
   create_first_admin_user
 end
 
@@ -45,7 +46,7 @@ def create_groups
     groups_progress.increment
   end
 
-  puts "End"
+  puts "-----"
 end
 
 def create_properties
@@ -71,7 +72,7 @@ def create_properties
     props_progress.increment
   end
 
-  puts "End"  
+  puts "-----"  
 end
 
 def create_products_and_values
@@ -128,7 +129,7 @@ def create_products_and_values
     prods_progress.increment
   end
 
-  puts "End"
+  puts "-----"
 end
 
 def setup_prices
@@ -160,7 +161,7 @@ def setup_prices
     end
   end
 
-  puts "End"
+  puts "-----"
 end
 
 
@@ -174,24 +175,36 @@ def add_values_to_values
     values_progress.increment
   end
 
-  puts "End"
+  puts "-----"
+end
+
+def init_roles
+  puts "Initializing roles"
+  roles = ['admin', 'content_manager', 'products_manager']
+  roles.each do |role|
+    Role.create name: role
+    puts "#{role} created"
+  end
+  puts "-----"
 end
 
 def create_first_admin_user
   puts "Creating first user with admin priveleges:"
   email = HighLine.ask('email: '){|q| q.case = :down; q.validate = /[a-z][\w\.\-]+@([a-z]+[\w\-]+\.)+[a-z]{2,5}/}
   f = ''
-  while f != 'y' do
+  while f != 'y'
     password = HighLine.ask('Your password: '){|q| q.echo = '*'}
     c_pass = HighLine.ask('Confirm pass: '){|q| q.echo = '*'}
     if password == c_pass
-      User.create!(email: email, password: password, password_confirmation: password, group: 'admin')
+      user = User.create!(email: email, password: password, password_confirmation: password)
+      user.assign_role('admin')
       f = 'y'
     else
       puts "Passwords don't match, try again"
     end
   end
   puts "User #{email} successfully created!"
+  puts "Shortly email with confirmation will be delivered"
 end
 
 main

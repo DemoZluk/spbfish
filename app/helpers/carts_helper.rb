@@ -1,11 +1,13 @@
 module CartsHelper
   def count_cart_elements
-    sum = 0
-    if @cart
-      @cart.line_items.each do |item|
-        sum += item.quantity
-      end
+    @cart.line_items.sum(&:quantity).to_s
+  end
+
+  def cart_owner?
+    if (session[:cart_id] == params[:cid]) || can?(:edit, @cart)
+      true
+    else
+      false
     end
-    sum
   end
 end

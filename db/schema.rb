@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321100352) do
+ActiveRecord::Schema.define(version: 20140407095743) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -114,12 +114,21 @@ ActiveRecord::Schema.define(version: 20140321100352) do
     t.datetime "updated_at"
   end
 
+  create_table "roles", force: true do |t|
+    t.string "name"
+  end
+
   create_table "storages", force: true do |t|
     t.integer  "product_id"
     t.float    "amount"
     t.string   "unit"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "user_roles", force: true do |t|
+    t.integer "user_id"
+    t.integer "role_id"
   end
 
   create_table "users", force: true do |t|
@@ -136,7 +145,6 @@ ActiveRecord::Schema.define(version: 20140321100352) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "login"
-    t.string   "group"
     t.string   "confirmation_token"
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"

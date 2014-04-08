@@ -3,9 +3,7 @@
 one:
   user_id: 1
   product_id: 1
-  ip: MyString
 
 two:
   user_id: 1
   product_id: 1
-  ip: MyString

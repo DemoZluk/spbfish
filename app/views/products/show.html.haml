@@ -13,20 +13,20 @@
   >
   = link_to group.title, group_path(group, anchor: @product.permalink)
 
-- query = params[:q]
+- query = [params[:q], params[:q].try(:parameterize)].select(&:present?)
 
 .product_card{id: @product.permalink}
   .image= render 'shared/image', product: @product
 
   .text_block
-    %h2
-      = @product.title
+    %h3
+      = highlight(@product.title, query)
 
     %p
       - if @product.description == '.'
-        = @product.long_name
+        = highlight(@product.long_name, query)
       - else
-        = highlight(@product.description, [query, query.try(:parameterize)])
+        = highlight(@product.description, query)
 
   .right_panel
     %p.price= number_to_currency @product.price

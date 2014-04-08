@@ -39,5 +39,5 @@
       = f.label(:comment)
       %span.required 
       = f.text_area :comment, class: 'form-control', placeholder: 'Ваши комментарии к заказу (максимум 200 символов)', rows: 3
-  .actions
+  .actions.pull-right
     = f.submit 'Заказать', :class => 'order primary_button'

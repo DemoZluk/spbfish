@@ -1,0 +1,13 @@
+.text-center= paginate @products
+
+- query = [params[:q].split('*'), ActiveSupport::Inflector.transliterate(params[:q]).split('*')].flatten.map{|s| s.gsub('+', ' ')}.select(&:present?) if params[:q]
+
+- if @products.any?
+  = render @products, query: query
+- else
+  %p.warning.alert.alert-warning Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска.
+
+- if @total > @per_page.to_i
+  .bottom_control.container-fluid
+    .row
+      .col-xs-12.col-sm-offset-4.col-sm-4.btn.btn-lg.bold.btn-yellow#more_products= "Ещё"

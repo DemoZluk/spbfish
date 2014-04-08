@@ -10,13 +10,12 @@
       %h1.underlined= @group.title# + (', Страница: ' + params[:page].to_s if params[:page]).to_s
 
       = render 'children'
+      
       .control
         = render 'shared/control'
+
       #product_index
-        - if @products.any?
-          = render @products
-        - else
-          %p.warning Раздел ещё пуст либо не найдено позиций, удовлетворяющих критериям поиска
+        = render 'store/product_index'
 
       #loading
         #notification

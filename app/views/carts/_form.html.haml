@@ -19,5 +19,5 @@
           %td.quantity
             =# link_to('', decrement_line_item_path(item.id), remote: true, class: :decrement, method: :post)
             = text_field_tag item.id, item.quantity, {class: 'spinner center', size: 3}
-          %td.actions= link_to('Удалить', line_item_path, method: :destroy)
+          %td.actions= link_to('Удалить', line_item_path(id: item.id), method: :destroy)
     = f.submit 'Сохранить'

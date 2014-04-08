@@ -6,9 +6,10 @@
     %th Адрес
     %th Email
     %th Способ оплаты
-    %th
-    %th
-    %th
+    - if can? :manage, Order
+      %th
+      %th
+      %th
     %th Дата доставки
 
   - @orders.each do |order|
@@ -17,7 +18,8 @@
       %td= order.address
       %td= mail_to order.email
       %td.center= order.pay_type
-      %td= link_to 'Show', order
-      %td= link_to 'Edit', edit_order_path(order)
-      %td= link_to 'Destroy', order, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      - if can? :manage, Order
+        %td= link_to 'Открыть', order
+        %td= link_to 'Изменить', edit_order_path(order)
+        %td= link_to 'Удалить', order, :method => :delete, :data => { :confirm => 'Уверены?' }
       %td.center= order.shipping_date

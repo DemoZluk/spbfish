@@ -1,6 +1,6 @@
 // Еcли вы это видите, перезагрузите страницу
 
-$('#product_index').html("#{products = (j(render(@products) || '<p class=warning>Позиций, удовлетворяющих критериям поиска не найдено.</p>'.html_safe))}")//.prepend("#{j content_tag :div, flash[:notice], id: 'notice' if flash[:notice]}")//.prepend("#{j debug session[:user]; params[:producer]}");
+$('#product_index').html("#{products = (j(render('store/product_index') || '<p class=warning>Позиций, удовлетворяющих критериям поиска не найдено.</p>'.html_safe))}")//.prepend("#{j content_tag :div, flash[:notice], id: 'notice' if flash[:notice]}")//.prepend("#{j debug session[:user]; params[:producer]}");
 $('.control').html("#{j render 'shared/control'}")
 $('#minPrice').attr('placeholder', "#{@products_min}").val("#{@min_price if params[:minPrice]}")
 $('#maxPrice').attr('placeholder', "#{@products_max}").val("#{@max_price if params[:maxPrice]}")

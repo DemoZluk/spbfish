@@ -85,6 +85,9 @@ gem 'bcrypt-ruby', '~> 3.0'
 # Authentication system
 gem 'devise'
 
+# Authorization system
+gem 'cancan'
+
 # Create thumbnails
 gem 'carrierwave'
 gem 'mini_magick'

@@ -22,6 +22,5 @@
         %td= cart.updated_at
       %tr 
         %td.cart_actions{colspan: 3}
-          = link_to('Открыть', cart)
-          = link_to('Изменить', edit_cart_path(cart))
-          = link_to('Удалить', cart, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)
+          = link_to('Открыть', cart_path(cid: cart.id))
+          = link_to('Удалить', cart_path(cid: cart.id), method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)

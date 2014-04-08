@@ -1,20 +1,16 @@
 require 'test_helper'
 
 class OrdersControllerTest < ActionController::TestCase
+  include Devise::TestHelpers
   setup do
-    @order = orders(:one)
+    sign_in users :one
+    @ordr = orders(:one)
   end
 
   test "should get index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:orders)
-  end
-
-  test "requires item in cart" do
-    get :new
-    assert_redirected_to store_url
-    assert_equal flash[:notice], I18n.t(:cart_is_empty)
   end
 
   test "should get new" do
@@ -30,37 +26,27 @@ class OrdersControllerTest < ActionController::TestCase
 
   test "should create order" do
     assert_difference('Order.count') do
-      post :create, order: { address: @order.address, email: @order.email, name: @order.name, pay_type: @order.pay_type, shipping_date: DateTime.tomorrow }
+      post :create, order: @ordr.attributes.merge('shipping_date' => DateTime.tomorrow)
     end
-
-    assert_redirected_to store_url
   end
 
   test "should fail to create order" do
     assert_no_difference('Order.count') do
-      post :create, order: { address: @order.address, email: @order.email, name: @order.name, pay_type: @order.pay_type, shipping_date: DateTime.current-1 }
+      post :create, order: { address: @ordr.address, email: @ordr.email, name: @ordr.name, pay_type: @ordr.pay_type, shipping_date: DateTime.current-1 }
     end
   end
 
   test "should show order" do
-    get :show, id: @order
+    get :show, id: @ordr
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, id: @order
-    assert_response :success
+    get :edit, id: @ordr.id, token: @ordr.token
+    assert_redirected_to store_url
   end
 
   test "should update order" do
-    patch :update, id: @order, order: { address: @order.address, email: @order.email, name: @order.name, pay_type: @order.pay_type }
-  end
-
-  test "should destroy order" do
-    assert_difference('Order.count', -1) do
-      delete :destroy, id: @order
-    end
-
-    assert_redirected_to orders_path
+    patch :update, id: @ordr, order: { address: @ordr.address, email: @ordr.email, name: @ordr.name, pay_type: @ordr.pay_type }
   end
 end

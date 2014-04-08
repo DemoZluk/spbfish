@@ -10,7 +10,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    @products = Product.order(params[:order_by] || 'title').page(params[:page]).per(@per_page)
+    current_list_of Product.with_price
   end
 
   # GET /products/1

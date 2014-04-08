@@ -3,8 +3,9 @@
 one:
   name: Dave Thomas
   address: 123 The Street
+  phone_number: 123456
   email: dave@example.org
-  pay_type: Самовывоз
+  pay_type: Наличный
 
 two:
   name: MyString

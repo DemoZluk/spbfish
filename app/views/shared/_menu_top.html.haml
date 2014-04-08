@@ -1,14 +1,18 @@
 %ul.parent
   
-  - if user_signed_in? && current_user.admin?
+  - if current_user.try :role?
     %li
-      = link_to 'Панель администратора', admin_path, class: 'btn btn-gray'
+      %span.btn.btn-gray Панель управления
       %ul.child
-        %li= link_to('Заказы', orders_path)
-        %li= link_to('Товары', products_path)
-        %li= link_to('Корзины', carts_path)
-        %li= link_to('Пользователи', users_path)
-        %li= link_to('Статьи', articles_path)
+        - if can?(:manage, Order)
+          %li= link_to('Заказы', orders_path)
+          %li= link_to('Корзины', carts_path)
+        - if can?(:manage, Product)
+          %li= link_to('Товары', products_path)
+        - if can?(:manage, User)
+          %li= link_to('Пользователи', users_path)
+        - if can?(:manage, @article)
+          %li= link_to('Статьи', articles_path)
   %li= link_to 'Каталог', store_path, class: 'btn btn-gray'
   %li= link_to 'О нас', '/about_us', class: 'btn btn-gray'
   %li= link_to 'Контакты', store_path, class: 'btn btn-gray'
