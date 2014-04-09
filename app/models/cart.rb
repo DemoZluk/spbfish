@@ -1,6 +1,8 @@
 class Cart < ActiveRecord::Base
   has_many :line_items, dependent: :destroy
   belongs_to :user
+
+  scope :not_empty, -> { joins{line_items}.group{id} }
   
   def add_product(product_id, amount)
     current_item = line_items.find_by(product_id: product_id)

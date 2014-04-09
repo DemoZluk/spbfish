@@ -73,8 +73,6 @@ $(document).on 'click', '#reset_button', (e) ->
   clearForm(form)
   form.submit()
 
-
-
 #--- Ajax hooks' processing ---#
 $(document).on 'ajax:beforeSend', '#content', ->
   #$('input:not(.primary_button)').attr('disabled', true)

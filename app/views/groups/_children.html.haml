@@ -1,4 +1,4 @@
-- if @group.children.any?
+- if @group && @group.children.any?
   - cache @group do
     .children
       - @group.children.each do |child_group|

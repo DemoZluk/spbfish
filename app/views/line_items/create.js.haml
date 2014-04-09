@@ -1,5 +1,5 @@
 //if ($('#cart tr').length > 0) { $('#cart').show('blind', 300); };
-$('#cart_panel').html("#{ j render('shared/cart', cart: @cart) }");
+$('#cart').html("#{ j render('shared/cart', cart: @cart) }");
 //$('#cart_panel').ready( function () { $('#cart').fadeIn(500); });
 
 $('.grand_total').html("#{ j render('shared/grand_total') }");

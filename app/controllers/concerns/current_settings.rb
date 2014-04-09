@@ -5,7 +5,7 @@ module CurrentSettings
   end
 
   def change_user_prefs
-    # Create user preferences in session if undefined
+    # Create default user preferences in session if undefined
     session[:user] ||= Hash[:prefs, {per_page: 10, order_by: 'title'}].with_indifferent_access unless session && session[:user] && session[:user][:prefs]
 
     session[:user][:prefs].delete_if{|key, val| val.blank?} if session[:user][:prefs] = user_prefs.presence
@@ -17,12 +17,9 @@ module CurrentSettings
     @order_by += ' DESC' if @desc
   end
 
-  # Define product list for current group
-  # if group is present, else list all products
+  # Define product list
   def current_list_of products
-    prod = filter products
-    @total = products.count
-    @products = prod.page(params[:page]).per(@per_page)
+    @products = filter(products).page(params[:page]).per(@per_page)
     # redirect_to store_path, notice: 'No results' if @products.empty?
   end
 
@@ -58,14 +55,6 @@ module CurrentSettings
       
       products = products.where(query.join(' OR ')).group{id}.having{count(product_property_values.property_id) >= c}
     end
-
-    # vals << params[:p].map(&:to_s) if params[:p] && params[:p].any?
-
-    # unless vals.empty?
-    #   vv = Value.joins{product_property_values}.where{id >> vals.flatten}.pluck('product_property_values.product_id')
-    #   products = products.where{id >> vv}
-    # end
-
     products
   end
 

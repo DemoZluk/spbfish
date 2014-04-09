@@ -1,16 +1,15 @@
 %h1 Список заказов
 
-%table
-  %tr
-    %th Имя
-    %th Адрес
-    %th Email
-    %th Способ оплаты
-    - if can? :manage, Order
-      %th
-      %th
-      %th
-    %th Дата доставки
+%table.table
+  %thead
+    %tr
+      %th Имя
+      %th Адрес
+      %th Email
+      %th Способ оплаты
+      - if can? :manage, Order
+        %th Действия
+      %th Дата доставки
 
   - @orders.each do |order|
     %tr
@@ -19,7 +18,8 @@
       %td= mail_to order.email
       %td.center= order.pay_type
       - if can? :manage, Order
-        %td= link_to 'Открыть', order
-        %td= link_to 'Изменить', edit_order_path(order)
-        %td= link_to 'Удалить', order, :method => :delete, :data => { :confirm => 'Уверены?' }
+        %td
+          = link_to 'Открыть', order
+          = link_to 'Изменить', edit_order_path(order)
+          = link_to 'Удалить', order, :method => :delete, :data => { :confirm => 'Уверены?' }
       %td.center= order.shipping_date

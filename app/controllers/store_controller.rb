@@ -10,6 +10,7 @@ class StoreController < ApplicationController
   end
 
   def index
+    @next = params[:next].presence
     respond_to do |format|
       format.html
       format.js

@@ -71,19 +71,21 @@ a {
 
   &:visited {
   }
-}
 
-input:focus, button:focus {
-  outline: none !important;
-}
-
-a {
   &:hover, &:active, &:focus, &:visited {
     outline: 0;
   }
   &:hover, &:active, &:visited {
     text-decoration: none;
   }
+}
+
+input:focus, button:focus {
+  outline: none !important;
+}
+
+h3 {
+  margin-top: 5px;
 }
 
 .bold {
@@ -147,4 +149,9 @@ a {
 .input-group .form-control:not(:first-child):not(:last-child).add_amount.form-control {
   text-align: center;
   border-radius: 3px 0px 0px 3px;
+}
+
+hr {
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
