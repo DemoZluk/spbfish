@@ -1,10 +1,11 @@
 .select
   %select{name: name}
     - array.each do |item|
-      %option{selected: eql(item, current) ? true : false, value: item.to_s}= selection_label(item) # < application_helper.rb
+      %option{selected: eql(item, current) ? true : false, value: item}= selection_label(item) # < application_helper.rb
+      - puts t(item) + ':' + t(current)
   %span= selection_label(current) # < application_helper.rb
   .arrow_down
   %ul.values
     - array.each do |item|
       - unless eql(item, current) # < application_helper.rb
-        %li{data: {value: item.to_s}}= selection_label(item)
+        %li{data: {value: item}}= selection_label(item)

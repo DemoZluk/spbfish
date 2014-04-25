@@ -8,6 +8,7 @@ ru:
     price: Цене
     updated_at: Дате
     rating: Рейтингу
+    value: Рейтингу
 
   views:
     pagination:

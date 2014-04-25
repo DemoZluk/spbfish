@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    current_list_of Product.with_price
+    current_list_of Product.all
   end
 
   # GET /products/1

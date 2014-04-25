@@ -9,8 +9,12 @@ module CurrentSettings
 
     # Update user preferences
     @per_page = session[:user][:prefs][:per_page] ||= 10
-    @order_by = 'products.' + session[:user][:prefs][:order_by] ||= 'title'
     @desc = session[:user][:prefs][:descending].presence
+    if session[:user][:prefs][:order_by] && session[:user][:prefs][:order_by] == 'rating'
+      @order_by = 'ratings.value'
+    else
+      @order_by = 'products.' + session[:user][:prefs][:order_by] ||= 'title'
+    end
     @order_by += ' DESC' if @desc
   end
 

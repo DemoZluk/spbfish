@@ -11,7 +11,9 @@ module CurrentProducts
 
     set_min_max_price_for products
 
-    products = products.where(price: @min_price..@max_price).includes{values}.references(:values)
+    products = products.where(price: @min_price..@max_price).includes{ratings}
+
+    products = products.includes{values}.references(:values) unless controller_name == 'store'
 
     producers = params[:producer]
     products = products.where{producer >> producers} if producers

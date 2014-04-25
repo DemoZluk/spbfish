@@ -55,7 +55,7 @@ module ApplicationHelper
   end
 
   def eql item, current
-    item.to_s.match(/[.\w]+/).to_s == current.to_s.match(/[.\w]+/).to_s.sub('products.', '')
+    t('selection_labels.' + item) == t('selection_labels.' + current)
   end
 
   def selection_label(current)
