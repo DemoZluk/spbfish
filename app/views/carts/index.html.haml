@@ -1,6 +1,10 @@
 .carts_index.container-fluid
   %h1 Список корзин
 
+  %h4
+    - if @carts.empty?
+      Активных корзин нет
+
   .text-center= paginate @carts
   - @carts.each do |cart|
     .col-sm-6.col-lg-4

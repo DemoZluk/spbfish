@@ -7,7 +7,7 @@ class Users::SessionsController < Devise::SessionsController
     if @old_cart = @user.carts.last
       flash[:merge_carts?] = t(:merge_carts?)
     end
-    puts session[:user]
+    session[:user]
     Cart.find(session[:cart_id]).update user_id: current_user.id
   end
 end

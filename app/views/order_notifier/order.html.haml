@@ -1,41 +1,41 @@
 %html
-	%head
-		%meta{:content => "text/html; charset=utf-8"}/ 
-		%link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/
+  %head
+    %meta{:content => "text/html; charset=utf-8"}/ 
+    %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/
 
-	%body.email
-		%p= 'Пользователь ' + @order.name + ' сделал заказ на сайте'
+  %body.email
+    %p= 'Пользователь ' + @order.name + ' сделал заказ на сайте'
 
-		%strong Номер заказа:
-		= @order.id
+    %strong Номер заказа:
+    = @order.id
 
-		%p Он заказал следующие товары:
+    %p Он заказал следующие товары:
 
-		%table.order
-			%tr
-				%th Кол-во
-				%th Цена
-				%th Название
-				%th Сумма
-			- @order.line_items.each do |line_item|
-				%tr
-					%td.right= line_item.quantity
-					%td= line_item.product.long_name
-					%td.right= line_item.price
-					%td.right= number_to_currency(line_item.total_price)
-			%tr
-				%td{ :colspan => 2 } Итого
-				%td.right= number_to_currency(@total_price)
+    %table.order
+      %tr
+        %th Кол-во
+        %th Название
+        %th Цена
+        %th Сумма
+      - @order.line_items.each do |line_item|
+        %tr
+          %td.right= line_item.quantity
+          %td= line_item.product.long_name
+          %td.right= number_to_currency line_item.price
+          %td.right= number_to_currency(line_item.total_price)
+      %tr
+        %td{ :colspan => 3 } Итого
+        %td.right= number_to_currency(@total_price)
 
-		%p
-			%strong Адрес доставки:
-			%br
-				= @order.address
-		%p
-			%strong Телефон:
-			%br
-				= @order.phone_number
-		%p
-			%strong Ссылка на заказ:
-			%br
-				= link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)
+    %p
+      %strong Адрес доставки:
+      %br
+        = @order.address
+    %p
+      %strong Телефон:
+      %br
+        = @order.phone_number
+    %p
+      %strong Ссылка на заказ:
+      %br
+        = link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)

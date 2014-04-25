@@ -1,6 +1,7 @@
 class StoreController < ApplicationController
-  include CurrentSettings
   include CurrentCart
+  include CurrentSettings
+  include CurrentProducts
 
   before_action :change_user_prefs, :set_products, :set_cart
   skip_before_action :authenticate_user!

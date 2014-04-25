@@ -1,0 +1,3 @@
+$("##{@product.permalink} .add_to_bookmarks").html("#{j render 'products/add_to_bookmarks', product: @product}")
+$('##{@product.permalink} .add_to_bookmarks button').tooltip()
+$('.bookmarks_list').html("#{j render 'shared/bookmarks_panel'}")

@@ -8,7 +8,7 @@
     = text_field_tag 'maxPrice', params['maxPrice'], {class: 'max', placeholder: @products_max, data: {max: @products_max, current: @max_price}, autocomplete: 'off'}
     руб.
     .slider{data: {min: @products_min, max: @products_max}}
-    
+
   #producer
     %section.well.well-sm
       %h4 Производитель
@@ -19,11 +19,11 @@
             = list_item_for 'producer', prdcr[0], prdcr[1], (prod_list.length == 1)
         - if prod_list.length > 5
           .show_more
-            .body.hidden
+            .body
               - prod_list.from(5).each do |prdcr|
                 - unless prdcr[1] == 0
                   = list_item_for 'producer', prdcr[0], prdcr[1]
-            .head.toggle_text.btn.btn-link.btn-sm{data: {'sub-text' => 'Скрыть'}} Ещё
+            .toggle_text.btn.btn-link.btn-sm{data: {'sub-text' => 'Скрыть'}} Ещё
 
   - if @group.try(:properties).try(:any?)
     - @group.properties.each do |prop|
@@ -48,6 +48,6 @@
                     - vals.to_a.from(5).each_with_index do |val, i|
                       - unless v_a[i][1] == 0
                         = list_item_for 'p', val, v_a[i][1]
-                  .head.toggle_text.btn.btn-link.btn-sm{data: {'sub-text' => 'Скрыть'}} Ещё
+                  .show_more.toggle_text.btn.btn-link.btn-sm{data: {'sub-text' => 'Скрыть'}} Ещё
   = submit_tag 'Применить', name: 'commit'
   = submit_tag 'Сбросить все', {name: 'reset', id: 'reset_button', type: :reset}

@@ -15,8 +15,8 @@ class Ability
     end
 
     if user.role?('content_manager')
-      can :manage, @article
-      can :update, @product
+      can :manage, Article
+      can :update, Product
     end
     
     if user.role?('orders_manager')

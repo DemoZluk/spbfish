@@ -1,0 +1,24 @@
+%h1.underlined
+  Меню
+  - if can? :manage, MenuItem
+    = link_to 'Новый пункт меню', new_menu_item_path
+
+%table.table
+  %thead
+    %tr
+      %th Заголовок
+      %th Ссылка
+      %th Родитель
+      %th Опубликован
+      %th Действия
+  %tbody
+    - @menu_items.each do |menu_item|
+      %tr
+        %td= menu_item.title
+        %td= menu_item.permalink
+        %td= menu_item.parent_id ? menu_item.parent.title : 'Нет'
+        %td= menu_item.published? ? 'Да' : 'Нет'
+        %td
+          = link_to 'Показать', menu_item
+          = link_to 'Изменить', edit_menu_item_path(menu_item)
+          = link_to 'Удалить', menu_item, :method => :delete, :data => { :confirm => 'Удалить этот пункт меню?' }

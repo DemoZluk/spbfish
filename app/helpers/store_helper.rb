@@ -29,11 +29,11 @@ module StoreHelper
     end
   end
 
-  def list_item_for param, item, cnt, dsb = nil
-    checked = params[param].try(:index, item) || dsb
+  def list_item_for p, item, cnt, dsb = nil
     title = item.try(:title) || item
+    checked = dsb || (params[p].try(:index, ((p == 'producer') ? item : item.id.to_s)))
     li = content_tag :li do
-      check_box_tag("#{param}[]", (item.try(:id) || item), checked, {multiple: true, id: title.parameterize, disabled: dsb, autocomplete: 'off'}) + 
+      check_box_tag("#{p}[]", (item.try(:id) || item), checked, {id: title.parameterize, disabled: dsb}) + 
       label_tag(title.parameterize, title) + 
       content_tag(:span, " (#{cnt})", class: 'count')
     end

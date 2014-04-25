@@ -1,25 +1,28 @@
-%h1 Список заказов
+.container-fluid
+  - if flash[:warning]
+    .alert.alert-warning.alert-dismissable
+      %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
+      = flash[:warning]
 
-%table.table
-  %thead
-    %tr
-      %th Имя
-      %th Адрес
-      %th Email
-      %th Способ оплаты
-      - if can? :manage, Order
-        %th Действия
-      %th Дата доставки
+  %h1.underlined Список заказов
 
-  - @orders.each do |order|
-    %tr
-      %td= link_to(order.name, order)
-      %td= order.address
-      %td= mail_to order.email
-      %td.center= order.pay_type
-      - if can? :manage, Order
-        %td
-          = link_to 'Открыть', order
-          = link_to 'Изменить', edit_order_path(order)
-          = link_to 'Удалить', order, :method => :delete, :data => { :confirm => 'Уверены?' }
-      %td.center= order.shipping_date
+  = form_tag({action: :destroy}, {method: :delete, class: 'row'}) do
+    .col-sm-12.col-lg-10
+      %table.table
+        %thead
+          %tr
+            %th ID
+            %th Дата
+            %th Товары
+            %th.right Сумма
+            %th.center Статус
+            - if can? :manage, Order
+              %th 
+        %tbody
+          - @orders.each do |order|
+            %tr
+              = render order
+              %td.center= link_to "×", cancel_order_path(order), data: { :confirm => 'Вы уверены что хотите отменить заказ?' }, class: 'bold btn btn-link btn-lg'
+
+    .col-lg-2
+      = submit_tag 'Удалить'

@@ -1,7 +1,6 @@
-%h1 Editing order
+.container-fluid
+  %h1.underlined
+    Правка заказа
+    = link_to 'Заказы', orders_path
 
-= render 'form'
-
-= link_to 'Show', @order
-\|
-= link_to 'Back', orders_path
+  .row= render 'form'

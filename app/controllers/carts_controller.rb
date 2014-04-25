@@ -1,10 +1,6 @@
 #encoding: utf-8
 class CartsController < ApplicationController
-  include CurrentCart
   skip_before_action :authenticate_user!, only: [:create, :show, :update, :destroy]
-  before_action :set_cart, only: [:show, :edit, :update, :destroy]
-  before_action :set_user, :old_cart, only: [:merge_yes, :merge_no]
-  after_action :cart_user_id, only: :create
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
 
   # GET /carts
@@ -21,7 +17,7 @@ class CartsController < ApplicationController
 
   # GET /carts/new
   def new
-    @cart = Cart.new(user_id: (session[:user][:id] if session[:user]))
+    @cart = Cart.new(user_id: current_user.try(:id))
   end
 
   # GET /carts/1/edit
@@ -64,6 +60,15 @@ class CartsController < ApplicationController
   # DELETE /carts/1
   # DELETE /carts/1.json
   def destroy
+    @cart.destroy
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.js
+      format.json { head :no_content }
+    end
+  end
+
+  def clear
     @cart.line_items.destroy_all
     respond_to do |format|
       format.html { redirect_to :back }
@@ -73,8 +78,8 @@ class CartsController < ApplicationController
   end
 
   def merge_yes
-    if @user && @old_cart
-      cart = Cart.find session[:user][:id]
+    if user_signed_in? && @old_cart
+      cart = Cart.find_by(user_id: current_user.id)
       @old_cart.line_items.update_all cart_id: session[:cart_id]
       @old_cart.destroy
     end
@@ -92,17 +97,9 @@ class CartsController < ApplicationController
     #   @cart = Cart.find (params[:id] ? params[:id] : session[:cart_id])
     # end
 
-    def cart_user_id
-      @cart.update user_id: session[:user][:id] if session[:user]
-    end
-
-    def set_user
-      @user = User.find session[:user][:id] if session[:user]
-    end
-
     # Never trust parameters from the scary internet, only allow the white list through.
     def cart_params
-      puts params[:cart]
+      params[:cart]
     end
 
     def invalid_cart

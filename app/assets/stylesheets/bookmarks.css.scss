@@ -1,0 +1,75 @@
+// Place all the styles related to the Bookmarks controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.add_to_bookmarks {
+  display: inline-block;
+  vertical-align: super;
+
+  button {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    margin: 0;
+    padding: 0;
+  }
+
+  img {
+    height: 12px;
+    width: 12px;
+  }
+}
+
+.bookmarks_list {
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+  
+  .bookmarks {
+
+    a{
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      padding: 7px;
+    }
+
+    img {
+      cursor: pointer;
+      opacity: 0.5;
+    }
+  }
+
+  .bookmarks.active {
+    background: #2A2A2A 0 0 no-repeat;
+
+    img {
+      opacity: 1;
+    }
+  }
+
+  &:hover img {
+    opacity: 1;
+  }
+
+  .list {
+    display: none;
+    min-width: 350px;
+    color: #FFF;
+    position: absolute;
+    right: 0;
+    bottom: 35px;
+    background: #2A2A2A 0 0 no-repeat;
+    padding: 10px;
+    margin: 0;
+    border-radius: 5px 5px 0px 0px;
+
+    a {
+      color: #B8FAC0;
+    }
+
+    td {
+      padding: 1px 5px;
+    }
+  }
+
+}

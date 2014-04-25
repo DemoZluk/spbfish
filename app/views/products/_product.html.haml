@@ -1,18 +1,35 @@
 .entry{id: product.permalink}
   - query ||= nil
   =# link_to image_tag(image_thumb_helper(product), alt: product.permalink), product
-  - cache product do
+
+  .head.container-fluid
+    .row
+      %h3.col-sm-6.col-lg-8
+        -# link_to_product product, html_options = {}, query = nil <-application_helper
+        = link_to_product product, {target: '_blank'}, query
+
+        - if user_signed_in?
+          .add_to_bookmarks
+            = render 'products/add_to_bookmarks', product: product
+
+      .rating_wrapper.right.col-sm-3.col-lg-2= render 'shared/rating', product: product
+
+      .price.right.pull-right.col-sm-3.col-lg-2
+        Цена: 
+        = number_to_currency(product.price)
+  
+  - cache_if (action_name != 'search'), product do
     = render 'shared/image', product: product
-  .description
-    %h3= link_to highlight(product.title, query), product_path(product, q: params[:q]), target: '_blank'
-    %p
-      = highlight(sanitize(product.long_name).truncate(350, separator: '.', omission: '...'), query)
-    %p
-      Производитель:
-      = link_to(highlight(product.producer, query), params.merge('producer' => product.producer))
-    .short_description
-      =# link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
+    .description
+      %p
+        = highlight(sanitize(product.long_name).truncate(350, separator: '.', omission: '...'), query)
+      %p
+        Производитель:
+        = link_to(highlight(product.producer, query), params.merge('producer' => product.producer))
+      %p
+        Артикул:
+        = highlight product.item, query
+      .short_description
+        =# link_to '+ Показать описание', product, remote: true, class: 'short_description_header show'
   .right_panel
-    %span.price= number_to_currency(product.price)
-    .rating_wrapper= render 'shared/rating', product: product
     = render 'shared/add_to_cart', product: product

@@ -1,0 +1,24 @@
+.row
+  = form_for @menu_item, {html: {class: 'centered-form'}} do |f|
+    - if @menu_item.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@menu_item.errors.count, "error")} prohibited this menu_item from being saved:"
+        %ul
+          - @menu_item.errors.full_messages.each do |msg|
+            %li= msg
+
+    .form-group
+      = f.label :title
+      = f.text_field :title, required: true
+    .form-group
+      = f.label :permalink
+      = f.text_field :permalink
+    .row
+      .form-group.col-xs-6
+        = f.label :parent_id
+        = f.select :parent_id, MenuItem.primary.where.not(id: @menu_item.id).map{|i| [i.title, i.id]}, include_blank: 'Нет'
+      .form-group.col-xs-6
+        = f.label :published
+        = f.select :published, [['Да', true], ['Нет', false]], required: true
+    .actions
+      = f.submit 'Сохранить'

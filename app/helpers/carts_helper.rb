@@ -1,6 +1,6 @@
 module CartsHelper
   def count_cart_elements
-    @cart.line_items.to_a.sum(&:quantity).to_s
+    @cart.try(:line_items).to_a.sum(&:quantity).to_s
   end
 
   def cart_owner?

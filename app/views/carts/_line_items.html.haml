@@ -2,6 +2,6 @@
   .product{id: li.product.permalink}
     = render 'shared/image', product: li.product, size: 'r'
     .description
-      %h3= link_to li.product.title, li.product
+      %h3= link_to_product li.product
       %p= li.product.long_name
     .info_table= render(partial: 'info_table', locals: {li: li})

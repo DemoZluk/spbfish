@@ -1,0 +1,13 @@
+- if user_signed_in?
+  .bookmarks
+    = link_to bookmarks_path do
+      = image_tag 'bookmark-20x20.png'
+  .list
+    %table
+      - if current_user.bookmarks.any?
+        = render current_user.bookmarks
+      - else
+        %td.center
+          Нет закладок.
+          %br/
+          Вы можете добавить их, щёлкая по звёздочке рядом с названием товара, чтобы потом к нему вернуться в любое время.

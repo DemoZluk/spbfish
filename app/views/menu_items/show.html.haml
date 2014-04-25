@@ -1,0 +1,16 @@
+%p
+  %b Title:
+  = @menu_item.title
+%p
+  %b Permalink:
+  = @menu_item.permalink
+%p
+  %b Parent:
+  = @menu_item.parent_id
+%p
+  %b Published:
+  = @menu_item.published
+
+- if can? :manage, MenuItem
+  = link_to 'Правка', edit_menu_item_path(@menu_item), class: 'btn btn-default'
+  = link_to 'Все элементы меню', menu_items_path, class: 'btn btn-default'

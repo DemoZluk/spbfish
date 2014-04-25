@@ -1,209 +1,113 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-$img-size: 120px;
-$vote_img_size: 24px;
+// .product-table {
+//   width: 100%;
+//   border-collapse: collapse;
 
-.product-table {
-  width: 100%;
-  border-collapse: collapse;
+//   .product:nth-child(2n-1) {
+//     background: #DDD;
+//   }
 
-  .product:nth-child(2n-1) {
-    background: #DDD;
-  }
+//   tr, td {
+//     padding: 5px;
+//     vertical-align: top;
+//   }
 
-  tr, td {
-    padding: 5px;
-    vertical-align: top;
-  }
+//   .image {
+//     width: $img-size;
+//     cursor: pointer;
+//     background: #FFF;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+//     border: {
+//       style: solid;
+//       color: #FFF;
+//       width: $img-size*0.03;
+//       radius: $img-size*0.03;
+//     }
 
-  .image {
-    width: $img-size;
-    cursor: pointer;
-    background: #FFF;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-    border: {
-      style: solid;
-      color: #FFF;
-      width: $img-size*0.03;
-      radius: $img-size*0.03;
-    }
+//     img {
+//       max-width: $img-size;
+//       max-height: $img-size*0.75;
+//       display: block;
+//       margin: auto;
+//     }
+//   }
 
-    img {
-      max-width: $img-size;
-      max-height: $img-size*0.75;
-      display: block;
-      margin: auto;
-    }
-  }
+//   .name {
+//     color: #FFF;
+//     font: {
+//       size: 1.2em;
+//       weight: bold;
+//     }
+//     display: block;
+//     margin: 0.8em;
+//   }
 
-  .name {
-    color: #FFF;
-    font: {
-      size: 1.2em;
-      weight: bold;
-    }
-    display: block;
-    margin: 0.8em;
-  }
+//   .price {
+//     text-align: right;
+//     width: 6em;
+//   }
 
-  .price {
-    text-align: right;
-    width: 6em;
-  }
-
-  .actions {
-    text-align: right;
-    font-size: small;
-    width: 5em;
-  }
-}
-
-.rating_wrapper {
-  position: relative;
-  height: 24px;
-  margin-bottom: 15px;
-}
-
-.entry {
-  .rating {
-    position: absolute;
-    // top: 30px;
-    right: 45px;
-  }
-
-  .rating_counter {
-    right: 0px;
-  }
-}
-
-.rating {
-  height: $vote_img_size;
-  width: $vote_img_size*5;
-  position: relative;
-  margin-bottom: 15px;
-  background: transparent image-url('/images/thumb_up_bg.png') left top no-repeat;
-
-  .current {
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    background: transparent image-url('/images/thumb_up_rating.png') left top no-repeat;
-    opacity: 0.9;
-  }
-
-  .vote {
-    height: 100%;
-    width: 100%;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 3;
-    a {
-      display: block;
-      height: $vote_img_size;
-      width: $vote_img_size;
-      float: left;
-    }
-
-    .vote_bg {
-      display: block;
-      height: 100%;
-      width: 0;
-      background: transparent image-url('/images/thumb_up.png') left top repeat-x;
-      z-index: 2;
-    }
-
-    @for $i from 1 through 5 {
-      a.rate_#{$i}:hover ~ .vote_bg {
-        width: #{$vote_img_size * $i};
-      }
-    }
-  }
-
-  .voted {
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: transparent image-url('/images/thumb_up_voted.png') left top repeat-x;
-    z-index: 3;
-    opacity: 0.8;
-  }
-
-  .thanks {
-    display: block;
-    position: absolute;
-    font-size: 10px;
-    font-weight: bold;
-    bottom: -15px;
-    left: 0;
-  }
-}
-.rating_counter {
-  color: #555;
-  font-size: 11px;
-  position: absolute;
-  left: 125px;
-  bottom: 0px;
-}
+//   .actions {
+//     text-align: right;
+//     font-size: small;
+//     width: 5em;
+//   }
+// }
 
 // Showing product
-.product .show {
-  .image {
-    float: left;
-    margin: 10px;
+.products.show {
+  // .image {
+  //   float: left;
+  //   margin: 10px;
 
-    img {
-      max-height: 250px;
-      max-width: 250px;
-    }
-  }
+  //   img {
+  //     max-height: 250px;
+  //     max-width: 250px;
+  //   }
+  // }
   
-  .text_block {
-    position: absolute;
-    padding: 5px;
-    text-align: justify;
-    display: inline-block;
-    width: 635px;
-    overflow: hidden;
-  }
+  // .text_block {
+  //   position: absolute;
+  //   padding: 5px;
+  //   text-align: justify;
+  //   display: inline-block;
+  //   width: 635px;
+  //   overflow: hidden;
+  // }
   
-  .right_panel {
-    position: absolute;
-    right: 10px;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #888;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(131, 131, 131, 0.8);
-    text-align: right;
-    background: #F7F7F7;
-    width: 150px;
+  // .right_panel {
+  //   position: absolute;
+  //   right: 10px;
+  //   margin: 10px;
+  //   padding: 10px;
+  //   border: 1px solid #888;
+  //   border-radius: 5px;
+  //   box-shadow: 2px 2px 5px rgba(131, 131, 131, 0.8);
+  //   text-align: right;
+  //   background: #F7F7F7;
+  //   width: 150px;
 
-    & .add_to_cart {
-      margin: 20px 0px 5px 0px;
-    }
+  //   & .add_to_cart {
+  //     margin: 20px 0px 5px 0px;
+  //   }
 
-    .price {
-      margin: 2px;
-    }
+  //   .price {
+  //     margin: 2px;
+  //   }
 
-    .rating {
-      margin-top: 4px;
-      margin-right: 35px;
-    }
-  }
+  //   .rating {
+  //     margin-top: 4px;
+  //     margin-right: 35px;
+  //   }
+  // }
 
-}
+  // #breadcrumb {
+  //   margin-left: 10px;
+  //   font: 16px Arial,sans-serif;
+  // }
 
-#breadcrumbs {
-  margin-left: 10px;
-  font: 16px Arial,sans-serif;
 }
 
 .product_card {
@@ -216,16 +120,24 @@ $vote_img_size: 24px;
     display: inline-block;
   }
 
-  .text_block {
+  .thumb {
     display: inline-block;
-    width: 50%;
+
+    img {
+      height: 70px;
+      width: 70px;
+    }
+  }
+
+  .text_block {
     vertical-align: top;
     text-align: justify;
-    margin: 0px 20px;
   }
 
   .right_panel {
     display: inline-block;
     vertical-align: top;
+    text-align: right;
+
   }
 }

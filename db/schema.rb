@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407095743) do
+ActiveRecord::Schema.define(version: 20140423080541) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -20,6 +20,14 @@ ActiveRecord::Schema.define(version: 20140407095743) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "permalink"
+    t.boolean  "published",  default: false
+  end
+
+  create_table "bookmarks", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "product_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "carts", force: true do |t|
@@ -39,9 +47,12 @@ ActiveRecord::Schema.define(version: 20140407095743) do
 
   create_table "images", force: true do |t|
     t.string   "url"
-    t.string   "item_id"
+    t.string   "product_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "original_url"
+    t.string   "medium_url"
+    t.string   "thumbnail_url"
   end
 
   create_table "information", force: true do |t|
@@ -65,6 +76,15 @@ ActiveRecord::Schema.define(version: 20140407095743) do
 
   add_index "line_items", ["cart_id"], name: "index_line_items_on_cart_id", using: :btree
   add_index "line_items", ["product_id"], name: "index_line_items_on_product_id", using: :btree
+
+  create_table "menu_items", force: true do |t|
+    t.string   "title"
+    t.string   "permalink"
+    t.integer  "parent_id"
+    t.boolean  "published",  default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "orders", force: true do |t|
     t.string   "name"

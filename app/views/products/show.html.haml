@@ -1,37 +1,39 @@
-- if notice
-  %p#notice= notice
-
 - @page_title = @product.title
 - content_for :description, ((@product.description == '.') ? @product.long_name : @product.description)
 - content_for :keywords, @product.long_name
 - group = @product.group
 
-#breadcrumbs
+#breadcrumb.breadcrumb
   = link_to 'Каталог', store_path
-  >
-  = link_to (parent = group.parent).title, group_path(parent)
-  >
-  = link_to group.title, group_path(group, anchor: @product.permalink)
+  &rarr;
+  = link_to (parent = group.parent).title, group_path(id: parent.permalink)
+  &rarr;
+  = link_to group.title, group_path(pid: parent.permalink, id: group.permalink, anchor: @product.permalink)
 
 - query = [params[:q], params[:q].try(:parameterize)].select(&:present?)
 
-.product_card{id: @product.permalink}
-  .image= render 'shared/image', product: @product
+.product_card.container-fluid{id: @product.permalink}
+  .row
+    .image.col-md-3
+      = render 'shared/image', product: @product, size: 'md-sq'
+      .thumbnails
+        - @product.images.each do |i|
+          .thumb= link_to image_tag(i.thumbnail_url), i.original_url, data: {remote: i.medium_url}
 
-  .text_block
-    %h3
-      = highlight(@product.title, query)
+    .text_block.col-md-6
+      %h3
+        = highlight(@product.title, query)
 
-    %p
-      - if @product.description == '.'
-        = highlight(@product.long_name, query)
-      - else
-        = highlight(@product.description, query)
+      %p
+        - if @product.description == '.'
+          = highlight(@product.long_name, query)
+        - else
+          = highlight(@product.description, query)
 
-  .right_panel
-    %p.price= number_to_currency @product.price
-    .rating_wrapper= render 'shared/rating', product: @product
-    = render 'shared/add_to_cart', product: @product
+    .right_panel.col-md-3
+      %p.price= number_to_currency @product.price
+      .rating_wrapper= render 'shared/rating', product: @product
+      = render 'shared/add_to_cart', product: @product
 
-- if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
-  = link_to('Изменить', edit_product_path(@product))
+  - if session[:user_id] && User.find(session[:user_id]).user_group == 'admin'
+    = link_to('Изменить', edit_product_path(@product))

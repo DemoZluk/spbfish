@@ -22,7 +22,7 @@
         - @order.line_items.each do |line_item|
           %tr
             %td= line_item.product.long_name
-            %td.right= line_item.price
+            %td.right= number_to_currency line_item.price
             %td.quantity.right= line_item.quantity
             %td.price.right= number_to_currency(line_item.total_price)
       %tfoot 

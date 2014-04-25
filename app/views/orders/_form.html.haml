@@ -1,43 +1,47 @@
-= form_for @order do |f|
-  - if @order.errors.any?
-    #error_explanation
-      %h2= "Следующие ошибки не позволили сделать заказ:"
-      %ul
-        - @order.errors.full_messages.each do |msg|
-          %li= msg
+.col-sm-offset-3.col-sm-6
+  = form_for @order do |f|
+    - if @order.errors.any?
+      #error_explanation
+        %h2= "Следующие ошибки не позволили сделать заказ:"
+        %ul
+          - @order.errors.full_messages.each do |msg|
+            %li= msg
 
-  - info = current_user.try :information
-  .row
-    .form-group.col-md-12
-      = f.label(:name)
-      %span.required *
-      = f.text_field :name, class: 'form-control', placeholder: 'Иванов Иван Иванович', required: true, value: info.try(:name)
-  .row
-    .form-group.col-md-6
-      = f.label(:email)
-      %span.required *
-      = f.email_field :email, class: 'form-control', placeholder: "example@domain.com", required: true, value: current_user.try(:email)
-    .form-group.col-md-6
-      = f.label(:phone_number)
-      %span.required *
-      = f.text_field :phone_number, class: 'form-control', placeholder: "8-987-654-32-10", value: info.try(:phone_number), required: true
-  .row
-    .form-group.col-md-6
-      = f.label(:pay_type)
-      %span.required *
-      = f.select :pay_type, Order::PAYMENT_TYPES, prompt: 'Выберите способ оплаты', class: 'form-control', required: true
-    .form-group.col-md-6
-      = f.label(:shipping_date)
-      %span.required *
-      = f.text_field :shipping_date, class: 'form-control', placeholder: 'гггг-мм-дд', autocomplete: 'off'#, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
-  .row
-    .form-group.col-md-6
-      = f.label(:address)
-      %span.required
-      = f.text_area :address, class: 'form-control', placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', rows: 3, value: info.try(:address)
-    .form-group.col-md-6
-      = f.label(:comment)
-      %span.required 
-      = f.text_area :comment, class: 'form-control', placeholder: 'Ваши комментарии к заказу (максимум 200 символов)', rows: 3
-  .actions.pull-right
-    = f.submit 'Заказать', :class => 'order primary_button'
+    .row
+      .form-group.col-md-12
+        = f.label(:name)
+        %span.required *
+        = f.text_field :name, class: 'form-control', placeholder: 'Иванов Иван Иванович', required: true
+    .row
+      .form-group.col-md-6
+        = f.label(:email)
+        %span.required *
+        = f.email_field :email, class: 'form-control', placeholder: "example@domain.com", required: true
+      .form-group.col-md-6
+        = f.label(:phone_number)
+        %span.required *
+        = f.telephone_field :phone_number, class: 'form-control', placeholder: "8-987-654-32-10", required: true
+    .row
+      .form-group.col-md-6
+        = f.label(:pay_type)
+        %span.required *
+        = f.select :pay_type, Order::PAYMENT_TYPES, prompt: 'Выберите способ оплаты', class: 'form-control', required: true
+      .form-group.col-md-6
+        = f.label(:shipping_date)
+        %span.required *
+        = f.text_field :shipping_date, class: 'form-control', placeholder: 'гггг-мм-дд', autocomplete: 'off'#, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
+    .row
+      .form-group.col-md-6
+        = f.label(:address)
+        %span.required
+        = f.text_area :address, class: 'form-control', placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', rows: 3
+      .form-group.col-md-6
+        = f.label(:comment)
+        %span.required 
+        = f.text_area :comment, class: 'form-control', placeholder: 'Ваши комментарии к заказу (максимум 200 символов)', rows: 3
+    - if user_signed_in?
+      .pull-left
+        = check_box_tag 'remember', true, true
+        = label_tag 'remember', 'Запомнить данные'
+    .actions.pull-right
+      = f.submit ((action_name == 'edit') ? 'Обновить' : 'Заказать'), :class => 'order primary_button'

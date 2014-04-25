@@ -1,6 +1,6 @@
 .container-fluid
   .row
-    #search.col-lg-5
+    #search.col-lg-5{role: 'search'}
       = form_tag search_path, method: 'GET' do
         .input-group
           = text_field_tag 'q', params[:q], class: 'form-control', placeholder: 'Поиск', autocomplete: 'off'
@@ -18,7 +18,7 @@
             = render partial: 'shared/select', locals: {current: @per_page, array: ["10", "25", "50"], controller: 'store', action: 'change_user_prefs', param: 'per_page', name: 'per_page'}
           #sort
             %span Сортировать по
-            - sort_types = ['title', 'price', 'rating']
+            - sort_types = ['title', 'price']
             -# "Order items by" select pseudo-tag
             = render partial: 'shared/select', locals: {current: @order_by || 'title', array: sort_types, controller: controller_name, action: action_name, param: 'order_by', name: 'order_by'}
             = check_box_tag 'descending', true, (@desc), autocomplete: 'off'

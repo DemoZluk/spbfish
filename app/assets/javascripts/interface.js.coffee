@@ -18,7 +18,6 @@ clearForm = (form) ->
       this.selectedIndex = -1
 
 $(document).on 'page:change page:load ready', ->
-    
   $('.slider').each ->
     obj = $(this)
     min = parseFloat $(this).data('min')
@@ -36,8 +35,8 @@ $(document).on 'page:change page:load ready', ->
         $(this).closest('form').submit()
     })
 
-
   $('#search_help').tooltip({container: 'body'})
+  $('.add_to_bookmarks button').tooltip()
 
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}
@@ -61,11 +60,6 @@ $(document).on 'page:change page:load ready', ->
   #       $(this).children('.min').val(p[0])
   #       $(this).children('.max').val(p[1])
   #       $(this).children('.slider').slider( "option", "values", [ p[0], p[1] ] )
-
-  # window.onload = (e) ->
-  #   history.replaceState(null, null, document.URL)
-
-
 
 $(document).on 'click', '#reset_button', (e) ->
   e.preventDefault()
@@ -115,7 +109,7 @@ $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, s
     if (e.value == '' || $.inArray(e.name, ['authenticity_token', 'utf8']) != -1) then null else e
   filters = $.param arr
   settings.url = this.action + '?' + filters
-  history.pushState('document', document.title, settings.url)
+  history.pushState({turbolinks: true, url: settings.url}, document.title, settings.url)
 
 $(document).on 'click', '#close_cart', ->
   $('#cart_panel').hide('blind')

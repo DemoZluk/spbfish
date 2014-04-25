@@ -1,0 +1,7 @@
+%h1.underlined
+  = "Правка '#{@menu_item.title}'"
+  = link_to 'Назад', menu_items_path
+
+.container-fluid= render 'form'
+
+= link_to 'Открыть', @menu_item

@@ -1,6 +1,6 @@
 class Image < ActiveRecord::Base
   belongs_to :product
 
-  validates :item_id, presence: true
-  validates :url, presence: true, uniqueness: true
+  validates :product_id, presence: true
+  validates :url, uniqueness: true
 end

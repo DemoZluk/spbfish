@@ -42,4 +42,9 @@ $(document).on 'ajax:beforeSend', '.product', ->
 # Show cart
 $(document).on 'click', '#cart_block .cart_link', ->
   #$('.cart_block #cart_panel').show();
-  $('#cart_block #cart_panel').stop().toggle('blind', 500);
+  $('#cart_panel').stop().toggle('blind', 'fast');
+
+$(document).on 'mousedown', (e) ->
+    container = $('#cart_panel')
+    if !container.is(e.target) && container.has(e.target).length == 0
+        container.stop().hide('blind', 'fast')

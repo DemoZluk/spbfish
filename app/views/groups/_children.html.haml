@@ -3,6 +3,6 @@
     .children
       - @group.children.each do |child_group|
         .child_group_link
-          = link_to child_group do
+          = link_to group_path(pid: child_group.parent.permalink, id: child_group) do
             = image_tag 'no_photo.png', {alt: child_group.title}
             %span.link= child_group.title

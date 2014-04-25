@@ -1,9 +1,9 @@
 #encoding: utf-8
 class LineItemsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:create, :decrement, :increment, :destroy]
   include CurrentCart
   before_action :set_cart, only: [:index, :create, :destroy, :decrement, :increment]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement, :increment]
+  skip_before_action :authenticate_user!, only: [:create, :decrement, :increment, :destroy]
 
   # GET /line_items
   # GET /line_items.json

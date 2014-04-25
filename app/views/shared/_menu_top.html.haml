@@ -1,25 +1,21 @@
 %ul.parent
-  
+  -# application_helper: menu_item(path = {}, name = nil, html_options = nil, &block)
   - if current_user.try :role?
     %li
-      %span.btn.btn-gray Панель управления
+      %ul= menu_item(true, 'Панель управления')
       %ul.child
-        - if can?(:manage, Order)
-          %li= link_to('Заказы', orders_path)
-          %li= link_to('Корзины', carts_path)
-        - if can?(:manage, Product)
-          %li= link_to('Товары', products_path)
-        - if can?(:manage, User)
-          %li= link_to('Пользователи', users_path)
-        - if can?(:manage, @article)
-          %li= link_to('Статьи', articles_path)
-  %li= link_to 'Каталог', store_path, class: 'btn btn-gray'
-  %li= link_to 'О нас', '/about_us', class: 'btn btn-gray'
-  %li= link_to 'Контакты', store_path, class: 'btn btn-gray'
-  %li
-    = link_to 'Помощь', store_path, class: 'btn btn-gray'
-    %ul.child
-      %li= link_to 'Оплата', store_path
-      %li= link_to 'Как получить', store_path
-      %li= link_to 'Гарантия', store_path
-  %li= link_to 'Отзывы и пожелания', store_path, class: 'btn btn-gray'
+        %li= menu_item(can?(:manage, Order), 'Заказы', orders_path)
+        %li= menu_item(can?(:manage, Order), 'Корзины', carts_path)
+        %li= menu_item(can?(:manage, Product), 'Товары', products_path)
+        %li= menu_item(can?(:manage, User), 'Пользователи', users_path)
+        %li= menu_item(can?(:manage, @article), 'Статьи', articles_path)
+        %li= menu_item(can?(:manage, MenuItem), 'Меню', menu_items_path)
+  %li= link_to('Каталог', store_path, class: 'btn-gray')
+  - MenuItem.all_published.primary.each do |item|
+    %li
+      = menu_item(item.published?, item.title, item.permalink)
+      - if item.children.any?
+        %ul.child
+          - item.children.each do |child|
+            %li= menu_item(true, child.title, child.permalink)
+  %li= link_to('Отзывы и пожелания', store_path, class: 'btn-gray')

@@ -1,13 +1,12 @@
-- user = @user || current_user
 - if flash[:warning]
   .alert.alert-warning.alert-dismissable
     %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
     = flash[:warning]
-%h3
-  = "Привет, #{user.information.try(:name).presence || user.email}!" # greeting < users_helper.rb
-  .btn.btn-default= link_to 'Редактировать профиль', profile_edit_path
-%h2 Заказы
-- if user.all_orders.active.any?
+%h1.underlined
+  = "Привет, #{@user.information.try(:name).presence || @user.email}!" # greeting < users_helper.rb
+  = link_to 'Редактировать профиль', profile_edit_path
+%h3 Текущие заказы
+- if @user.all_orders.active.any?
   %table.table.table-striped.table-hover
     %thead 
       %tr 
@@ -15,26 +14,19 @@
         %th.center Дата
         %th.center Товары
         %th.center Сумма
-        %th.center Отменить
-    - user.all_orders.active.each do |order|
-      %tr 
-        %td= link_to order.id, order
-        %td= link_to order.created_at.to_formatted_s(format = :db), order
-        %td
-          %table 
-            - order.line_items.each do |item|
-              %tr 
-                %td.right= "#{item.quantity} × "
-                %td= link_to item.product.title, item.product
-        %td.bold.right= number_to_currency order.total_price
-        %td.right= link_to "×", cancel_order_path(order), data: { :confirm => 'Вы уверены?' }, class: 'bold btn btn-link'
+        %th.center Статус
+    %tbody
+      - @user.all_orders.active.each do |order|
+        %tr
+          = render order
+          %td.right= link_to "×", cancel_order_path(order), data: { :confirm => 'Вы уверены что хотите отменить заказ?' }, class: 'bold btn btn-link btn-lg' unless order.closed?
 - else
   У Вас нет активных заказов.
 
 %hr/ 
 
-%h2 История заказов
-- if user.all_orders.closed.any?
+%h3 История заказов
+- if @user.all_orders.closed.any?
   %table.history.table.table-striped.table-hover
     %thead 
       %tr 
@@ -42,17 +34,10 @@
         %th.center Дата
         %th.center Товары
         %th.center Сумма
+        %th.center Статус
     %tbody 
-      - user.all_orders.closed.each do |order|
-        %tr{valign: 'top'}
-          %td= link_to order.id, order
-          %td= link_to order.created_at.to_formatted_s(format = :db), order
-          %td
-            %table 
-              - order.line_items.each do |item|
-                %tr 
-                  %td.right= "#{item.quantity} × "
-                  %td= link_to item.product.title, item.product
-          %td.bold.right= number_to_currency order.total_price
+      - @user.all_orders.closed.each do |order|
+        %tr 
+          = render order
 - else
   История Ваших заказов пуста.

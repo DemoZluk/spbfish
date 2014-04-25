@@ -1,11 +1,23 @@
 module ApplicationHelper
 
+  def cache_if condition, name = {}, &block
+    if condition
+      cache name, &block
+    else
+      yield
+    end
+  end
+
+  def link_to_product product, html_options = {}, query = nil
+    link_to highlight(product.title, query), product_path(pgid: product.group.permalink, gid: product.group.parent.permalink, id: product.permalink, q: params[:q]), html_options
+  end
+
   def values_of prop
 
     # !!! Optimize later
 
     if @group
-      prods = @group.products
+      prods = @group.products.with_price
       Value.joins{products}.merge(prods).where{property_id == prop.id}.group{title}
       # prop_id = property.id
       # product_ids = @group.products.pluck(:id).uniq
@@ -60,6 +72,24 @@ module ApplicationHelper
 
   def max(obj, attribute)
     obj.maximum(attribute).ceil
+  end
+
+  def test &block
+    yield
+  end
+
+  def menu_item(condition, name, options = nil, html_options = {})
+    if condition
+      c = 'btn-gray'
+      c << ' current-page' if options == request.path
+      options == request.path
+      options
+      if options.present?
+        link_to(name, options, html_options.merge(class: c))
+      else
+        content_tag(:span, name, html_options.merge(class: c))
+      end
+    end
   end
 
   def hidden_div_if(condition, attributes = {}, &block)

@@ -7,13 +7,19 @@
           = render 'shared/filter'
     #main.col-lg-10.col-md-9.col-sm-9.col-xs-12
       %h1.underlined
-        - if controller_name == 'store'
+        - if @group
+          #breadcrumb
+            = link_to 'Каталог', store_path
+            &rarr;
+            - if pgroup = @group.parent
+              = link_to pgroup.title, pgroup
+              &rarr;
+            = (@page_title = @group.try :title) || t('.title')
+        - else
           - if action_name == 'search'
-            = "Поиск: #{params[:q] || ''}"
+            = "Поиск '#{params[:q] || ''}'"
           - else
             = t('.title')
-        - else
-          = (@page_title = @group.try :title) || t('.title')
 
       = render 'groups/children'
 

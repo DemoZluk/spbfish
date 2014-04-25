@@ -30,9 +30,15 @@ input[type='checkbox'], input[type='checkbox']~label {
   vertical-align: middle;
 }
 
-.img-s-sq, .img-s-sq img {
+.img-sm-sq, .img-sm-sq img {
   height: 135px;
   width: 135px;
+  display: inline-block;
+}
+
+.img-md-sq, .img-md-sq img {
+  height: 300px;
+  width: 300px;
   display: inline-block;
 }
 
@@ -84,6 +90,10 @@ form {
       text-decoration: underline;
     }
   }
+}
+
+.banner {
+  display: inline-block;
 }
 
 #header_wrapper {
@@ -180,8 +190,6 @@ form {
   }
 
   ul {
-    margin: 0;
-    padding: 0;
     z-index: 10;
 
     li {
@@ -224,7 +232,7 @@ form {
     top: 28px;
     right: -2px;
     display: none;
-    border-radius: 4px 0px 4px 4px;
+    border-radius: 6px 0px 6px 6px;
     background: #CCC;
 
     li {
@@ -232,8 +240,8 @@ form {
         padding: 8px;
       }
 
-      &:not(:last-child) {
-        border-bottom: 1px dotted;
+      &:not(:first-child) {
+        border-radius: 6px 0px 6px 6px;
       }
     }
   }
@@ -340,23 +348,21 @@ form {
 .bottom_panel {
   display: inline-block;
   background: #222;
+  color: #EEE;
+  font-weight: bold;
   width: 100%;
   height: $bottom_panel_height;
-  padding: 2px;
-  color: #EEE;
   position: fixed;
   clear: both;
   bottom: 0px;
   left: 0px;
-  padding: 8px;
   z-index: 999;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  font: {
-    weight: bold;
-  };
 
   .back-to-top {
+    display: inline-block;
+    padding: 7px;
     color: #B8FAC0;
   }
 }
@@ -438,7 +444,6 @@ form {
 }
 
 .price {
-  width: 100%;
   display: inline-block;
   color: #44a;
   font-weight: bold;

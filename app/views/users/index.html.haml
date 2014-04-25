@@ -1,4 +1,4 @@
-%h1 Список пользователей
+%h1.underlined Список пользователей
 
 %table.table
   %thead
@@ -21,7 +21,5 @@
           = link_to 'Профиль', user_path(id: user)
           %br
           = link_to 'Удалить', users_path(id: user), :method => :delete, :data => { :confirm => 'Вы действительно хотите удалить пользователя?' }
-
-%br
 
 =# link_to 'New User', new_user_path

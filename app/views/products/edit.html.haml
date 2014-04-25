@@ -1,7 +1,6 @@
-%h1 Измененить товара
+%h1
+  Измененить товар
+  = link_to 'Показать', @product
+  = link_to 'Назад', products_path
 
 = render 'form'
-
-= link_to 'Показать', @product
-\|
-= link_to 'Назад', products_path

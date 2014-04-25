@@ -1,9 +1,8 @@
 #encoding: utf-8
 class OrdersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:show, :new, :create]
   before_action :set_order, only: [:show, :edit, :update, :destroy, :check_if_empty, :cancel]
   before_action :check_if_empty, only: [:edit]
-  #before_action :check_date, only: [:create, :update]
+  skip_before_action :authenticate_user!, only: [:show, :new, :create]
 
   # GET /orders
   # GET /orders.json
@@ -23,8 +22,10 @@ class OrdersController < ApplicationController
     if @cart.line_items.empty?
       redirect_to :back, notice: I18n.t(:cart_is_empty)
     end
-
-    @order = Order.new
+    if user_signed_in?
+      info = {email: current_user.email}.merge(Hash(current_user.information.try(:attributes)))
+      @order = Order.new(info)
+    end
   end
 
   # GET /orders/1/edit
@@ -34,10 +35,12 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
+    if user_signed_in? && params[:remember]
+      info = Information.find_or_create_by(user_id: current_user.id)
+      info.update order_params.slice(*Information.column_names)
+    end
     total_price = @cart.total_price
-    p = order_params
-    p.merge!(user_id: current_user.try(:id))
-    p[:status] = 'Активен'
+    p = order_params.merge(user_id: current_user.try(:id), status: 'Активен')
     @order = Order.new(p)
     @order.token = params[:authenticity_token]
     @order.add_line_items_from_cart(@cart)
@@ -77,7 +80,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1.json
   def destroy
     number = @order.id
-    @order.destroy
+    @order.try(:destroy)
     respond_to do |format|
       format.html { redirect_to :back, flash: { warning: "Заказ № #{number} удалён"} }
       format.json { head :no_content }
@@ -92,6 +95,11 @@ class OrdersController < ApplicationController
       format.html { redirect_to :back, flash: { warning: "Заказ № #{number} отменён"} }
       format.json { head :no_content }
     end
+  end
+
+  def delete_multiple_orders
+    ids = params[:ids]
+    @orders = Order.where{id >> ids}
   end
 
   private

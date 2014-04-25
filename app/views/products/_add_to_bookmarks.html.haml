@@ -1,0 +1,6 @@
+- uid = current_user.id
+= button_to bookmark_product_path(product: product.permalink), title: "#{product.bookmarks.where{user_id == uid}.any? ? 'Убрать закладку' : 'Добавить закладку'}", data: {toggle: 'tooltip', placement: 'bottom'}, remote: true do
+  - if product.bookmarks.where{user_id == uid}.any?
+    = image_tag 'bookmark.png'
+  - else
+    = image_tag 'bookmark_new.png'

@@ -19,6 +19,9 @@
 //= require turbolinks
 //= require_tree .
 
+document.createElement('aside');
+document.createElement('article');
+
 Turbolinks.enableTransitionCache();
 
 $(document).on('ready page:change page:load', function() {

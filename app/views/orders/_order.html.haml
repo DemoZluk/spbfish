@@ -1,0 +1,11 @@
+%td= link_to order.id, order
+%td= link_to order.created_at.to_formatted_s(format = :db), order
+%td
+  %table 
+    - order.line_items.each do |item|
+      %tr 
+        %td.right= item.quantity
+        %td ×
+        %td= link_to_product item.product
+%td.bold.right= number_to_currency order.total_price
+%td.bold.center= order.status

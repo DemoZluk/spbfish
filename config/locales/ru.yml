@@ -61,10 +61,15 @@ ru:
     show:
       article_doesnt_exist: Страницы не существует
 
+  menu_items:
+    update:
+      successfully_updated: Обновлён
+
   activerecord:
     models:
       user: Пользователь
       order: Заказ
+      menu_item: Меню
     attributes:
       order:
         address: Адрес
@@ -88,6 +93,11 @@ ru:
         body: Тело
         author: Автор
         permalink: Ссылка
+      menu_item:
+        title: Заголовок
+        permalink: Ссылка
+        parent_id: Родитель
+        published: Опубликовано
 
   number:
     currency:
@@ -136,6 +146,7 @@ ru:
 
   devise:
     confirmations:
+      confirmation_token: Код подтверждения
       confirmed: "Ваша учётная запись подтверждена. Теперь Вы можете войти в систему."
       send_instructions: "В течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
       send_paranoid_instructions: "Если ваш адрес email есть в нашей базе данных, то в течение нескольких минут вы получите письмо с инструкциями по подтверждению вашей учётной записи."
@@ -198,3 +209,5 @@ ru:
         few: "%{resource}: сохранение не удалось из-за %{count} ошибок"
         many: "%{resource}: сохранение не удалось из-за %{count} ошибок"
         other: "%{resource}: сохранение не удалось из-за %{count} ошибки"
+    menu_item:
+      cannot_be_parent_of_self: не может совпадать с собственным идентификатором.

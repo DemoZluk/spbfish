@@ -2,18 +2,23 @@ Fishmarkt::Application.routes.draw do
 
   root 'store#index', as: 'store'
 
+  resources :menu_items
+
+  get 'catalog', to: 'store#index'
+  get '/catalog(/:pid)/:id' => 'groups#show', as: :group
   resources :catalog,  controller: 'groups', as: 'group' do
     # get ':id/page=:page', action: :show, on: :collection
   end
-  post '/catalog/:id' => 'groups#show'
 
-  get 'catalog', to: 'store#index'
-
+  get '/catalog(/:pgid)(/:gid)/:id' => 'products#show', as: :product
   resources :products do
     get :who_bought, on: :member
     get :vote, on: :member
   end
   get '/search' => 'products#search'
+
+  post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product
+  resources :bookmarks
 
   resources :line_items do
     member do
@@ -22,14 +27,15 @@ Fishmarkt::Application.routes.draw do
     end
   end
 
-  get 'cart' => "carts#show"
-  delete 'cart' => "carts#destroy"
-  get 'cart/:cid/edit' => "carts#edit", as: :edit_cart
-  resources :carts
+  get 'cart' => "carts#show", as: :cart
+  delete 'cart' => 'carts#clear'
+  resources :carts, param: :cid do
+  end
 
   resources :orders do
     get 'cancel', on: :member
   end
+  delete 'delete_orders' => 'orders#destroy', as: :destroy
 
   get 'profile' => 'users#show', as: 'user_root'
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
@@ -37,7 +43,7 @@ Fishmarkt::Application.routes.draw do
   devise_scope :user do
     post '/profile/add_data' => 'users#add_data', as: :add_data
     get 'login' => "users/sessions#new"
-    post 'login' => "users/sessions#create"
+    post 'login' => "users/sessions#create", constraints: {subdomain: 'secure'}
     delete 'logout' => "users/sessions#destroy"
     get 'sign_up' => "users/registrations#new"
     get 'profile/edit' => "devise/registrations#edit"
@@ -50,7 +56,9 @@ Fishmarkt::Application.routes.draw do
   get 'merge_yes' => 'carts#merge_yes'
   get 'merge_no' => 'carts#merge_no'
 
-  get 'admin' => 'admin#index'
+  namespace :admin do
+    root 'admin#index'
+  end
 
   resources :articles do
   end

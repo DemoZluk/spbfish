@@ -1,5 +1,6 @@
 class GroupsController < ApplicationController
   include CurrentSettings
+  include CurrentProducts
 
   before_action :change_user_prefs, :set_group, :set_products
   skip_before_action :authenticate_user!, only: [:show]

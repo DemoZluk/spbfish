@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.0'
+gem 'activerecord', '4.0'
 
 # Need pg for heroku
 # group :production, :staging do
@@ -24,7 +25,6 @@ group :development do
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano-rvm'
   gem 'capistrano-bundler', '>=1.1.0'
-  #gem "sqlite3"
 end
 
 
@@ -74,7 +74,7 @@ gem 'roadie'
 gem "letter_opener", group: :development
 
 # Paperclip - attachment manager
-gem 'paperclip'
+gem 'paperclip', '~> 4.1'
 
 # Pageinate results
 gem 'kaminari'
@@ -89,7 +89,6 @@ gem 'devise'
 gem 'cancan'
 
 # Create thumbnails
-gem 'carrierwave'
 gem 'mini_magick'
 
 # Alternative server to WEBrick

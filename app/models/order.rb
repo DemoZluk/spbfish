@@ -5,16 +5,16 @@ class Order < ActiveRecord::Base
   belongs_to :user
 
   PAYMENT_TYPES = ['Наличный', 'Безналичный']
-  ORDER_STATUS = ['Активен','В пути','Отменён','Закрыт']
+  ORDER_STATUS = [['Активен','В пути'],['Отменён','Закрыт']]
   validates :name, :email, :shipping_date, :phone_number, presence: true
   validates :address, presence: true, unless: 'pay_type == "Самовывоз"'
   validates :pay_type, inclusion: PAYMENT_TYPES
-  validates :status, inclusion: ORDER_STATUS, allow_blank: true
+  validates :status, inclusion: ORDER_STATUS.flatten, allow_blank: true
   validates :comment, length: {maximum: 200}
   validate :check_date
 
-  scope :active, -> { where{status >> ['Активен', 'В пути']} }
-  scope :closed, -> { where{status >> ['Отменён', 'Закрыт']} }
+  scope :active, -> { where{status >> ORDER_STATUS[0]} }
+  scope :closed, -> { where{status >> ORDER_STATUS[1]} }
 
   def check_date
     if shipping_date.present? && (shipping_date < DateTime.tomorrow || shipping_date > DateTime.current+60)
@@ -27,6 +27,10 @@ class Order < ActiveRecord::Base
       item.cart_id = nil
       line_items << item
     end
+  end
+
+  def closed?
+    ORDER_STATUS[1].include?(status)
   end
 
   def total_price

@@ -3,8 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   include CurrentCart
   before_action :set_cart, :authenticate_user!
-  before_action :configure_permitted_parameters, if: :devise_controller?
   protect_from_forgery with: :exception
+  after_action :no_cache
   #rescue ErrorReporter.report_error.deliver
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -12,10 +12,14 @@ class ApplicationController < ActionController::Base
     redirect_to store_url
   end
 
-  protected
-
-    def configure_permitted_parameters
-      devise_parameter_sanitizer.for(:account_update) << :login
+  def no_cache
+    if request.xhr?
+        response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
     end
+  end
+
+  protected
     
 end

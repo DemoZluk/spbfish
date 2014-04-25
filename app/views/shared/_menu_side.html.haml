@@ -1,7 +1,7 @@
-- cache "groups/#{Group.maximum(:updated_at).utc.try(:to_s, :number)}" do
-  .side-panel
+- cache "groups/#{Group.maximum(:updated_at).utc.try(:to_s, :number)}#{request.path}" do
+  %aside.side-panel
     .show_hide_tree ▼ Каталог ▼
     %nav.menu_side
       %ul
         - Group.where(parent_id: '').each do |group|
-          = menu_for_group(group).html_safe
+          = menu_for_group(group)

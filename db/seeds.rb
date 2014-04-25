@@ -5,13 +5,13 @@
 require "highline/import"
 
 def main
-  # open_files
-  # create_groups
-  # create_properties
-  # create_products_and_values
-  # setup_prices
-  # add_values_to_values
-  # init_roles
+  open_files
+  create_groups
+  create_properties
+  create_products_and_values
+  setup_prices
+  add_values_to_values
+  init_roles
   create_first_admin_user
 end
 
@@ -121,7 +121,7 @@ def create_products_and_values
       product.css('Картинка').each do |img|
         Image.create(
           url: img.content,
-          item_id: product.at_css('>Ид').content
+          product_id: prod.id
         )
       end
     end

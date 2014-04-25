@@ -23,6 +23,7 @@ class UsersController < ApplicationController
         redirect_to store_path, error: t('.not_admin')
       end
     else
+      @user = current_user
       render :show
     end
   end

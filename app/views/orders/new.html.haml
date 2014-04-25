@@ -1,8 +1,7 @@
-%h1 Оформить заказ
+%h1.inderlined
+  Оформить заказ
+  = link_to 'Назад', :back
 
 %fieldset.order.container-fluid
   %legend Информация по заказу
-  .col-sm-offset-3.col-sm-6
-    = render 'form'
-  
-    = link_to 'Назад', :back, class: 'btn btn-default'
+  .row= render 'form'

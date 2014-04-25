@@ -6,16 +6,19 @@
   - lis = @cart.line_items.page(params[:li_page])
   %table.item_table
     %colgroup 
-      %col{width: '10%'}
-      %col{width: '50%'}
-      %col{width: '35%'}
-      %col{width: '5%'}
+      %col
+      %col
+      %col{width: '55%'}
+      %col{width: '30%'}
+      %col
     = render(partial: 'line_items/line_item', collection: lis, controller: 'line_item')
     %tfoot
-      %td{colspan: 2} Итого
+      %td
+      %td
+      %td.left Итого
       %td.grand_total.right= render('shared/grand_total')
       %td
-      %td.clear_cart= button_to('×', cart_path, method: :delete, data: { confirm: 'Вы уверены?' }, remote: true)
+      %td.clear_cart= button_to('×', cart_path, method: :delete, class: 'btn btn-default btn-xs bold', data: { confirm: 'Вы уверены, что хотите убрать все товары из корзины?' }, remote: true)
   = paginate(lis, param_name: 'li_page', remote: true, params: {controller: 'line_items', action: 'index'})
 = content_tag :div, '×', id: 'close_cart', class: 'close' unless controller_name == 'carts'
 -# = link_to('Изменить', edit_cart_path(cart))

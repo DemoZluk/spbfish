@@ -1,12 +1,11 @@
 .row
-  .col-md-2.col-xs-0
-  .col-md-8.col-xs-12
-    %h2= @article.title
+  %article.col-md-offset-2.col-md-8.col-xs-12
+    %h2
+      = @article.title
+      - if can? :manage, @article
+        = link_to 'К списку статей', articles_path, class: 'btn btn-default'
+        = link_to 'Изменить', edit_article_path(@article), class: 'btn btn-primary'
     .body
       %p= @article.body.html_safe
 
-    - if current_user.try :admin?
-      = link_to 'Изменить', edit_article_path(@article)
-      \ | 
-      = link_to 'К списку статей', articles_path
   .col-md-2.col-xs-0
