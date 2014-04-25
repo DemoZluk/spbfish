@@ -12,6 +12,7 @@ db/*.sqlite3*
 config/database.yml
 
 /public/images/
+/public/catalog/
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
