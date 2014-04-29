@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.0'
-gem 'activerecord', '4.0'
+gem 'activerecord', '< 4.1'
 
 # Need pg for heroku
 # group :production, :staging do
