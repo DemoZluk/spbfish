@@ -4,4 +4,4 @@
   %td.name.left= link_to_product line_item.product
   %td.total.right= number_to_currency(line_item.total_price)
   %td.decrement= button_to('-1', decrement_line_item_path(line_item.id), class: 'btn btn-default btn-xs bold', remote: true)
-  %td.delete= button_to('×', line_item, method: :delete, class: 'btn btn-default btn-xs bold', data: { confirm: 'Вы уверены?' }, remote: true)
+  %td.delete= button_to('×', line_item, method: :delete, class: 'btn btn-default btn-xs bold', data: { confirm: "Удалить #{line_item.product.title} из корзины?" }, remote: true)

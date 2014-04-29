@@ -1,4 +1,3 @@
-
 $(document).on "page:change page:load ready", ->
   # Hide notice after 2 seconds
   $('#error').delay(2000).slideUp(500);

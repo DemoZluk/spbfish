@@ -55,7 +55,7 @@ module ApplicationHelper
   end
 
   def eql item, current
-    t('selection_labels.' + item) == t('selection_labels.' + current)
+    t('selection_labels.' + item.to_s) == t('selection_labels.' + current.to_s)
   end
 
   def selection_label(current)

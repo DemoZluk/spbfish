@@ -27,6 +27,8 @@ $(document).on "ready page:change", ->
   #   -> $('#cart').stop().hide(500)
   # )
 
+$(document).on 'click', '#close_cart', ->
+  $('#cart_panel').hide('blind')
 
 $(document).on 'click', 'input.minus', ->
   input = $(this).closest('form').siblings('input[type=text]')
@@ -40,11 +42,14 @@ $(document).on 'ajax:beforeSend', '.product', ->
   # alert ''
 
 # Show cart
-$(document).on 'click', '#cart_block .cart_link', ->
+$(document).on 'click', '#cart_block .cart_link', (e) ->
   #$('.cart_block #cart_panel').show();
-  $('#cart_panel').stop().toggle('blind', 'fast');
+  if $('#cart').html() != ''
+    e.preventDefault()
+    $('#cart_panel').stop().toggle('blind', 'fast')
 
 $(document).on 'mousedown', (e) ->
     container = $('#cart_panel')
-    if !container.is(e.target) && container.has(e.target).length == 0
+    buy_btn = $('.add_to_cart button, .add_to_cart input')
+    if !container.is(e.target) && !buy_btn.is(e.target) && container.has(e.target).length == 0
         container.stop().hide('blind', 'fast')

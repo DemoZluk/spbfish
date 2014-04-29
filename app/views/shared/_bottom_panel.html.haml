@@ -8,8 +8,14 @@
         %span.grand_total= render('shared/grand_total')
       #cart_panel{ style: "display: #{flash[:merge_carts?] ? 'block' : 'none'};" }
         - if @cart
-          #cart= render('shared/cart', cart: @cart)
+          #cart=# render('shared/cart', cart: @cart)
       
       = button_to('Заказать', new_order_path, style: ((controller_name == 'orders') ? ("display: none") : false), class:  'order primary_button', method: :get, autocomplete: 'off')
   .pull-right= link_to 'Наверх', '#top', class: 'back-to-top'
-  .bookmarks_list.pull-right= render 'shared/bookmarks_panel'
+  
+  - if user_signed_in?
+    #bookmarks_list.pull-right
+      .bookmarks
+        = link_to bookmarks_path, remote: true do
+          = image_tag 'bookmark-20x20.png'
+      .list=# render 'shared/bookmarks_table'

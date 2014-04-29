@@ -4,7 +4,6 @@
 
 .add_to_bookmarks {
   display: inline-block;
-  vertical-align: super;
 
   button {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
@@ -19,7 +18,7 @@
   }
 }
 
-.bookmarks_list {
+#bookmarks_list {
   display: inline-block;
   margin-right: 10px;
   position: relative;
@@ -66,10 +65,66 @@
     a {
       color: #B8FAC0;
     }
+  }
 
-    td {
-      padding: 1px 5px;
+  #bm-thead {
+    padding: 5px 10px;
+
+    .col {
+      margin-right: 10px;
+
+      a {
+        position: relative;
+
+        &.asc:before {
+          border-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0) #B8FAC0;
+          border-style: solid;
+          border-width: 8px 4px;
+          content: "";
+          position: absolute;
+          right: -13px;
+          top: -2px;
+        }
+
+        &.desc:before {
+          border-color: #B8FAC0 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+          border-style: solid;
+          border-width: 8px 4px;
+          content: "";
+          position: absolute;
+          right: -13px;
+          top: 7px;
+        }
+      }
     }
   }
 
+  #bm-table {
+    width: 100%;
+    max-height: 400px;
+    overflow: auto;
+  }
+
+  table {
+    td, th {
+      padding: 1px 5px;
+    }
+
+    td:first-child {
+      width: 0;
+    }
+
+    td:last-child {
+      width: 0;
+
+      a.btn-sm {
+        font-size: 16px;
+        font-weight: bold;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
 }

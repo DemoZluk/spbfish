@@ -190,3 +190,10 @@ hr {
 .entry .head > div {
   @include make-row(16);
 }
+
+.checkbox {
+  padding-left: 20px;
+  label {
+    padding-left: 0;
+  }
+}

@@ -111,9 +111,6 @@ $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, s
   settings.url = this.action + '?' + filters
   history.pushState({turbolinks: true, url: settings.url}, document.title, settings.url)
 
-$(document).on 'click', '#close_cart', ->
-  $('#cart_panel').hide('blind')
-
   # $('#price-slider').slider({
   #   range: true,
   #   min: $("#minPrice").data('min')

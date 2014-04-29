@@ -4,7 +4,15 @@ class BookmarksController < ApplicationController
   # GET /bookmarks
   # GET /bookmarks.json
   def index
-    @bookmarks = Bookmark.all
+    @bookmarks = if order_params.match 'product_id'
+      if order_params.match 'desc'
+        current_user.bookmarks.joins{product}.order{product.title.desc}
+      else
+        current_user.bookmarks.joins{product}.order{product.title}
+      end
+    else
+      current_user.bookmarks.order(order_params)
+    end
   end
 
   # GET /bookmarks/1
@@ -38,6 +46,7 @@ class BookmarksController < ApplicationController
   end
 
   def bookmark_product
+    index
     @product = Product.find_by(permalink: params[:product])
     if @bookmark = Bookmark.find_by(product_id: @product.id, user_id: current_user.id)
       @bookmark.destroy
@@ -96,5 +105,11 @@ class BookmarksController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def bookmark_params
       params.require(:bookmark).permit(:product_id)
+    end
+
+    def order_params
+      desc = ['asc', 'desc'].include?(params[:type]) ? params[:type] : 'desc'
+      @sort = Bookmark.column_names.include?(params[:sort]) ? params[:sort] : 'created_at'
+      @sort += ' ' + desc
     end
 end

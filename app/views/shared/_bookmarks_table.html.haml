@@ -1,0 +1,14 @@
+#bm-thead.content-fluid.center
+  .row
+    .col.col-xs-3= link_to "Дата", bookmarks_path(sort: 'created_at', type: 'desc'), class: 'desc', data: {sort: 'created_at'}, remote: true
+    .col.col-xs-7= link_to 'Товар', bookmarks_path(sort: 'product_id', type: 'asc'), data: {sort: 'product_id'}, remote: true
+#bm-table
+  %table
+    %tbody
+      - if @bookmarks.any?
+        = render @bookmarks
+      - else
+        %td.center
+          Нет закладок.
+          %br/
+          Вы можете добавить их, щёлкая по звёздочке рядом с названием товара, чтобы потом к нему вернуться в любое время.

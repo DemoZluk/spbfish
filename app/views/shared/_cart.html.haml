@@ -1,9 +1,9 @@
 - if @cart.line_items.empty?
   %strong Ваша корзина пуста
 - else
-  - if controller_name != 'carts'
-    %h4= link_to('Перейти в корзину', cart_path, id: 'cart_link')
-  - lis = @cart.line_items.page(params[:li_page])
+  %h4.center= link_to('Перейти в корзину', cart_path, id: 'cart_link')
+
+  - line_items = @cart.line_items.page(params[:li_page])
   %table.item_table
     %colgroup 
       %col
@@ -11,7 +11,7 @@
       %col{width: '55%'}
       %col{width: '30%'}
       %col
-    = render(partial: 'line_items/line_item', collection: lis, controller: 'line_item')
+    = render line_items
     %tfoot
       %td
       %td
@@ -19,8 +19,9 @@
       %td.grand_total.right= render('shared/grand_total')
       %td
       %td.clear_cart= button_to('×', cart_path, method: :delete, class: 'btn btn-default btn-xs bold', data: { confirm: 'Вы уверены, что хотите убрать все товары из корзины?' }, remote: true)
-  = paginate(lis, param_name: 'li_page', remote: true, params: {controller: 'line_items', action: 'index'})
-= content_tag :div, '×', id: 'close_cart', class: 'close' unless controller_name == 'carts'
+  = paginate(line_items, param_name: 'li_page', remote: true, params: {controller: 'line_items', action: 'index'})
+  = content_tag :div, '×', id: 'close_cart', class: 'close'
+
 -# = link_to('Изменить', edit_cart_path(cart))
 -# \|
 -# = link_to('Назад', carts_path)

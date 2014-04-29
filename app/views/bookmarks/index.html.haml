@@ -3,15 +3,13 @@
 
 %table.table
   %tr
-    %th Пользователь
-    %th Товар
-    %th Действия
+    %th.center Дата
+    %th.center Товар
+    %th.center
 
   - @bookmarks.each do |bookmark|
     %tr
-      %td= bookmark.user_id
+      %td= bookmark.created_at.strftime("%y.%m.%d")
       %td= link_to_product Product.find(bookmark.product_id)
       %td
-        = link_to 'Показать', bookmark
-        = link_to 'Правка', edit_bookmark_path(bookmark)
-        = link_to "×", bookmark, :method => :delete, :data => { :confirm => 'Уверены?' }
+        = link_to "×", bookmark, :method => :delete, class: 'btn btn-sm btn-link', :data => { :confirm => 'Уверены?' }
