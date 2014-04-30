@@ -57,7 +57,11 @@
 // }
 
 // Showing product
-.products.show {
+.product_card {
+
+  .price {
+    font-size: 15px;
+  }
   // .image {
   //   float: left;
   //   margin: 10px;

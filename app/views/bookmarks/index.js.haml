@@ -1,12 +1,15 @@
 $('#bookmarks_list .bookmarks > a').removeAttr('data-remote')
 $('#bookmarks_list .list').html("#{ j render 'shared/bookmarks_table' }")
-- sort = @sort.split[0]
-- type = @sort.split[1].try(:downcase) || 'asc'
-object = $("#bookmarks_list .col > a[data-sort=#{sort}]")
-- if type == 'asc'
-  object.attr('href', function(i, href) {return href.replace('asc', 'desc')})
-- else
-  object.attr('href', function(i, href) {return href.replace('desc', 'asc')})
-$("#bookmarks_list .col > a").removeClass()
-object.attr('class', "#{type}")
+
+- if @bookmarks.any?
+  - sort = @sort.split[0]
+  - type = @sort.split[1].try(:downcase) || 'asc'
+  object = $("#bookmarks_list .col > a[data-sort=#{sort}]")
+  - if type == 'asc'
+    object.attr('href', function(i, href) {return href.replace('asc', 'desc')})
+  - else
+    object.attr('href', function(i, href) {return href.replace('desc', 'asc')})
+  $("#bookmarks_list .col > a").removeClass()
+  object.attr('class', "#{type}")
+
 $('#bookmarks_list .list').fadeIn('fast')

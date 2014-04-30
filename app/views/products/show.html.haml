@@ -15,7 +15,7 @@
 .product_card.container-fluid{id: @product.permalink}
   .row
     .image.col-md-3
-      = render 'shared/image', product: @product, size: 'md-sq'
+      = render 'shared/image', product: @product, size: 'r'
       .thumbnails
         - @product.images.each do |i|
           .thumb= link_to image_tag(i.thumbnail_url), i.original_url, data: {remote: i.medium_url}
@@ -29,6 +29,16 @@
           = highlight(@product.long_name, query)
         - else
           = highlight(@product.description, query)
+
+      %table.table.properties
+        %colgroup
+          %col{width: '50%'}
+          %col{width: '50%'}
+        - @product.values.each do |val|
+          - title = val.property.title.split(',')
+          %tr
+            %td.bold= title[0]
+            %td= val.title + "#{title[1]}"
 
     .right_panel.col-md-3
       %p.price= number_to_currency @product.price

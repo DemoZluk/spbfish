@@ -17,6 +17,11 @@ h1.underlined {
   border-bottom: 3px dotted #77d;
 }
 
+mark {
+  padding: 2px 0;
+  background-color: #FF0;
+}
+
 /* An entry in the store catalog */
 .entry {
   position: relative;

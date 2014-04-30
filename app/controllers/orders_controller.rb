@@ -25,6 +25,8 @@ class OrdersController < ApplicationController
     if user_signed_in?
       info = {email: current_user.email}.merge(Hash(current_user.information.try(:attributes)))
       @order = Order.new(info)
+    else
+      @order = Order.new
     end
   end
 

@@ -13,9 +13,6 @@ module ApplicationHelper
   end
 
   def values_of prop
-
-    # !!! Optimize later
-
     if @group
       prods = @group.products.with_price
       Value.joins{products}.merge(prods).where{property_id == prop.id}.group{title}

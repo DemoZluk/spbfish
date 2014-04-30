@@ -23,7 +23,7 @@ def open_files
 end
 
 def create_groups
-  puts "Creating groups"
+  puts "+ Creating groups"
 
   groups = @doc.xpath('//Группы/descendant::Группа')
   groups_progress = ProgressBar.create(total: groups.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -50,7 +50,7 @@ def create_groups
 end
 
 def create_properties
-  puts "Creating Properties"
+  puts "+ Creating Properties"
 
   props = @doc.css('Свойство')
   props_progress = ProgressBar.create(total: props.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -76,7 +76,7 @@ def create_properties
 end
 
 def create_products_and_values
-  puts "Creating Products and Values"
+  puts "+ Creating Products and Values"
 
   prods = @doc.css('Товар')
   prods_progress = ProgressBar.create(total: prods.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
@@ -133,7 +133,7 @@ def create_products_and_values
 end
 
 def setup_prices
-  puts "Setting prices"
+  puts "+ Setting prices"
 
   prices = Nokogiri::XML(@offers).css('Предложение')
   if prices.size > 0
@@ -166,7 +166,7 @@ end
 
 
 def add_values_to_values
-  puts "Populating value attribute"
+  puts "+ Populating value attribute"
 
   values_progress = ProgressBar.create(total: Value.all.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   Value.all.each do |val|
@@ -189,7 +189,7 @@ def init_roles
 end
 
 def create_first_admin_user
-  puts "Creating first user with admin priveleges:"
+  puts "+ Creating first user with admin priveleges:"
   email = HighLine.ask('email: '){|q| q.case = :down; q.validate = /[a-z][\w\.\-]+@([a-z]+[\w\-]+\.)+[a-z]{2,5}/}
   f = ''
   while f != 'y'
