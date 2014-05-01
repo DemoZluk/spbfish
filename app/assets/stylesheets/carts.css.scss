@@ -91,7 +91,7 @@
     border-radius: 10px;
 
     &:hover {
-      border-color: #7D7;
+      border-color: #428BCA;
       background: #EEE;
     }
 
@@ -113,6 +113,11 @@
         min-width: 130px;
       }
     }
+  }
+
+  .product-image {
+    height: 85px;
+    width: 85px;
   }
 }
 

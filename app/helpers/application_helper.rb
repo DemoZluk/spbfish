@@ -8,10 +8,6 @@ module ApplicationHelper
     end
   end
 
-  def link_to_product product, html_options = {}, query = nil
-    link_to highlight(product.title, query), product_path(pgid: product.group.permalink, gid: product.group.parent.permalink, id: product.permalink, q: params[:q]), html_options
-  end
-
   def values_of prop
     if @group
       prods = @group.products.with_price
@@ -45,12 +41,6 @@ module ApplicationHelper
     title = (@page_title || t(params[:controller])[params[:action].to_sym][:title]) + ' - ' + default rescue default
   end
 
-  def display_product_image(item_id)
-    if item = ProductImage.where(item_id: item_id).presence
-      item.map {|i| i.url}
-    end
-  end
-
   def eql item, current
     t('selection_labels.' + item.to_s) == t('selection_labels.' + current.to_s)
   end
@@ -69,10 +59,6 @@ module ApplicationHelper
 
   def max(obj, attribute)
     obj.maximum(attribute).ceil
-  end
-
-  def test &block
-    yield
   end
 
   def menu_item(condition, name, options = nil, html_options = {})

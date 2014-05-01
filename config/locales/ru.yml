@@ -71,7 +71,15 @@ ru:
       user: Пользователь
       order: Заказ
       menu_item: Меню
+      products: Товар
     attributes:
+      product:
+        title: Наименование
+        long_name: Наименование для печати
+        price: Цена
+        description: Описание
+        html_keywords: Ключевые слова
+        html_description: html-описание
       order:
         address: Адрес
         name: Имя
@@ -106,10 +114,6 @@ ru:
         separator: ","
   helpers:
     label:
-      product:
-        title: Наименование
-        description: Описание
-        price: Цена
       order:
         name: ФИО
         address: Адрес

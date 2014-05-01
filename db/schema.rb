@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140423080541) do
+ActiveRecord::Schema.define(version: 20140430133804) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -112,13 +112,15 @@ ActiveRecord::Schema.define(version: 20140423080541) do
     t.string   "title"
     t.string   "long_name"
     t.text     "description"
-    t.float    "price",       default: 0.0, null: false
+    t.float    "price",            default: 0.0, null: false
     t.string   "producer"
     t.string   "item_id"
     t.string   "group_id"
     t.string   "permalink"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "html_keywords"
+    t.string   "html_description"
   end
 
   create_table "properties", force: true do |t|

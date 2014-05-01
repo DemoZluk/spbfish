@@ -39,7 +39,7 @@ module CurrentProducts
         c = 0
         c += Value.uniq.where{id >> flt}.group_by{|value| value.property_id}.count if flt
         c += params[:r].keep_if{|k,v| v.reject(&:empty?).any?}.count if rng
-        
+
         products = products.where(query.join(' OR ').gsub(/'/, '"')).group{id}.having{count(product_property_values.property_id) >= c}
       end
     end

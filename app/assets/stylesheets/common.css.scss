@@ -20,12 +20,6 @@ ul {
   }
 }
 
-input[type='text'], input[type='email'], input[type='password'], textarea {
-  border: 1px solid rgb(149, 149, 148);
-  border-radius: 3px;
-  outline: none;
-}
-
 input[type='checkbox'], input[type='checkbox']~label {
   vertical-align: middle;
 }
@@ -43,7 +37,6 @@ input[type='checkbox'], input[type='checkbox']~label {
 }
 
 .img-r, .img-r img {
-  height: 100%;
   width: 100%;
   display: inline-block;
   vertical-align: top;

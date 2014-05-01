@@ -14,7 +14,7 @@ class Product < ActiveRecord::Base
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
-  validates :title, :description, presence: true
+  validates :title, :long_name, presence: true
   validates :price, numericality: {greater_than_or_equal_to: 0.00}
   validates :title, uniqueness: true
 
@@ -62,10 +62,10 @@ class Product < ActiveRecord::Base
   # end
 
   def desc
-    if self.description == '.'
+    if description == '.' || description == ''
       long_name
     else
-      self.description
+      description
     end
   end
 

@@ -1,22 +1,30 @@
 = form_for @product, :html => { :multipart => true } do |f|
-  - if @product.errors.any?
-    #error_explanation
-      %h2= "При вводе были допущены следующие ошибки:"
-      %ul
-        - @product.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    = f.label :title
-    %br
-    = f.text_field :title
-  .field
-    = f.label :description
-    %br
-    = f.text_area :description, rows: 6, cols: 35
-  .field
-    = f.label :price
-    %br
-    = f.text_field :price
-  .actions
-    = f.submit 'Сохранить'
+  .conteiner-fluid
+    .row
+      .col-sm-offset-2.col-sm-8.col-lg-offset-3.col-lg-6
+        - if @product.errors.any?
+          #error_explanation
+            %h2= "При вводе были допущены следующие ошибки:"
+            %ul
+              - @product.errors.full_messages.each do |msg|
+                %li= msg
+        .field
+          = f.label :title
+          = f.text_field :title
+        .field
+          = f.label :long_name
+          = f.text_field :long_name
+        .field
+          = f.label :description
+          = f.text_area :description, rows: 6
+        .field
+          = f.label :price
+          = f.text_field :price
+        .field
+          = f.label :html_keywords
+          = f.text_field :html_keywords
+        .field
+          = f.label :html_description
+          = f.text_field :html_description
+        .actions
+          = f.submit 'Сохранить'

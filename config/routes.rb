@@ -10,11 +10,11 @@ Fishmarkt::Application.routes.draw do
     # get ':id/page=:page', action: :show, on: :collection
   end
 
-  get '/catalog(/:pgid)(/:gid)/:id' => 'products#show', as: :product
   resources :products do
     get :who_bought, on: :member
     get :vote, on: :member
   end
+  get '/catalog(/:pgid)(/:gid)/:id' => 'products#show', as: :show_product
   get '/search' => 'products#search'
 
   post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product

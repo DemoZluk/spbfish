@@ -187,13 +187,31 @@ hr {
   margin-bottom: 5px;
 }
 
-.entry .head > div {
-  @include make-row(16);
-}
-
 .checkbox {
   padding-left: 20px;
   label {
     padding-left: 0;
   }
+}
+
+.field {
+  @extend .form-group;
+
+  label {
+    @extend .control-label;
+  }
+
+  input, textarea {
+    @extend .form-control;
+  }
+
+  .field_with_errors {
+    @extend .has-error;
+  }
+}
+
+.actions input[type=submit]{
+  @extend .btn;
+  @extend .btn-primary;
+  @extend .pull-right;
 }
