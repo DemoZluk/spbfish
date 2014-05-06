@@ -29,13 +29,13 @@ def create_groups
   groups_progress = ProgressBar.create(total: groups.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   groups.each do |g|
     parent = g.xpath('ancestor::Группа').last
-    group_id = g.at_css('>Ид').content
+    group_id = g.at_css('>Ид').try(:content)
     if parent
-      parent_id = parent.at_css('>Ид').content
+      parent_id = parent.at_css('>Ид').try(:content)
     else
       parent_id = ''
     end
-    title = g.at_css('>Наименование').content
+    title = g.at_css('>Наименование').try(:content)
     permalink = title.mb_chars.parameterize('-') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
     Group.create(
       id: group_id,
@@ -55,8 +55,8 @@ def create_properties
   props = @doc.css('Свойство')
   props_progress = ProgressBar.create(total: props.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   props.each do |p|
-    id = p.at_css('Ид').content
-    title = p.at_css('Наименование').content
+    id = p.at_css('Ид').try(:content)
+    title = p.at_css('Наименование').try(:content)
     prop = Property.create(
       property_id: id,
       title: title
@@ -64,8 +64,8 @@ def create_properties
 
     p.css('ВариантыЗначений>Справочник').each do |v|
       Value.create(
-        value_id: v.at_css('ИдЗначения').content,
-        title: v.at_css('Значение').content,
+        value_id: v.at_css('ИдЗначения').try(:content),
+        title: v.at_css('Значение').try(:content),
         property_id: prop.id
       )
     end
@@ -81,23 +81,23 @@ def create_products_and_values
   prods = @doc.css('Товар')
   prods_progress = ProgressBar.create(total: prods.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
   prods.each do |product|
-    product_title = product.at_css('>Наименование').content
+    product_title = product.at_css('>Наименование').try(:content)
     permalink = product_title.mb_chars.parameterize('-') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
 
     if Product.find_by permalink: permalink
       prods_progress.log 'Товар ' + product_title + ' уже существует.'
     else
-      item_id = product.at_css('>Ид').content
+      item_id = product.at_css('>Ид').try(:content)
 
       prod = Product.create!(
-        item: product.at_css('>Артикул').content,
+        item: product.at_css('>Артикул').try(:content),
         title: product_title,
-        long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").content,
-        description: product.at_css('>Описание').inner_html,
-        producer: product.at_css('>Изготовитель>Наименование').content,
+        long_name: product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").try(:content),
+        description: product.at_css('>Описание').try(:inner_html),
+        producer: product.at_css('>Изготовитель>Наименование').try(:content),
         item_id: item_id,
         price: 0,
-        group_id: product.at_css('>Группы>Ид').content,
+        group_id: product.at_css('>Группы>Ид').try(:content),
         permalink: permalink
       )
 
@@ -106,21 +106,21 @@ def create_products_and_values
       Storage.create!(
         product_id: prod.id,
         amount: amount,
-        unit: product.at_css('>БазоваяЕдиница').content
+        unit: product.at_css('>БазоваяЕдиница').try(:content)
       )
 
       product.css('ЗначенияСвойства').each do |p|
         ProductPropertyValue.create!(
           product_id: Product.find_by(item_id: item_id).id,
-          value_id: Value.find_by(value_id: p.at_css('Значение').content).try(:id),
-          property_id: Property.find_by(property_id: p.at_css('Ид').content).id
+          value_id: Value.find_by(value_id: p.at_css('Значение').try(:content)).try(:id),
+          property_id: Property.find_by(property_id: p.at_css('Ид').try(:content)).id
         )
         #prods_progress.log 'Продукт ' + product_title + 'и его свойства добавлены в базу.'
       end
 
       product.css('Картинка').each do |img|
         Image.create(
-          url: img.content,
+          url: img.try(:content),
           product_id: prod.id
         )
       end
@@ -139,13 +139,13 @@ def setup_prices
   if prices.size > 0
     prices_progress = ProgressBar.create(total: prices.size, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
     prices.each do |offer|
-      if product = Product.find_by(item_id: offer.at_css('Ид').content)
-        price = offer.at_css('ЦенаЗаЕдиницу').content
+      if product = Product.find_by(item_id: offer.at_css('Ид').try(:content))
+        price = offer.at_css('ЦенаЗаЕдиницу').try(:content)
         product.price = price.to_f
         # p product.title + ' price: ' + price
         product.save
       else
-        prices_progress.log 'Product ' + offer.at_css('Наименование').content + ' not found'
+        prices_progress.log 'Product ' + offer.at_css('Наименование').try(:content) + ' not found'
       end
       prices_progress.increment
     end

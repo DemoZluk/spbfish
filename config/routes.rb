@@ -10,15 +10,15 @@ Fishmarkt::Application.routes.draw do
     # get ':id/page=:page', action: :show, on: :collection
   end
 
-  resources :products do
-    get :who_bought, on: :member
+  resources :products, except: [:new, :create, :destroy] do
+    # get :who_bought, on: :member
     get :vote, on: :member
   end
   get '/catalog(/:pgid)(/:gid)/:id' => 'products#show', as: :show_product
   get '/search' => 'products#search'
 
   post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product
-  resources :bookmarks
+  resources :bookmarks, except: [:edit, :update, :show]
 
   resources :line_items do
     member do

@@ -29,12 +29,16 @@
 
     %p
       %strong Адрес доставки:
-      %br
-        = @order.address
+      %br/
+      = @order.address
     %p
       %strong Телефон:
-      %br
-        = @order.phone_number
+      %br/ 
+      = @order.phone_number
+    %p
+      %strong Комментарий:
+      %br/ 
+      = @order.comment
     %p
       %strong Ссылка на заказ:
       %br

@@ -1,0 +1,9 @@
+%table.table.properties
+  %colgroup
+    %col{width: '50%'}
+    %col{width: '50%'}
+  - @product.values.joins{property}.order{property.id}.each do |val|
+    - title = val.property.title.split(',')
+    %tr
+      %td.bold= title[0]
+      %td= val.title + "#{title[1]}"

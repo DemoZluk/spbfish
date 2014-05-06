@@ -46,9 +46,9 @@ ru:
 
   order_notifier:
     order:
-      user_made_order: "Пользователь %{user_name} сделал заказ"
+      user_made_order: "Пользователь %{user_name} сделал заказ № %{order}"
     order_canceled:
-      user_canceled_order: "Пользователь %{user_name} отменил заказ"
+      user_canceled_order: "Пользователь %{user_name} отменил заказ № %{order}"
 
 
   products:

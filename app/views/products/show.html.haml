@@ -1,13 +1,7 @@
 - @page_title = @product.title
-- content_for :description, (@product.html_description || @product.desc)
-- content_for :keywords, (@product.html_keywords || @product.long_name)
-- group = @product.group
+- content_for :description, @product.html_description.presence || @product.desc
+- content_for :keywords, @product.html_keywords.presence || @product.long_name
 
-#breadcrumb.breadcrumb
-  = link_to 'Каталог', store_path
-  &rarr;
-  = link_to (parent = group.parent).title, group_path(id: parent.permalink)
-  &rarr;
-  = link_to group.title, group_path(pid: parent.permalink, id: group.permalink, anchor: @product.permalink)
+= render 'shared/breadcrumbs'
 
 = render 'product_card'

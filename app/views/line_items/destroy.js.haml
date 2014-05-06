@@ -1,8 +1,8 @@
 // Перерисовать корзину
-$('#cart_panel').html("#{ escape_javascript render('shared/cart', cart: @cart) }");
+$('#cart_panel #cart').html("#{ j render('shared/cart', cart: @cart) }");
 
 // Перерисовать общую сумму внизу
-$('.grand_total').html("#{ escape_javascript render('shared/grand_total') }");
+$('.grand_total').html("#{ j render('shared/grand_total') }");
 
 // Перерисовать счётчик товаров внизу
-$('#item_counter span').stop().hide('fast', function() { $('#item_counter span').html("#{ escape_javascript render('shared/counter') }").show('fast')});
+$('#item_counter span').stop().hide('fast', function() { $('#item_counter span').html("#{ j render('shared/counter') }").show('fast')});

@@ -21,8 +21,7 @@ class Cart < ActiveRecord::Base
 
   def self.destroy_abandoned_carts(time = 1.day)
     time = time.ago
-    carts = Cart.select{id}.joins{line_items.outer}.where{(updated_at < time)}.group{id}.having{count(line_items.id) == 0}
-    Cart.where{id >> carts}.try(:destroy_all)
+    carts = Cart.select{id}.joins{line_items.outer}.where{(updated_at < time)}.group{id}.having{count(line_items.id) == 0}.try(:destroy_all)
     puts "Destroyed empty carts, that are older than #{time}"
     Cart.where{(updated_at < 1.month.ago)}.try(:destroy_all)
     puts "Destroyed all carts, that are older than #{1.month.ago}"

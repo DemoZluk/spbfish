@@ -6,7 +6,7 @@ class Product < ActiveRecord::Base
   has_many :images
   has_many :product_property_values
   has_many :properties, through: :product_property_values
-  has_many :values, through: :product_property_values
+  has_many :values, -> { order 'product_property_values.property_id' }, through: :product_property_values
   has_many :ratings
   has_many :storages
   has_many :bookmarks
@@ -14,9 +14,9 @@ class Product < ActiveRecord::Base
 
   before_destroy :ensure_not_referenced_by_any_line_item
 
-  validates :title, :long_name, presence: true
-  validates :price, numericality: {greater_than_or_equal_to: 0.00}
-  validates :title, uniqueness: true
+  validates :title, :long_name, :permalink, presence: true
+  validates :price, numericality: { greater_than_or_equal_to: 0.00 }
+  validates :title, :permalink, uniqueness: true
 
 
   def to_param
@@ -39,6 +39,14 @@ class Product < ActiveRecord::Base
     '/images/no_photo.png'
   end
 
+  def desc
+    if description == '.' || description == ''
+      long_name
+    else
+      description
+    end
+  end
+
   def image_url
     images.order(:original_url).first.original_url
   rescue NoMethodError
@@ -49,29 +57,44 @@ class Product < ActiveRecord::Base
     Product.order('updated_at').last
   end
 
-  # def rate(points)
-  #   if [1, 2, 3, 4, 5].include?(points.to_i)
-  #     rt = self.rating || 0
-  #     rc = self.rating_counter || 0
+  def self.update_products_table
+    import = File.read('xml/import.xml')
+    doc = Nokogiri::XML(import)
 
-  #     self.update_column :rating, (rt * rc + points.to_i) / (rc + 1)
-  #     self.update_column :rating_counter, rc + 1
-  #   else
-  #     return false
-  #   end
-  # end
+    offers = Nokogiri::XML( File.read('xml/offers.xml') )
 
-  def desc
-    if description == '.' || description == ''
-      long_name
-    else
-      description
+    if doc.at_css('Каталог').attribute('СодержитТолькоИзменения').value == 'true'
+      doc.css('Товар').each do |product|
+        item_id     = product.at_css('>Ид').try :content
+        item        = product.at_css('>Артикул').try :content
+        title       = product.at_css('>Наименование').try :content
+        group_id    = product.at_css('>Группы>Ид').try :content
+        description = product.at_css('>Описание').try :content
+        producer    = product.at_css('>>Изготовитель>Наименование').try :content
+        long_name   = product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").try :content
+
+        permalink   = title.mb_chars.parameterize('-')
+
+        price = offers
+
+        new_product =  Product.find_or_initialize_by(item_id: item_id)
+        new_product.update(
+          item:        item,
+          title:       title,
+          group_id:    group_id,
+          description: description,
+          producer:    producer,
+          long_name:   long_name,
+          permalink:   permalink
+        )
+
+      end
     end
   end
 
   def avg_rating
     if ratings.any?
-      ratings.to_a.sum{|r| r.value}/ratings.count
+      ratings.to_a.sum(&:value)/ratings.count.to_f
     else
       0
     end
@@ -133,10 +156,4 @@ class Product < ActiveRecord::Base
         return false
       end
     end
-    
-  # !!!!!!!!!!!!
-  # !!! TODO !!!
-  # !!!!!!!!!!!!
-  #
-  # Add thumbnails later!
 end

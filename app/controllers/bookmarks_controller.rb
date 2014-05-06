@@ -87,6 +87,7 @@ class BookmarksController < ApplicationController
   # DELETE /bookmarks/1
   # DELETE /bookmarks/1.json
   def destroy
+    index
     @product = @bookmark.product
     @bookmark.destroy
     respond_to do |format|

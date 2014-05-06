@@ -16,24 +16,16 @@ class Group < ActiveRecord::Base
   end
 
   def properties
-    self.products.select('properties.*').joins{properties}.uniq
+    products.select('properties.*').joins{properties}.uniq
   end
 
   def producers
-    self.all_products.uniq.pluck(:producer)
+    all_products.uniq.pluck(:producer)
   end
 
   # If group has any children, join products, groups and their parents
   def all_products(order = 'title')
-    ids = self.ids_including_children
-    Product.with_price.where{group_id >> ids}.order(order)
-  end
-
-  def ids_including_children
-    group_id = self.id
-    ids = []
-    ids << group_id
-    ids << Group.where{parent_id == group_id}.pluck(:id) if self.children.any?
-    ids.flatten.uniq
+    ids = [id] << children.pluck(:id)
+    Product.where{group_id >> ids}.order(order)
   end
 end

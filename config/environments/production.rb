@@ -12,12 +12,12 @@ Fishmarkt::Application.configure do
   
   config.action_mailer.delivery_method = :smtp
 
-  config.action_mailer.default_url_options = { :host => "fishmarkt.ru" }
+  config.action_mailer.default_url_options = { :host => "https://www.fishmarkt.ru/" }
 
   config.action_mailer.smtp_settings = {
     address: "smtp.fishmarkt.ru",
     port: 587,
-    domain: "fishmarkt.ru",
+    domain: "https://www.fishmarkt.ru/",
     authentication: "plain",
     user_name: "mail@fishmarkt.ru",
     password: "spbfish-discus",

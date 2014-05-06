@@ -2,7 +2,6 @@
   %select{name: name}
     - array.each do |item|
       %option{selected: eql(item, current) ? true : false, value: item}= selection_label(item) # < application_helper.rb
-      - puts t(item) + ':' + t(current)
   %span= selection_label(current) # < application_helper.rb
   .arrow_down
   %ul.values

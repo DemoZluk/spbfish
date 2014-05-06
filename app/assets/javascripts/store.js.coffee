@@ -4,3 +4,10 @@
 
 $(document).on 'click', '.show_more .btn', ->
   $(this).siblings('.body').stop().slideToggle('fast')
+
+$(document).on 'click', '.properties_header', (e) ->
+  table = $(this).closest('form').siblings('.properties_table')
+  if table.html() != ''
+    e.preventDefault()
+    $('.properties_table').slideUp('fast')
+    table.stop().slideToggle('fast')

@@ -25,7 +25,7 @@
   
   .bookmarks {
 
-    a{
+    a {
       display: inline-block;
       width: 35px;
       height: 35px;
@@ -62,7 +62,7 @@
     margin: 0;
     border-radius: 5px 5px 0px 0px;
 
-    a {
+    a, input[type=submit] {
       color: #B8FAC0;
     }
   }
@@ -103,9 +103,12 @@
     width: 100%;
     max-height: 400px;
     overflow: auto;
+
   }
 
   table {
+    width: 100%;
+
     td, th {
       padding: 1px 5px;
     }

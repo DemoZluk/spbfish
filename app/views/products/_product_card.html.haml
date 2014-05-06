@@ -1,6 +1,6 @@
 - query = [params[:q], params[:q].try(:parameterize)].select(&:present?)
 
-.product_card.container-fluid{id: @product.permalink}
+.product_card.container-fluid{id: @product.permalink, itemscope: true, itemtype: 'http://schema.org/Product'}
   .row
     .image.col-md-3
       = render 'shared/image', product: @product, size: 'r'
@@ -8,37 +8,40 @@
         - @product.images.each do |i|
           .thumb= link_to image_tag(i.thumbnail_url), i.original_url, data: {remote: i.medium_url}
 
+    .right_panel.pull-right.col-md-3
+      %p.price{itemprop: 'offers', itemscope: true, itemtype: 'http://schema.org/Offer'}
+        %span{itemprop: 'price'}= number_to_currency @product.price
+        %br/ 
+        %small= "за 1 #{@product.storages.first.unit}."
+      %p.item
+        Артикул:
+        = @product.item
+      %p
+        Производитель:
+        %span{itemprop: 'manufacturer'}= @product.producer
+      .rating_wrapper= render 'shared/rating', product: @product
+      .pull-right= render 'shared/add_to_cart', product: @product
+
     .text_block.col-md-6
       %h3
-        = highlight(@product.title, query)
+        %span{itemprop: 'name'}= highlight(@product.title, query)
+        = link_to 'Изменить', edit_product_path(id: @product.permalink), class: 'btn btn-default pull-right'
 
-      %p
+      %p{itemprop: 'description'}
         = highlight(@product.desc, query)
 
-      %table.table.properties
-        %colgroup
-          %col{width: '50%'}
-          %col{width: '50%'}
-        - @product.values.each do |val|
-          - title = val.property.title.split(',')
-          %tr
-            %td.bold= title[0]
-            %td= val.title + "#{title[1]}"
-
-    .right_panel.col-md-3
-      %p.price= number_to_currency @product.price
-      .rating_wrapper= render 'shared/rating', product: @product
-      = render 'shared/add_to_cart', product: @product
+        = render 'properties_table'
 
   - if can? :manage, Product
-    %table
-      %tr
-        %td
-          %strong Ключевые слова:&nbsp;
-          %td= yield :keywords
+    %table.table
+      %colgroup 
+        %col{width: '30%'}/ 
+        %col{width: '70%'}/ 
       %tr
         %td
           %strong Описание:
-          %td= yield :description
-
-    = link_to('Изменить', edit_product_path(id: @product.permalink), class: 'btn btn-default pull-right')
+        %td= yield :description
+      %tr
+        %td
+          %strong Ключевые слова:
+        %td= yield :keywords

@@ -1,0 +1,8 @@
+- group = @product.group
+#breadcrumb.breadcrumb{'xmlns:v' => "http://rdf.data-vocabulary.org/#"}
+  %div{itemprop: 'breadcrumb'}
+  %span{typeof: "v:Breadcrumb"}= link_to 'Каталог', store_path, rel: 'v:url', property: "v:title"
+  &rarr;
+  %span{typeof: "v:Breadcrumb"}= link_to group.parent.title, group_path(id: group.parent.permalink), rel: 'v:url', property: "v:title"
+  &rarr;
+  %span{typeof: "v:Breadcrumb"}= link_to group.title, group_path(pid: group.parent.permalink, id: group.permalink, anchor: @product.permalink), rel: 'v:url', property: "v:title"

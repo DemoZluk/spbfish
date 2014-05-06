@@ -1,4 +1,9 @@
-- if @bookmarks.any?
+- if @bookmarks.empty?
+  .center
+    Нет закладок.
+    %br/
+    Вы можете добавить их, щёлкнув по звёздочке рядом с названием товара, чтобы потом к нему вернуться в любое время.
+- else
   #bm-thead.content-fluid.center
     .row
       .col.col-xs-3= link_to "Дата", bookmarks_path(sort: 'created_at', type: 'desc'), class: 'desc', data: {sort: 'created_at'}, remote: true
@@ -7,8 +12,3 @@
     %table
       %tbody
         = render @bookmarks
-- else
-  .center
-    Нет закладок.
-    %br/
-    Вы можете добавить их, щёлкнув по звёздочке рядом с названием товара, чтобы потом к нему вернуться в любое время.

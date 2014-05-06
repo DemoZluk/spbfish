@@ -23,9 +23,13 @@ class Order < ActiveRecord::Base
   end
 
   def add_line_items_from_cart(cart)
-    cart.line_items.each do |item|
-      item.cart_id = nil
-      line_items << item
+    if cart.line_items.any?
+      cart.line_items.each do |item|
+        item.cart_id = nil
+        line_items << item
+      end
+    else
+      false
     end
   end
 

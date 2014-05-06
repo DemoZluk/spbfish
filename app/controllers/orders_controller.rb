@@ -45,7 +45,9 @@ class OrdersController < ApplicationController
     p = order_params.merge(user_id: current_user.try(:id), status: 'Активен')
     @order = Order.new(p)
     @order.token = params[:authenticity_token]
-    @order.add_line_items_from_cart(@cart)
+    unless @order.add_line_items_from_cart(@cart)
+      redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
+    end
 
     respond_to do |format|
       if @order.save
@@ -57,7 +59,7 @@ class OrdersController < ApplicationController
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', notice: @order.errors}
         format.json { render json: @order.errors,
         status: :unprocessable_entity }
       end

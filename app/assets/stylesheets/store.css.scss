@@ -31,15 +31,6 @@ mark {
   border: solid 1px #CCC;
   border-radius: 10px;
 
-  .rating {
-    position: absolute;
-    right: 30px;
-  }
-
-  .rating_counter {
-    right: 0px;
-  }
-
   .price {
     padding: 7px;
   }
@@ -78,10 +69,12 @@ mark {
     -moz-box-sizing: border-box;
   }
 
-  .short_description {
-      p {
-        display: none;
-      }
+  .properties_table {
+    display: none;
+  }
+
+  .table.properties {
+    width: 510px;
   }
 
   .right_panel {
@@ -108,14 +101,15 @@ mark {
 .rating_wrapper {
   position: relative;
   height: 24px;
-  margin: 6px 0px;
+  margin: 6px 0px 15px;
+  white-space: nowrap;
 }
 
 .rating {
+  display: inline-block;
   height: $vote_img_size;
   width: $vote_img_size*5;
   position: relative;
-  margin-bottom: 15px;
   background: transparent image-url('/images/thumb_up_bg.png') left top no-repeat;
 
   .current {
@@ -179,11 +173,11 @@ mark {
   }
 }
 .rating_counter {
+  display: inline-block;
+  width: 2.6em;
   color: #555;
   font-size: 11px;
-  position: absolute;
-  left: 125px;
-  bottom: 0px;
+  vertical-align: bottom;
 }
 
 #filters {

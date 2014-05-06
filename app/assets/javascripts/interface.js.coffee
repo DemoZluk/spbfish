@@ -68,9 +68,9 @@ $(document).on 'click', '#reset_button', (e) ->
   form.submit()
 
 #--- Ajax hooks' processing ---#
-$(document).on 'ajax:beforeSend', '#content', ->
+$(document).on 'ajax:beforeSend', '#side', ->
   #$('input:not(.primary_button)').attr('disabled', true)
-  $('#loading').fadeIn('fast')
+  $('#loading').fadeIn(50)
 
 $(document).on 'ajax:error', (xhr, error) ->
   #console.log error
@@ -79,7 +79,7 @@ $(document).on 'ajax:error', (xhr, error) ->
 
 $(document).on 'ajaxSuccess', (data, status, xhr) ->
   $('#error').hide('blind')
-  $('#loading').fadeOut('fast')
+  $('#loading').fadeOut(50)
   #$('input').removeAttr('disabled')
 #------------------------------#
 

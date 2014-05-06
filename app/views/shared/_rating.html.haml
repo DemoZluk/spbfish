@@ -1,14 +1,19 @@
-.rating
-  - if session && session[:voted] && session[:voted][product.id]
-    .voted{style: "width: #{session[:voted][product.id].to_i*120/5}px"}
-    .thanks Спасибо за отзыв!
-  - else
-    - if user_signed_in?
-      .vote
-        - 1.upto(5) do |i|
-          = link_to '', vote_product_path(product, points: i), title: "Оценить на #{i}", class: "rate_#{i}", remote: true, tabindex: '-1'
-        .vote_bg
+%div{role: 'rating', itemprop: 'aggregateRating', itemscope: true, itemtype: 'http://schema.org/AggregateRating'}
+  .rating
+    - if session && session[:voted] && session[:voted][product.id]
+      .voted{style: "width: #{session[:voted][product.id].to_i*120/5}px"}
+      .thanks Спасибо за отзыв!
+    - else
+      - if user_signed_in?
+        .vote
+          - 1.upto(5) do |i|
+            = link_to '', vote_product_path(product, points: i), title: "Оценить на #{i}", class: "rate_#{i}", remote: true, tabindex: '-1'
+          .vote_bg
 
-  .current{style: "width: #{((product.avg_rating.to_f || 0)/5*120).to_i}px"}
-.rating_counter
-  = "(#{product.ratings.count || 0})"
+    .current{style: "width: #{(product.avg_rating/5*120).to_i}px"}
+    %meta{itemprop: 'ratingValue', content: product.avg_rating}
+    %meta{itemprop: 'bestRating', content: '5'}
+  .rating_counter
+    (
+    %span{itemprop: 'ratingCount'}>= product.ratings.count || 0
+    )

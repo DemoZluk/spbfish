@@ -1,5 +1,7 @@
 - if @cart.line_items.empty?
-  %strong Ваша корзина пуста
+  %p.center
+    %strong Ваша корзина пуста
+  = content_tag :div, '×', id: 'close_cart', class: 'close'
 - else
   %h4.center= link_to('Перейти в корзину', cart_path, id: 'cart_link')
 

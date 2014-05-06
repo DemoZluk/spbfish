@@ -10,7 +10,7 @@ module ApplicationHelper
 
   def values_of prop
     if @group
-      prods = @group.products.with_price
+      prods = @group.all_products
       Value.joins{products}.merge(prods).where{property_id == prop.id}.group{title}
       # prop_id = property.id
       # product_ids = @group.products.pluck(:id).uniq

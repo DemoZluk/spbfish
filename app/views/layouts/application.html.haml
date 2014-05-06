@@ -21,13 +21,17 @@
           %button.close{data: {dismiss: 'modal'}} &times;
 
     #error_wrapper
-      #error{style: (flash.any?) ? nil : 'display: none'}
-        = flash[:error] || notice || alert
+      #error{style: (error = flash[:error] || alert) ? nil : 'display: none'}
+        = error
 
     %header#header_wrapper
       = render 'shared/header'
 
     %main#content{role: 'main'}
+      - if message = flash[:warning] || notice
+        .alert.alert-warning.alert-dismissable
+          %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
+          = message
       = yield
 
     = render 'shared/metrika.html'

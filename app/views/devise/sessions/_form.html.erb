@@ -1,8 +1,7 @@
 <div class="authform well well-lg">
-  <%= notice %>
+  <% notice %>
   <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :role => 'form'}) do |f| %>
     <h3>Вход</h3>
-    <%= devise_error_messages! %>
     <div class="form-group">
       <%- if devise_mapping.registerable? %>
         <%= link_to 'Регистрация', new_registration_path(resource_name), class: 'right'  %>

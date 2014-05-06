@@ -17,6 +17,10 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /products/new
@@ -74,25 +78,6 @@ class ProductsController < ApplicationController
     uid = current_user.id
 
     Rating.find_or_create_by(user_id: uid, product_id: pid).update(value: points)
-    # session[:voted] ||= {}
-
-    # if !session[:voted][@product.id] && @product.rate(@points)
-
-    #   vote = {@product.id => @points}
-    #   session[:voted].deep_merge!(vote)
-
-    #   respond_to do |format|
-    #     format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_feedback')} ) }
-    #     format.json { render json: @product.rating }
-    #     format.js
-    #   end
-    # else
-    #   respond_to do |format|
-    #     format.html { redirect_to_back_or_default( {notice: I18n.t('products.vote_error')} ) }
-    #     format.json { render json: @product.errors, status: :unprocessable_entity }
-    #     format.js
-    #   end
-    # end
   end
 
   def search
