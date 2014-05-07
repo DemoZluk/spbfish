@@ -91,10 +91,10 @@ form {
 }
 
 #header_wrapper {
-  border: 4px solid #7A2210;
+  border: 2px solid #444444;
   padding: 7px;
   margin-bottom: 5px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #header {
@@ -103,7 +103,7 @@ form {
   min-height: 115px;
   background: #24C5C5;
   padding: 10px;
-  border-bottom: 1px solid;
+  box-shadow: 0 0 3px #1FC0C0;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;

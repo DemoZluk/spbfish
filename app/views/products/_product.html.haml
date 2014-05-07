@@ -1,7 +1,7 @@
 .entry.container-fluid{id: product.permalink, itemscope: true, itemtype: 'http://schema.org/Product'}
   - query ||= nil
   =# link_to image_tag(image_thumb_helper(product), alt: product.permalink), product
-  .head.row{itemprop: 'offers', itemscope: true, itemtype: 'http://schema.org/Offer'}
+  .head.row
     %h3.col-sm-6.col-lg-8
       -# link_to_product product, html_options = {}, query = nil <-application_helper
       = link_to_product product, {target: '_blank', itemprop: 'name url'}, query
@@ -12,7 +12,7 @@
 
     .rating_wrapper.right.col-sm-3.col-lg-2= render 'shared/rating', product: product
 
-    .price.right.pull-right.col-sm-3.col-lg-2
+    .price.right.pull-right.col-sm-3.col-lg-2{itemprop: 'offers', itemscope: true, itemtype: 'http://schema.org/Offer'}
       Цена: 
       %span{itemprop: 'price'}= number_to_currency(product.price)
 

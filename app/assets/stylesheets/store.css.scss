@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 $side_width: 200px;
-$side_padding: 15px;
+$side_padding: 7px;
 $side_margin: 5px;
 
 $img-size: 120px;
@@ -19,7 +19,7 @@ h1.underlined {
 
 mark {
   padding: 2px 0;
-  background-color: #FF0;
+  background-color: rgba(100, 235, 0, 0.70);
 }
 
 /* An entry in the store catalog */
@@ -208,11 +208,11 @@ mark {
 }
 
 #side {
-  border: 1px solid #555;
-  border-radius: 6px;
+  border: 2px solid #444444;
+  border-radius: 5px;
   // float: left;
   // margin: $side_margin $side_margin 40px 0px;
-  padding: 10px $side_padding;
+  padding: 5px $side_padding;
   // width: $side_width;
   // min-height: 150px;
  
@@ -287,6 +287,10 @@ mark {
     font-size: 8px;
     vertical-align: sub;
     color: #666;
+  }
+
+  .well {
+    margin-bottom: 10px;
   }
 }
 

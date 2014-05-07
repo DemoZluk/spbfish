@@ -1,8 +1,15 @@
 - group = @product.group
-#breadcrumb.breadcrumb{'xmlns:v' => "http://rdf.data-vocabulary.org/#"}
+#breadcrumb.breadcrumb{itemscope: true, itemtype: 'http://schema.org/WebPage'}
   %div{itemprop: 'breadcrumb'}
-  %span{typeof: "v:Breadcrumb"}= link_to 'Каталог', store_path, rel: 'v:url', property: "v:title"
-  &rarr;
-  %span{typeof: "v:Breadcrumb"}= link_to group.parent.title, group_path(id: group.parent.permalink), rel: 'v:url', property: "v:title"
-  &rarr;
-  %span{typeof: "v:Breadcrumb"}= link_to group.title, group_path(pid: group.parent.permalink, id: group.permalink, anchor: @product.permalink), rel: 'v:url', property: "v:title"
+    = link_to 'Каталог', store_path
+    &rarr;
+    = link_to group.parent.title, group_path(id: group.parent.permalink)
+    &rarr;
+    = link_to group.title, group_path(pid: group.parent.permalink, id: group.permalink, anchor: @product.permalink)
+-# - group = @product.group
+-# #breadcrumb.breadcrumb{'xmlns:v' => "http://rdf.data-vocabulary.org/#"}
+-#   %span{typeof: "v:Breadcrumb"}= link_to 'Каталог', store_path, rel: 'v:url', property: "v:title"
+-#   &rarr;
+-#   %span{typeof: "v:Breadcrumb"}= link_to group.parent.title, group_path(id: group.parent.permalink), rel: 'v:url', property: "v:title"
+-#   &rarr;
+-#   %span{typeof: "v:Breadcrumb"}= link_to group.title, group_path(pid: group.parent.permalink, id: group.permalink, anchor: @product.permalink), rel: 'v:url', property: "v:title"
