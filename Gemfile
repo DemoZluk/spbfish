@@ -55,6 +55,8 @@ gem 'turbolinks'
 
 gem 'jquery-turbolinks'
 
+gem 'jquery-rails-cdn'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
