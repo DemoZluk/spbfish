@@ -260,7 +260,8 @@ mark {
   .parent:after {
     content: '';
     position: absolute;
-    top: 40%;
+    top: 50%;
+    margin-top: -4px;
     right: 0px;
     height: 0px;
     border-width: 4px;
