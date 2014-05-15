@@ -25,3 +25,5 @@ config/database.yml
 *~
 start.bat
 secret_token.rb
+newrelic.yml
+devise.rb
