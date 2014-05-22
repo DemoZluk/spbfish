@@ -8,7 +8,7 @@
     = @page_title
     = link_to 'Правка', edit_order_path(@order)
   .row
-    - if (params[:t] == @order.token) || current_user.try(:all_orders).try(:include?, @order)
+    - if can? :show, @ord
       .col-lg-4.col-lg-push-8
         .info.container-fluid
           %h3 Информация о заказчике

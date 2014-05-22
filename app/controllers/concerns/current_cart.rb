@@ -5,7 +5,7 @@ module CurrentCart
   
     def set_cart
       @cart = Cart.find session[:cart_id]
-      if current_user.admin?
+      if user_signed_in? && current_user.admin?
         @cart = Cart.find params[:cid]
       end
     rescue ActiveRecord::RecordNotFound

@@ -5,21 +5,22 @@ class Ability
     # Define abilities for the passed in user here. For example:
 
     user ||= User.new # guest user (not logged in)
+    roles = user.role?
     
-    if user.role?('admin')
+    if roles.include?('admin')
       can :manage, :all
     end
 
-    if user.role?('products_manager')
+    if roles.include?('products_manager')
       can :manage, Product
     end
 
-    if user.role?('content_manager')
+    if roles.include?('content_manager')
       can :manage, Article
       can :update, Product
     end
     
-    if user.role?('orders_manager')
+    if roles.include?('orders_manager')
       can :manage, Order
     end
       
