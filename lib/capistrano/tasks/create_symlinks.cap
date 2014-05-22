@@ -10,6 +10,12 @@ namespace :deploy do
 
       info "Make symlink for secret_token"
       execute :ln, "-sf #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers/secret_token.rb"
+
+      info "Make symlink for newrelic.yml"
+      execute :ln, "-sf #{shared_path}/config/newrelic.yml #{release_path}/config/newrelic.yml"
+
+      info "Make symlink for devise.rb"
+      execute :ln, "-sf #{shared_path}/config/initializers/devise.rb #{release_path}/config/initializers/devise.rb"
     end
   end
   

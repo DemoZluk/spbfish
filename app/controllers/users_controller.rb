@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  load_and_authorize_resource
+  skip_authorize_resource only: [:show]
   
 
   # # GET /users
@@ -16,15 +18,10 @@ class UsersController < ApplicationController
 
   def show
     if params[:id]
-      if current_user.admin?
-        @user = User.find(params[:id])
-        render :show
-      else
-        redirect_to store_path, error: t('.not_admin')
-      end
+      @user = User.find(params[:id])
+      authorize! :show, @user
     else
       @user = current_user
-      render :show
     end
   end
 

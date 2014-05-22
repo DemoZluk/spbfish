@@ -28,12 +28,17 @@
     %header#header_wrapper
       = render 'shared/header'
 
-    %main#content{role: 'main'}
-      - if message = flash[:warning] || notice
-        .alert.alert-warning.alert-dismissable
-          %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
-          = message
-      = yield
+    %main#content.container-fluid{role: 'main'}
+      .row
+        - if message = flash[:warning] || notice
+          .alert.alert-warning.alert-dismissable
+            %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
+            = message
+        - if message = flash[:success] || notice
+          .alert.alert-success.alert-dismissable
+            %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
+            = message
+        = yield
 
     = render 'shared/metrika.html'
 
