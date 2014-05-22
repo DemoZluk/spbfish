@@ -10,7 +10,7 @@ class OrderNotifier < ActionMailer::Base
     @order = order
     @total_price = total_price
 
-    mail to: order.email, subject: I18n.t(:mail_subject) + I18n.t(:order_received)
+    mail to: order.email.to_s, subject: I18n.t(:mail_subject) + I18n.t(:order_received)
   end
   
   def order(order, total_price)

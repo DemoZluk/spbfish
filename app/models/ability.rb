@@ -23,6 +23,10 @@ class Ability
     if roles.include?('orders_manager')
       can :manage, Order
     end
+
+    if roles.empty?
+      can [:show, :create, :update, :destroy, :clear], Cart
+    end
       
     #
     # The first argument to `can` is the action you are giving the user 

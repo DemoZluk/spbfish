@@ -17,7 +17,7 @@ Fishmarkt::Application.configure do
   config.action_mailer.smtp_settings = {
     address: "smtp.fishmarkt.ru",
     port: 587,
-    domain: "https://www.fishmarkt.ru/",
+    domain: "fishmarkt.ru",
     authentication: "plain",
     user_name: "mail@fishmarkt.ru",
     password: "spbfish-discus",

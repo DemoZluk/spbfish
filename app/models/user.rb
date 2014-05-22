@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
 
   def role? role = nil
     if role.nil?
-      roles.pluck(:name).presence
+      roles.pluck(:name)
     else
       if roles.find_by name: role
         true
