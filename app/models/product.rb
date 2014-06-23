@@ -110,16 +110,24 @@ class Product < ActiveRecord::Base
     }
   end
 
-  def create_images
+  def self.generate_images
+    images = joins{images}.each do |product|
+      product.generate_images
+    end
+
+    puts "Images for #{images.length} products generated."
+  end
+
+  def generate_images
     if images.any?
       ext = '.jpg'
-      prefix = 'public/images'
-      path = prefix + '/catalog/' + group.parent.permalink + '/' + group.permalink + '/' + permalink + '/'
-      FileUtils.makedirs path unless File.exists? path
+      prefix = 'public'
+      path = '/catalog/' + group.parent.permalink + '/' + group.permalink + '/' + permalink + '/'
+      FileUtils.makedirs prefix + path unless File.exists? prefix + path
 
       images.each_with_index do |img, i|
-        image = MiniMagick::Image.open prefix + '/' + img.url, ext
-        watermark = MiniMagick::Image.open(prefix + '/watermark.png', ext)
+        image = MiniMagick::Image.open prefix + '/images/' + img.url, ext
+        watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
         index = '-' + (i+1).to_s.rjust(2, '0')
 
         original_url = path + permalink + index + ext
@@ -127,20 +135,22 @@ class Product < ActiveRecord::Base
         original = image.composite(watermark) do |i|
           i.geometry '+50+50'
         end
-        original.write original_url
-        img.original_url = original_url.gsub(prefix, '')
+        original.write prefix + original_url
+        img.original_url = original_url
 
         medium_url = path + 'medium-' + permalink + index + ext
         original.resize '300'
-        original.write medium_url
-        img.medium_url = medium_url.gsub(prefix, '')
+        original.write prefix + medium_url
+        img.medium_url = medium_url
 
         thumbnail_url = path + 'thumb-' + permalink + index + ext
         image.resize '135'
-        image.write thumbnail_url
-        img.thumbnail_url = thumbnail_url.gsub(prefix, '')
+        image.write prefix + thumbnail_url
+        img.thumbnail_url = thumbnail_url
 
         img.save
+
+        puts "Image for #{title} generated."
       end
     end
   end
