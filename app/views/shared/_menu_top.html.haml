@@ -1,6 +1,6 @@
 %ul.parent
   -# application_helper: menu_item(path = {}, name = nil, html_options = nil, &block)
-  - if current_user.try :role?
+  - if current_user.try(:role?).try(:any?)
     %li
       %ul= menu_item(true, 'Панель управления')
       %ul.child

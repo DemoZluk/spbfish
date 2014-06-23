@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
     Order.where{(user_id == uid) | (email == umail)}
   end
 
+  def owns?(object)
+    object.try(:user) == self
+  end
+
   def assign_role role
     r = Role.find_by(name: role)
     if r && UserRole.where(user_id: id, role_id: r.id).empty?

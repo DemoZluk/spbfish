@@ -15,15 +15,15 @@
       %thead 
         %tr
           %th Название
-          %th Цена
           %th Кол-во
+          %th Цена
           %th Сумма
       %tbody 
         - @order.line_items.each do |line_item|
           %tr
             %td= line_item.product.long_name
-            %td.right= number_to_currency line_item.price
             %td.quantity.right= line_item.quantity
+            %td.right= number_to_currency line_item.price
             %td.price.right= number_to_currency(line_item.total_price)
       %tfoot 
         %tr.bold

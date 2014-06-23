@@ -13,18 +13,20 @@
 
     %table.order
       %tr
-        %th Кол-во
         %th Название
+        %th Артикул
+        %th Кол-во
         %th Цена
         %th Сумма
       - @order.line_items.each do |line_item|
         %tr
-          %td.right= line_item.quantity
           %td= line_item.product.long_name
+          %td= line_item.product.item
+          %td.right= line_item.quantity
           %td.right= number_to_currency line_item.price
           %td.right= number_to_currency(line_item.total_price)
       %tr
-        %td{ :colspan => 3 } Итого
+        %td{ :colspan => 4 } Итого
         %td.right= number_to_currency(@total_price)
 
     %p

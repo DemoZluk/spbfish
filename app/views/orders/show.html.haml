@@ -6,9 +6,10 @@
       = flash[:order_created]
   %h1.underlined
     = @page_title
+    - if can? :update, @order
     = link_to 'Правка', edit_order_path(@order)
   .row
-    - if can? :show, @ord
+    - if can? :show, @order
       .col-lg-4.col-lg-push-8
         .info.container-fluid
           %h3 Информация о заказчике
