@@ -12,6 +12,10 @@
         #side nav.menu_side>ul {
           display: block;
         }
+
+        .no_js {
+          display: block;
+        }
     = csrf_meta_tags
       
   %body{class: "#{controller_name} #{action_name}", id: 'top'}
@@ -30,14 +34,11 @@
 
     %main#content.container-fluid{role: 'main'}
       .row
-        - if message = flash[:warning] || notice
-          .alert.alert-warning.alert-dismissable
-            %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
-            = message
-        - if message = flash[:success] || notice
-          .alert.alert-success.alert-dismissable
-            %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
-            = message
+        .warning.center
+          %strong Внимание!
+          Сайт находится в тестовом режиме. В этом режиме заказы не будут приниматься. Но на почту корректно должны приходить письма и прочее.
+      .row
+        #alert= bootstrap_alerts
         = yield
 
     = render 'shared/metrika.html'

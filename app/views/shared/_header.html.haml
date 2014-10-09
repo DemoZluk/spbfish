@@ -4,13 +4,15 @@
       #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
       #left_header_part
         = link_to t('default_title'), store_path, id: 'title'
+        %br
+        Гипермаркет товаров для аквариумов
         #phone_number
           = image_tag 'phone.png'
           %span 
             +7 (800) XXX-XX-XX
             %br/ 
             +7 (900) XXX-XX-XX
-    #under_development Сайт находится в разработке
+    #under_development 
   #right_header_part
     #enter_form
       - if user_signed_in?

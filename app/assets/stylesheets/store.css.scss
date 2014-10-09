@@ -80,18 +80,23 @@ mark {
   .right_panel {
     height: 100%;
     display: inline-block;
-    position: absolute;
-    top: 5px;
-    right: 5px;
+    float: right;
+    padding-top: 10px;
+    padding-right: 10px;
     text-align: right;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
   }
 
+  .manufacturer {
+    
+  }
+
+  .add_to_cart_wrapper {
+    display: inline-block;
+  }
+
   .add_to_cart {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
     form {
       margin: auto;
     }

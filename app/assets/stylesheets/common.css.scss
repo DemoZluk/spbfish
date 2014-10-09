@@ -242,7 +242,7 @@ form {
 }
 
 .warning {
-  color: #F64;
+  color: #F44;
   font-size: 14px;
   margin: 15px;
 }
@@ -282,6 +282,11 @@ form {
   position: relative;
   //background: #161;
   min-height: 100%;
+}
+
+.no_js {
+  padding: 7px;
+  display: none;
 }
 
 .primary_button {
@@ -420,7 +425,29 @@ form {
   .first, .previous {
     text-align: left;
   }
+
   .gap {
+    position: relative;
+    cursor: pointer;
+
+    & > span, & > a {
+      width: 54px;
+    }
+  }
+
+  .gap_pages {
+    display: none;
+    background: #EEE;
+    border: 1px solid #DDD;
+    border-radius: 4px;
+    height: 30px;
+    width: 150px;
+    position: absolute;
+    top: -35px;
+    left: -75px;
+    margin-left: 50%;
+    padding: 9px;
+    z-index: 99;
   }
 }
 

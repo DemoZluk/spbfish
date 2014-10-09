@@ -19,6 +19,17 @@ module ApplicationHelper
     end
   end
 
+  def bootstrap_alerts
+    string = ''
+    if (messages = flash.to_hash.slice(:error, :warning, :notice, :success)).any?
+      messages.each do |key, value|
+        string << content_tag(:div, (content_tag(:button, "×", class: 'close', type: 'button', data: {dismiss: 'alert'}, 'aria-hidden' => 'true') + value), class: ('alert alert-dismissable  alert-' + key.to_s))
+      end
+      string.html_safe
+    end
+  end
+
+
   def parent_layout(layout)
     content_for :layout, self.output_buffer
     self.output_buffer = render(:file => "layouts/#{layout}")

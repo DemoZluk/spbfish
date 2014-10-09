@@ -1,6 +1,6 @@
 module GroupsHelper
   def menu_for_group product_group
-    path = group_path(pid: product_group.parent.try(:permalink), id: product_group.permalink)
+    path = group_path(id: product_group.permalink)
     children = product_group.children
     content_tag :li, class: "#{children.any? ? 'parent' : nil} #{ current_page?(path) ? 'current' : nil}" do
       string = ": #{children.map { |c| c.title }.join(', ')}" if children.any?

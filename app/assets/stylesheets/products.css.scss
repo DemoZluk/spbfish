@@ -58,10 +58,6 @@
 
 // Showing product
 .product_card {
-
-  .price {
-    font-size: 15px;
-  }
   // .image {
   //   float: left;
   //   margin: 10px;
@@ -119,6 +115,10 @@
   padding: 10px;
   border: 1px solid #000;
   border-radius: 10px;
+
+  .price {
+    font-size: 15px;
+  }
 
   .image {
     display: inline-block;

@@ -18,4 +18,4 @@
         %ul.child
           - item.children.each do |child|
             %li= menu_item(true, child.title, child.permalink)
-  %li= link_to('Отзывы и пожелания', store_path, class: 'btn-gray')
+  %li= link_to('Отзывы и пожелания', '/feedback', class: 'btn-gray')

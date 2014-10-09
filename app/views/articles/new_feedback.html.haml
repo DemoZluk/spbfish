@@ -1,0 +1,13 @@
+%h1 Обратная связь
+#feedback
+  = form_tag feedback_path, class: 'centered-form form-horizontal' do
+    .field.required
+      = label_tag 'feedback_email', 'Электронная почта', class: 'col-sm-3 control-label'
+      .col-sm-9= email_field_tag 'feedback[email]', current_user.try(:email), placeholder: 'mail@example.com', required: true
+    .field.required
+      = label_tag 'feedback_subject', 'Тема', class: 'col-sm-3 control-label'
+      .col-sm-9= text_field_tag 'feedback[subject]', (flash[:url] ? "[Ошибка] Не найдена страница #{flash[:url]}" : nil), required: true
+    .col-sm-12
+      .field.required= text_area_tag 'feedback[body]', (flash[:url] ? "Не найдена страница #{flash[:url]}" : nil), rows: 4, placeholder: 'Ваше сообщение', required: true
+    .submit.right
+      = submit_tag 'Отправить'

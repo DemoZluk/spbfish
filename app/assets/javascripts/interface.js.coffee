@@ -38,6 +38,33 @@ $(document).on 'page:change page:load ready', ->
   $('#search_help').tooltip({container: 'body'})
   $('.add_to_bookmarks button').tooltip()
 
+to = 0
+$(document).on "mouseenter", '.gap', ->
+  clearTimeout(to)
+
+  $(this).find('.gap_pages').fadeIn(50)
+
+  obj = $(this).find('.page_slider')
+  min = parseInt(obj.closest('li').prev().children('a, span').text()) + 1
+  max = parseInt(obj.closest('li').next().children('a, span').text()) - 1
+  obj.slider({
+    min: min,
+    max: max,
+    step: 1,
+    slide: (e, ui) ->
+      $a = $(this).closest('.pagination').find('.page:last > a').clone()
+      $a.attr('href', $a[0].href.replace(/page=\d+/, 'page=' + ui.value))
+      $a.text(ui.value)
+      obj.closest('.gap').children('a, span').replaceWith($a)
+  })
+
+$(document).on 'mouseleave', '.gap', ->
+  obj = $(this)
+  to = setTimeout ->
+    obj.find('.gap_pages').fadeOut(100)
+  , 500
+
+
   #   array = decodeURIComponent(location.search.substring(1)).split('&')
   #   params = {}
 

@@ -1,7 +1,6 @@
-#encoding: utf-8
 class CartsController < ApplicationController
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:create, :show, :update, :destroy]
+  skip_before_action :authenticate_user!, only: [:create, :show, :update, :clear]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
 
   # GET /carts

@@ -2,6 +2,7 @@
 
 - if params[:next]
   $('#product_index').append("#{j render('store/product_index')}")
+  history.pushState({}, '', "#{raw request.url}")
 
 - else
   $('#product_index').html("#{products = (j(render('store/product_index') || '<p class=warning>Позиций, удовлетворяющих критериям поиска не найдено.</p>'.html_safe))}");

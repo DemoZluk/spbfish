@@ -7,25 +7,23 @@ class Ability
     user ||= User.new # guest user (not logged in)
     roles = user.role?
     
+
     if roles.include?('admin')
       can :manage, :all
-    end
-
-    if roles.include?('products_manager')
-      can :manage, Product
-    end
-
-    if roles.include?('content_manager')
-      can :manage, Article
-      can :update, Product
-    end
-    
-    if roles.include?('orders_manager')
-      can :manage, Order
-    end
-
-    if roles.empty?
-      can [:show, :create, :update, :destroy, :clear], Cart
+    else
+      if roles.include?('products_manager')
+        can :manage, Product
+      end
+      if roles.include?('content_manager')
+        can :manage, Article
+        can :update, Product
+      end
+      if roles.include?('orders_manager')
+        can :manage, Order
+      end
+      can [:read, :update, :destroy, :clear], Cart, user_id: user.id
+      can [:create, :show, :update, :cancel], Order, user_id: user.id
+      can [:read, :create, :update, :decrement, :increment, :destroy], LineItem
     end
       
     #

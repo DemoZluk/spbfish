@@ -102,6 +102,15 @@ h3 {
 .pagination {
   margin-top: 10px;
   margin-bottom: 5px;
+
+  li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+
+    a {
+    }
+  }
 }
 
 form.centered-form {
@@ -214,4 +223,8 @@ hr {
   @extend .btn;
   @extend .btn-primary;
   @extend .pull-right;
+}
+
+.alert-notice {
+  @extend .alert-warning;
 }

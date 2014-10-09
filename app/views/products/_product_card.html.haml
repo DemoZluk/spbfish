@@ -25,14 +25,14 @@
     .text_block.col-md-6
       %h3
         %span{itemprop: 'name'}= highlight(@product.title, query)
-        = link_to 'Изменить', edit_product_path(id: @product.permalink), class: 'btn btn-default pull-right'
+        = link_to 'Изменить', edit_product_path(id: @product.permalink), class: 'btn btn-default pull-right' if can? :edit, @product
 
       %p{itemprop: 'description'}
         = highlight(@product.desc, query)
 
         = render 'properties_table'
 
-  - if can? :manage, Product
+  - if can? :edit, Product
     %table.table
       %colgroup 
         %col{width: '30%'}/ 

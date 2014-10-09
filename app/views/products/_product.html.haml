@@ -23,14 +23,14 @@
         %p{itemprop: 'description'}
           = highlight(sanitize(product.long_name).truncate(350, separator: '.', omission: '...'), query)
         %p
-          Производитель:
-          = link_to(highlight(product.producer, query), params.merge('producer' => product.producer), itemprop: 'manufacturer')
-        %p
           Артикул:
           = highlight product.item, query
         - if product.values.any?
           .product_properties
             = button_to '+ Характеристики', product_path(product.permalink), method: :get, remote: true, class: 'properties_header btn btn-link'
             .properties_table
-      .right_panel
-        = render 'shared/add_to_cart', product: product
+    .right_panel
+      %p.manufacturer
+        Производитель:
+        = link_to(highlight(product.producer, query), params.merge('producer' => product.producer), itemprop: 'manufacturer')
+      = render 'shared/add_to_cart', product: product

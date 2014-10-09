@@ -5,7 +5,7 @@ Fishmarkt::Application.routes.draw do
   resources :menu_items
 
   get 'catalog', to: 'store#index'
-  get '/catalog(/:pid)/:id' => 'groups#show', as: :group
+  get '/catalog/:id' => 'groups#show', as: :group, constraints: {id: /([\-\w]*\/)?[\-\w]*/}
   resources :catalog,  controller: 'groups', as: 'group' do
     # get ':id/page=:page', action: :show, on: :collection
   end
@@ -14,7 +14,7 @@ Fishmarkt::Application.routes.draw do
     # get :who_bought, on: :member
     get :vote, on: :member
   end
-  get '/catalog(/:pgid)(/:gid)/:id' => 'products#show', as: :show_product
+  get '/catalog(/:gid)/:id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
   get '/search' => 'products#search'
 
   post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product
@@ -59,6 +59,9 @@ Fishmarkt::Application.routes.draw do
   namespace :admin do
     root 'admin#index'
   end
+  
+  get '/feedback' => 'articles#new_feedback'
+  post '/feedback' => 'articles#feedback'
 
   resources :articles do
   end

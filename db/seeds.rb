@@ -1,4 +1,3 @@
-#encoding:utf-8
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
@@ -30,13 +29,16 @@ def create_groups
   groups.each do |g|
     parent = g.xpath('ancestor::Группа').last
     group_id = g.at_css('>Ид').try(:content)
+    title = g.at_css('>Наименование').try(:content)
+
     if parent
       parent_id = parent.at_css('>Ид').try(:content)
+      permalink = "#{parent.at_css('>Наименование').try(:content).mb_chars.parameterize}/#{title.mb_chars.parameterize}"
     else
       parent_id = ''
+      permalink = title.mb_chars.parameterize('-')
     end
-    title = g.at_css('>Наименование').try(:content)
-    permalink = title.mb_chars.parameterize('-') #.gsub(/[^-\wа-яА-ЯёЁ]+/i, ' ').squish.gsub(/\s+/, '_')
+
     Group.create(
       id: group_id,
       title: title,
@@ -124,6 +126,8 @@ def create_products_and_values
           product_id: prod.id
         )
       end
+
+      prod.generate_images
     end
 
     prods_progress.increment

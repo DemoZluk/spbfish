@@ -11,6 +11,13 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
+    unless @article
+      if params[:id] && lookup_context.exists?(params[:id], 'static')
+        render template: 'static/main'
+      else
+        redirect_to feedback_path, notice: t('.article_doesnt_exist'), flash: {url: request.original_url}
+      end
+    end
   end
 
   # GET /articles/new
@@ -63,6 +70,14 @@ class ArticlesController < ApplicationController
     end
   end
 
+  def new_feedback
+  end
+
+  def feedback
+    GeneralMailer.feedback(feedback_params[:email], feedback_params[:subject], simple_format(feedback_params[:body])).deliver
+    redirect_to root_path, flash: {success: 'Спасибо за ваше внимание.'}
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
@@ -73,5 +88,9 @@ class ArticlesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
       params.require(:article).permit(:title, :body, :author, :permalink)
+    end
+
+    def feedback_params
+      params.require(:feedback).permit(:email, :subject, :body)
     end
 end

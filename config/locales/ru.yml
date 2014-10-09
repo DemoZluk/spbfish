@@ -76,10 +76,12 @@ ru:
       product:
         title: Наименование
         long_name: Наименование для печати
+        item_id: Идентификатор
         price: Цена
         description: Описание
         html_keywords: Ключевые слова
         html_description: html-описание
+        permalink: Ссылка
       order:
         address: Адрес
         name: Имя
