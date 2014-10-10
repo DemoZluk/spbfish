@@ -1,6 +1,6 @@
 %ul.parent
   -# application_helper: menu_item(path = {}, name = nil, html_options = nil, &block)
-  - if current_user.try(:role?).try(:any?)
+  - if user_signed_in? && current_user.role?.any?
     %li
       %ul= menu_item(true, 'Панель управления')
       %ul.child
@@ -18,4 +18,5 @@
         %ul.child
           - item.children.each do |child|
             %li= menu_item(true, child.title, child.permalink)
+  %li= link_to('Гарантия', '/garant', class: 'btn-gray')
   %li= link_to('Отзывы и пожелания', '/feedback', class: 'btn-gray')

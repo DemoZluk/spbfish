@@ -32,7 +32,15 @@ module ProductModule
 
           if tmp_product = Product.find_by(item_id: product.at_css('>Ид').try(:content))
 
-            unless tmp_product.slice('item_id', 'item', 'title', 'group_id', 'description', 'producer', 'long_name', 'price') == new_product
+            unless tmp_product.slice(\
+              'item_id',\
+              'item',\
+              'title',\
+              'group_id',\
+              'description',\
+              'producer',\
+              'long_name',\
+              'price') == new_product
               #puts "Обновляем #{tmp_product['title']}..."
               tmp_product.update!(new_product)
             end
@@ -55,7 +63,15 @@ module ProductModule
           if tmp_product = Product.find_by(item_id: item_id)
 
             diff = {}
-            tmp_product.slice('item_id', 'item', 'title', 'group_id', 'description', 'producer', 'long_name', 'price').each {|k, v| diff[k] = new_product[k] unless new_product[k] == v}
+            tmp_product.slice(\
+              'item_id',\
+              'item',\
+              'title',\
+              'group_id',\
+              'description',\
+              'producer',\
+              'long_name',\
+              'price').each {|k, v| diff[k] = new_product[k] unless new_product[k] == v}
 
             if diff.empty?
               #puts "#{new_product['title']}: товар не изменен"
@@ -135,5 +151,5 @@ module ProductModule
 
   end
 
-  
+
 end
