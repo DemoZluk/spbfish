@@ -18,19 +18,21 @@
 
   .product.row
     - cache_if (action_name != 'search'), product do
+      - @product = product
       = render 'shared/image', product: product
       .description
         %p{itemprop: 'description'}
           = highlight(sanitize(product.long_name).truncate(350, separator: '.', omission: '...'), query)
         %p
           Артикул:
-          = highlight product.item, query
+          = highlight product.item || '', query
         - if product.values.any?
           .product_properties
-            = button_to '+ Характеристики', product_path(product.permalink), method: :get, remote: true, class: 'properties_header btn btn-link'
+            = link_to '+ Характеристики', product_path(product.permalink), remote: true, class: 'properties_header btn btn-link'
             .properties_table
+              = render 'products/properties_table'
     .right_panel
       %p.manufacturer
         Производитель:
-        = link_to(highlight(product.producer, query), params.merge('producer' => product.producer), itemprop: 'manufacturer')
+        = link_to(highlight(product.producer || '', query), params.merge('producer' => product.producer), itemprop: 'manufacturer')
       = render 'shared/add_to_cart', product: product

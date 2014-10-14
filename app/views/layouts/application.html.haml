@@ -26,17 +26,16 @@
           %button.close{data: {dismiss: 'modal'}} &times;
 
     #error_wrapper
-      #error{style: (error = flash[:error] || alert) ? nil : 'display: none'}
+      - test_message = "Внимание! Сайт находится в тестовом режиме. Заказы начнут приниматься с 15.11. Всем зарегистрировавшимся до этого числа - постоянная скидка 5%."
+      #error{style: (error = flash[:error] || alert || test_message) ? nil : 'display: none'}
         = error
+      #etw
+        #error_tag.toggle_text{'data-sub-text' => "▲", style: (error = flash[:error] || alert || test_message) ? nil : 'display: none'} ▼
 
     %header#header_wrapper
       = render 'shared/header'
 
     %main#content.container-fluid{role: 'main'}
-      .row
-        .warning.center
-          %strong Внимание!
-          Сайт находится в тестовом режиме. В этом режиме заказы не будут приниматься. Но на почту корректно должны приходить письма и прочее.
       .row
         #alert= bootstrap_alerts
         = yield

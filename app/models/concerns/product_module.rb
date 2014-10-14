@@ -21,6 +21,15 @@ module ProductModule
       puts "#{prefix}Выгрузка завершена"
     end
 
+    def generate_images
+      counter = 0
+      images = joins{images}.each do |product|
+        counter += 1 if product.generate_images
+      end
+
+      puts "Images for #{counter} products generated."
+    end
+
     private
 
       def update_partially1(document)
@@ -132,8 +141,50 @@ module ProductModule
         new_product.update(product)
 
       end
+
   end
 
+  def generate_images(silent = true)
+    if images.any?
+      ext = '.jpg'
+      prefix = 'public'
+      # path = '/catalog/' + group.parent.permalink + '/' + group.permalink + '/' + permalink + '/'
+      path = "/catalog/#{group.permalink}/#{permalink}/"
+      FileUtils.makedirs prefix + path unless File.exists? prefix + path
+
+      images.each_with_index do |img, i|
+        image = MiniMagick::Image.open prefix + '/images/' + img.url, ext
+        watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
+        index = '-' + (i+1).to_s.rjust(2, '0')
+
+        original_url = path + permalink + index + ext
+        image.resize '800'
+        original = image.composite(watermark) do |i|
+          i.gravity 'Center'
+        end
+        original.write prefix + original_url
+        img.original_url = original_url
+
+        medium_url = path + 'medium-' + permalink + index + ext
+        original.resize '300'
+        original.write prefix + medium_url
+        img.medium_url = medium_url
+
+        thumbnail_url = path + 'thumb-' + permalink + index + ext
+        image.resize '135'
+        image.write prefix + thumbnail_url
+        img.thumbnail_url = thumbnail_url
+
+        img.save
+
+        puts "Image for #{title} generated." unless silent
+      end
+
+      return true
+    else
+      return false
+    end
+  end
 
   def images_equal_to? new_product
     new_images = new_product.css('>Картинка').map(&:text)

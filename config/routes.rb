@@ -63,8 +63,7 @@ Fishmarkt::Application.routes.draw do
   get '/feedback' => 'articles#new_feedback'
   post '/feedback' => 'articles#feedback'
 
-  resources :articles do
-  end
+  resources :articles
   get '/:id' => 'articles#show'
 
   # resources :users

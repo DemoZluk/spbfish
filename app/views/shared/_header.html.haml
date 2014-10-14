@@ -5,14 +5,12 @@
       #left_header_part
         = link_to t('default_title'), store_path, id: 'title'
         %br
-        Гипермаркет товаров для аквариумов
+        %p Интернет-магазин товаров для аквариумов, прудов и террариумов
         #phone_number
           = image_tag 'phone.png'
-          %span 
-            +7 (800) XXX-XX-XX
-            %br/ 
-            +7 (900) XXX-XX-XX
-    #under_development 
+          %span{itemprop: "telephone"}
+            %a.phone_number{href: "#{ (request.user_agent =~ /Mobile|webOS/) ? 'tel' : 'callto' }:+79213834884"} 7 (921) 383-48-84
+    #under_development
   #right_header_part
     #enter_form
       - if user_signed_in?

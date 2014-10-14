@@ -112,51 +112,6 @@ class Product < ActiveRecord::Base
     }
   end
 
-  def self.generate_images
-    images = joins{images}.each do |product|
-      product.generate_images
-    end
-
-    puts "Images for #{images.length} products generated."
-  end
-
-  def generate_images(silent = true)
-    if images.any?
-      ext = '.jpg'
-      prefix = 'public'
-      path = '/catalog/' + group.parent.permalink + '/' + group.permalink + '/' + permalink + '/'
-      FileUtils.makedirs prefix + path unless File.exists? prefix + path
-
-      images.each_with_index do |img, i|
-        image = MiniMagick::Image.open prefix + '/images/' + img.url, ext
-        watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
-        index = '-' + (i+1).to_s.rjust(2, '0')
-
-        original_url = path + permalink + index + ext
-        image.resize '800'
-        original = image.composite(watermark) do |i|
-          i.geometry '+50+50'
-        end
-        original.write prefix + original_url
-        img.original_url = original_url
-
-        medium_url = path + 'medium-' + permalink + index + ext
-        original.resize '300'
-        original.write prefix + medium_url
-        img.medium_url = medium_url
-
-        thumbnail_url = path + 'thumb-' + permalink + index + ext
-        image.resize '135'
-        image.write prefix + thumbnail_url
-        img.thumbnail_url = thumbnail_url
-
-        img.save
-
-        puts "Image for #{title} generated." unless silent
-      end
-    end
-  end
-
   private
 
     # ensure that there are no line items referencing this product

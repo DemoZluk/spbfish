@@ -87,7 +87,8 @@ $(document).on 'mouseleave', '.gap', ->
   #       $(this).children('.min').val(p[0])
   #       $(this).children('.max').val(p[1])
   #       $(this).children('.slider').slider( "option", "values", [ p[0], p[1] ] )
-
+$(document).on 'click', '#error_tag', ->
+  $('#error').stop().slideToggle();
 $(document).on 'click', '#reset_button', (e) ->
   e.preventDefault()
   form = $(this).closest('form')
