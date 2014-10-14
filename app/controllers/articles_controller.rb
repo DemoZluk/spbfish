@@ -11,8 +11,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
-    puts '------------------------blah'
-    unless @article
+    unless @article.present?
       if params[:id] && lookup_context.exists?(params[:id], 'static')
         render template: 'static/main'
       else
@@ -33,7 +32,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    article_params['permalink'] ||= article_params['title'].mb_chars.parameterize
+    article_params['permalink'] ||= article_params['title'].mb_chars.parameterize.gsub(/^\//, '')
     @article = Article.new(article_params)
 
     respond_to do |format|

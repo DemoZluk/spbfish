@@ -5,7 +5,7 @@
 
 - @articles.each do |article|
   .row
-    %h3= article.title
+    %h4= article.title
     .col-md-8= truncate(strip_tags(article.body), {length: 150, separator: ' '})
     .col-md-2= "Автор: #{article.author}"
     .col-md-2

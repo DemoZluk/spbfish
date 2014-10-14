@@ -1,3 +1,22 @@
 // Place all the styles related to the Articles controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.articles {
+  #content form {
+    max-width: 700px;
+  }
+
+  .body {
+    text-align: justify;
+  }
+
+  .row {
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+
+article li {
+  list-style: inside;
+}

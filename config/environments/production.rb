@@ -20,7 +20,7 @@ Fishmarkt::Application.configure do
     domain: "fishmarkt.ru",
     authentication: "plain",
     user_name: "mail@fishmarkt.ru",
-    password: "spbfish-discus",
+    password: "discus",
     enable_starttls_auto: true,
     openssl_verify_mode: 'none'
   }

@@ -9,7 +9,9 @@
         #phone_number
           = image_tag 'phone.png'
           %span{itemprop: "telephone"}
-            %a.phone_number{href: "#{ (request.user_agent =~ /Mobile|webOS/) ? 'tel' : 'callto' }:+79213834884"} 7 (921) 383-48-84
+            %a.phone_number{href: "#{ (request.user_agent =~ /Mobile|webOS/) ? 'tel' : 'callto' }:#{t('phone1').gsub(/[\(\)\-\s]/, '')}"}= t('phone1')
+            %br/
+            %a.phone_number{href: "#{ (request.user_agent =~ /Mobile|webOS/) ? 'tel' : 'callto' }:#{t('phone2').gsub(/[\(\)\-\s]/, '')}"}= t('phone2')
     #under_development
   #right_header_part
     #enter_form

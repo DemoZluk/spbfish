@@ -1,7 +1,6 @@
-%h1.underlined Редактировать статью
+%h1.underlined
+  Редактировать статью
+  = link_to 'К списку статей', articles_path
+  = link_to 'Открыть', @article, class: 'btn-primary'
 
 = render 'form'
-
-= link_to 'Открыть', @article
-\|
-= link_to 'К списку статей', articles_path
