@@ -8,10 +8,10 @@
         %p Интернет-магазин товаров для аквариумов, прудов и террариумов
         #phone_number
           = image_tag 'phone.png'
-          %span{itemprop: "telephone"}
-            %a.phone_number{href: "#{ (request.user_agent =~ /Mobile|webOS/) ? 'tel' : 'callto' }:#{t('phone1').gsub(/[\(\)\-\s]/, '')}"}= t('phone1')
+          %p{itemprop: "telephone"}
+            = t('phone1')
             %br/
-            %a.phone_number{href: "#{ (request.user_agent =~ /Mobile|webOS/) ? 'tel' : 'callto' }:#{t('phone2').gsub(/[\(\)\-\s]/, '')}"}= t('phone2')
+            = t('phone2')
     #under_development
   #right_header_part
     #enter_form

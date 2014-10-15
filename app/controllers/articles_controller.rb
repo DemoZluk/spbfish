@@ -51,7 +51,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
-        format.html { render action: 'edit', notice: 'Article was successfully updated.' }
+        format.html { render action: 'show', notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

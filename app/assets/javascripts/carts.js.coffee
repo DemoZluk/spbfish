@@ -53,3 +53,12 @@ $(document).on 'mousedown', (e) ->
     buy_btn = $('.add_to_cart button, .add_to_cart input')
     if !container.is(e.target) && !buy_btn.is(e.target) && container.has(e.target).length == 0
         container.stop().hide('blind', 'fast')
+
+$(document).on 'blur', '.quantity .value', ->
+  id = $(this).data('id')
+  $.ajax {
+    url: "/line_items/#{id}"
+    type: 'PUT',
+    data: {line_item: {quantity: this.value}, format: 'js'}
+  }
+

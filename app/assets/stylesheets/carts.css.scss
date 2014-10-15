@@ -129,9 +129,12 @@
     height: 25px;
     border: 1px solid #777;
     border-width: 1px 0px;
-    -webkit-box-shadow: inset 0px 0px 3px #444;
-    -moz-box-shadow: inset 0px 0px 3px #444;
-    box-shadow: inset 0px 0px 3px #444;
+
+    &:focus {
+      -webkit-box-shadow: inset 0px 0px 3px #444;
+      -moz-box-shadow: inset 0px 0px 3px #444;
+      box-shadow: inset 0px 0px 3px #444;
+    }
   }
 
   input[type=submit] {

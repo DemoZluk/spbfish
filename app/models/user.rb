@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  require "highline/import"
+
   has_many :carts, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :ratings
@@ -50,7 +52,14 @@ class User < ActiveRecord::Base
       if roles.find_by name: role
         true
       else
-        false
+        answer = HighLine.ask("Role '#{role}' not found. Create new and assign to user? [y/n]: ")
+        if answer == 'y'
+          Role.create(name: role)
+          assign_role(role)
+          true
+        else
+          false
+        end
       end
     end
   end

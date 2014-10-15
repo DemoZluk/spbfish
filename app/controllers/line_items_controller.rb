@@ -49,9 +49,11 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       if @line_item.update(line_item_params)
         format.html { redirect_to @line_item, notice: 'Line item was successfully updated.' }
+        format.js {render partial: 'line_item_change_quantity'}
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
+        format.js { render json: @line_item.errors, status: :unprocessable_entity }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
       end
     end
@@ -124,6 +126,6 @@ class LineItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def line_item_params
-      params.require(:line_item).premit(:quantity)
+      params.require(:line_item).permit(:quantity)
     end
 end

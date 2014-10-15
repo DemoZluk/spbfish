@@ -183,8 +183,8 @@ def add_values_to_values
 end
 
 def init_roles
-  puts "Initializing roles"
-  roles = ['admin', 'content_manager', 'products_manager']
+  puts "+ Predefining some roles:"
+  roles = ['admin', 'content_manager', 'products_manager', 'orders_manager']
   roles.each do |role|
     Role.create name: role
     puts "#{role} created"

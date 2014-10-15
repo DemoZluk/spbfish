@@ -6,7 +6,6 @@ class Ability
 
     user ||= User.new # guest user (not logged in)
     roles = user.role?
-    
 
     if roles.include?('admin')
       can :manage, :all
@@ -20,12 +19,13 @@ class Ability
       end
       if roles.include?('orders_manager')
         can :manage, Order
+        can :manage, @cart
       end
       can [:read, :update, :destroy, :clear], Cart, user_id: user.id
       can [:create, :show, :update, :cancel], Order, user_id: user.id
       can [:read, :create, :update, :decrement, :increment, :destroy], LineItem
     end
-      
+
     #
     # The first argument to `can` is the action you are giving the user 
     # permission to do.

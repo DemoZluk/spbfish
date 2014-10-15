@@ -1,9 +1,0 @@
-if ($('body').hasClass('carts')) {$("##{@line_item.product.permalink} .info_table").html("#{j render(partial: 'carts/info_table', locals: {li: @line_item})}"); $('.items span').text("#{@cart.line_items.count}"); $('.grand-total span').text("#{number_to_currency @cart.total_price}")}
-
-$('#cart').html("#{ j render('shared/cart', cart: @cart) }");
-
-$('.grand_total').html("#{ j render('shared/grand_total') }");
-
-$('.current_item').css({'background-color':'#F55'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
-
-$('#item_counter span').stop().hide('fast', function() { $('#item_counter span').html("#{ j render('shared/counter') }").show('fast')});

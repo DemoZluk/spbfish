@@ -27,8 +27,8 @@ Turbolinks.enableTransitionCache();
 $(document).on('ready page:change page:load', function() {
   tinymce.init({
     selector: '.tinymce',
-    plugins: ["image code table fullscreen", "textcolor"],
-    toolbar: "undo redo | styleselect | bold italic underline | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullscreen code ",
+    plugins: ["link image code table fullscreen print preview media", "textcolor"],
+    toolbar: "undo redo | styleselect | bold italic underline | forecolor backcolor emoticons | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent hr | link unlink image | print preview media fullscreen code ",
     height: 300
     })
 })

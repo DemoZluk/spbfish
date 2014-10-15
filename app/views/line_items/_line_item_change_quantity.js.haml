@@ -1,0 +1,28 @@
+- if @current_cart != @cart
+
+  // Мигание изменённого товара в корзине
+  $('.current_item').css({'background-color':'#CCC'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
+
+  // Пересчитать счётчик товаров внизу
+  $('#item_counter span').stop().hide('fast', function() { $('#item_counter span').text("#{ j count_cart_elements @current_cart }").show('fast')});
+
+  // Корзина внизу
+  $('#cart').html("#{ j render('shared/cart', cart: @current_cart) }");
+
+// Пересчитать общую сумму
+$('.grand_total').html("#{ j render('shared/grand_total') }");
+
+// Количество позиций
+$('.items span').text("#{@current_cart.line_items.count}");
+
+- if @line_item && @line_item.quantity > 0
+  // Пересчитать количество товаров
+  $("##{@line_item.product.permalink} .info_table").html("#{j render(partial: 'carts/info_table', locals: {li: @line_item})}");
+
+  // Мигание количества товара в корзине
+  $('##{@line_item.product.permalink} .change-quantity input').animate({'background-color':'#BBB'}, 100).animate({'background-color':'#FFF'}, 100);
+
+  // Пересчитать кол-во товара в корзине и вывод в строку над кнопкой покупки
+  $('##{@line_item.product.permalink} .cart_quantity').text("В корзине #{ @line_item.quantity } #{@line_item.product.storages.first.unit}.")
+- else
+  $('##{@line_item.product.permalink}').hide('blind')

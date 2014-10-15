@@ -1,12 +1,13 @@
 module CurrentCart
   extend ActiveSupport::Concern
-  
+
   private
-  
+
     def set_cart
-      @cart = Cart.find session[:cart_id]
-      if user_signed_in? && current_user.admin?
+      if params[:cid] && user_signed_in? && can?(:manage, @cart)
         @cart = Cart.find params[:cid]
+      else
+        @cart = Cart.find session[:cart_id]
       end
     rescue ActiveRecord::RecordNotFound
       @cart = Cart.create(user_id: current_user.try(:id))

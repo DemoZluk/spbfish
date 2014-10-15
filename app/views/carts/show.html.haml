@@ -1,5 +1,7 @@
 .container-fluid
-  %h1 Ваша корзина
+  %h1
+    Ваша корзина
+    = link_to 'Список корзин', carts_path
   .row
     .col-xs-12.col-lg-8
       = paginate @line_items if @line_items
