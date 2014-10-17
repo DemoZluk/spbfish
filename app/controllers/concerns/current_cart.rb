@@ -4,14 +4,14 @@ module CurrentCart
   private
 
     def set_cart
-      if params[:cid] && user_signed_in? && can?(:manage, @cart)
-        @cart = Cart.find params[:cid]
-      else
-        @cart = Cart.find session[:cart_id]
+      @current_cart = Cart.find session[:cart_id]
+      if params[:cid] && can?(:manage, Cart)
+        @user_cart = Cart.find params[:cid]
       end
+      @cart = @user_cart || @current_cart
     rescue ActiveRecord::RecordNotFound
-      @cart = Cart.create(user_id: current_user.try(:id))
-      session[:cart_id] = @cart.id
+      @current_cart = Cart.create(user_id: current_user.try(:id))
+      session[:cart_id] = @current_cart.id
     end
 
     def old_cart

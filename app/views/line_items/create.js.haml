@@ -1,9 +1,0 @@
-//if ($('#cart tr').length > 0) { $('#cart').show('blind', 300); };
-$('#cart').html("#{ j render('shared/cart', cart: @cart) }");
-//$('#cart_panel').ready( function () { $('#cart').fadeIn(500); });
-
-$('.grand_total').html("#{ j render('shared/grand_total') }");
-
-$('.current_item').css({'background-color':'#88ff88'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
-
-$('#item_counter span').stop().hide('fast', function() { $('#item_counter span').text("#{ j count_cart_elements }").show('fast')});

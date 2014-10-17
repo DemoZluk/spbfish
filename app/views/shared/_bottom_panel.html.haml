@@ -1,13 +1,13 @@
 .bottom_panel
-  - if @cart #unless ['carts','registrations'].include? controller_name
+  - if @current_cart #unless ['carts','registrations'].include? controller_name
     #cart_block
       = link_to(cart_path, remote: true, :class => 'cart_link') do
         %span#cart_title Корзина
         #item_counter
-          %span= count_cart_elements
-        %span.grand_total= render('shared/grand_total')
+          %span= count_cart_elements @current_cart
+        %span.grand_total= grand_total @current_cart
       #cart_panel{ style: "display: #{flash[:merge_carts?] ? 'block' : 'none'};" }
-        - if @cart
+        - if @current_cart
           #cart=# render('shared/cart', cart: @cart)
       
       = button_to('Заказать', new_order_path, style: ((controller_name == 'orders') ? ("display: none") : false), class:  'order primary_button', method: :get, autocomplete: 'off')

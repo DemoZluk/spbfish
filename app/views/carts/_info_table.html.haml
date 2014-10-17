@@ -5,9 +5,9 @@
   %tr.quantity
     %td Количество
     %td.right<
-      = button_to("-", decrement_line_item_path(li.id), remote: true, class: 'minus', autocomplete: 'off', data: ((li.quantity <= 1) ? {confirm: "Хотите удалить #{li.product.title} из списка покупок?"} : nil))
+      = button_to("-", decrement_line_item_path(li.id, cid: params[:cid]), remote: true, class: 'minus', autocomplete: 'off', data: ((li.quantity <= 1) ? {confirm: "Хотите удалить #{li.product.title} из списка покупок?"} : nil))
       = text_field_tag "li_#{li.id}", li.quantity, size: 3, autocomplete: 'off', class: 'value', data: {id: li.id}
-      = button_to("+", increment_line_item_path(li.id), remote: true, autocomplete: 'off', class: 'plus')
+      = button_to("+", increment_line_item_path(li.id, cid: params[:cid]), remote: true, autocomplete: 'off', class: 'plus')
   %tr.sum.bold
     %td Сумма
     %td.right= number_to_currency(li.price * li.quantity)

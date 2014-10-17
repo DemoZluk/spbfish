@@ -1,5 +1,7 @@
 class CartsController < ApplicationController
+  include CurrentCart
   load_and_authorize_resource
+  before_action :set_cart, only: [:show, :create, :update, :clear]
   skip_before_action :authenticate_user!, only: [:create, :show, :update, :clear]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
 
@@ -12,7 +14,9 @@ class CartsController < ApplicationController
   # GET /carts/1
   # GET /carts/1.json
   def show
-    @line_items = @cart.line_items.page(params[:page])
+    @cart = @user_cart || @current_cart
+    redirect_to cart_path, notice: 'Нет прав на просмотр этой корзины.' unless (current_user_owns?(@cart) || can?(:manage, Cart))
+    @line_items = @cart.line_items.page(params[:page]).per(10)
   end
 
   # GET /carts/new
@@ -105,6 +109,10 @@ class CartsController < ApplicationController
     def invalid_cart
       logger.error("Неправильно задана корзина #{params[:id]}")
       redirect_to(store_url, notice: 'Неверная корзина')
+    end
+
+    def current_user_owns? cart
+      Cart.find(session[:cart_id]) == cart
     end
 
 end

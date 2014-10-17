@@ -1,19 +1,27 @@
-- if @current_cart != @cart
+- if @user_cart && @current_cart != @user_cart
+  $('#content .items span').text("#{@user_cart.line_items.count}");
+  $('#content .grand-total > span').html("#{ j grand_total @user_cart }");
 
-  // Мигание изменённого товара в корзине
-  $('.current_item').css({'background-color':'#CCC'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
+- else
+  // Пересчитать общую сумму
+  $('#cart_panel .grand_total').html("#{ j grand_total @current_cart }");
+
+  // Количество позиций
+  $('#cart_panel .items span').text("#{@current_cart.line_items.count}");
 
   // Пересчитать счётчик товаров внизу
   $('#item_counter span').stop().hide('fast', function() { $('#item_counter span').text("#{ j count_cart_elements @current_cart }").show('fast')});
 
+  // Мигание изменённого товара в корзине
+  $('.current_item').css({'background-color':'#CCC'}).animate({'background-color':'rgba(0, 0, 0, 0)'}, 1000);
+
   // Корзина внизу
   $('#cart').html("#{ j render('shared/cart', cart: @current_cart) }");
+  // Сумма внизу
+  $('#cart_block .grand-total').html("#{ j grand_total @current_cart }");
 
-// Пересчитать общую сумму
-$('.grand_total').html("#{ j render('shared/grand_total') }");
-
-// Количество позиций
-$('.items span').text("#{@current_cart.line_items.count}");
+  $('#content .items span').text("#{@current_cart.line_items.count}");
+  $('#content .grand-total > span').html("#{ j grand_total @current_cart }");
 
 - if @line_item && @line_item.quantity > 0
   // Пересчитать количество товаров

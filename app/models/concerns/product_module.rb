@@ -177,6 +177,8 @@ module ProductModule
 
         img.save
 
+        File.chmod 0644, original_url, medium_url, thumbnail_url
+
         puts "Image for #{title} generated." unless silent
       end
 

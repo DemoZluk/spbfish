@@ -43,12 +43,6 @@
     }
   }
 
-  .total {
-    margin-top: 15px;
-    margin-bottom: 10px;
-    font-size: 15px;
-  }
-
   .grand-total {
     font-weight: bold;
   }
@@ -80,6 +74,12 @@
         padding: 3px 5px;
       }
     }
+  }
+
+  #content .total {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 15px;
   }
 
   .product {

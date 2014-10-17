@@ -1,7 +1,6 @@
-#encoding: utf-8
 class LineItemsController < ApplicationController
   include CurrentCart
-  before_action :set_cart, only: [:index, :create, :destroy, :decrement, :increment]
+  before_action :set_cart, only: [:index, :create, :destroy, :decrement, :increment, :update]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement, :increment]
   skip_before_action :authenticate_user!, only: [:create, :decrement, :increment, :destroy]
 
@@ -34,7 +33,7 @@ class LineItemsController < ApplicationController
     respond_to do |format|
       if @line_item.save
         format.html { redirect_to store_url }
-        format.js { @current_item = @line_item }
+        format.js { @current_item = @line_item; render partial: 'line_item_change_quantity'}
         format.json { render action: 'show', status: :created, location: @line_item }
       else
         format.html { render action: 'new' }
@@ -87,7 +86,7 @@ class LineItemsController < ApplicationController
     if @line_item.save
       respond_to do |format|
         format.html {redirect_to cart_path(session[:cart_id])}
-        format.js {@current_item = @line_item}
+        format.js {@current_item = @line_item; render partial: 'line_item_change_quantity'}
         format.json { head :no_content }
       end
     else
@@ -105,7 +104,7 @@ class LineItemsController < ApplicationController
     if @line_item.save
       respond_to do |format|
         format.html {redirect_to cart_path(session[:cart_id])}
-        format.js {@current_item = @line_item}
+        format.js {@current_item = @line_item; render partial: 'line_item_change_quantity'}
         format.json { head :no_content }
       end
     else

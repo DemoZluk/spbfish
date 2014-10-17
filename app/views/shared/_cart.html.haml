@@ -1,11 +1,11 @@
-- if @cart.line_items.empty?
+- if @current_cart.line_items.empty?
   %p.center
     %strong Ваша корзина пуста
   = content_tag :div, '×', id: 'close_cart', class: 'close'
 - else
   %h4.center= link_to('Перейти в корзину', cart_path, id: 'cart_link')
 
-  - line_items = @cart.line_items.page(params[:li_page])
+  - line_items = @current_cart.line_items.page(params[:li_page])
   %table.item_table
     %colgroup 
       %col
@@ -18,7 +18,7 @@
       %td
       %td
       %td.left Итого
-      %td.grand_total.right= render('shared/grand_total')
+      %td.grand_total.right= grand_total @current_cart
       %td
       %td.clear_cart= button_to('×', cart_path, method: :delete, class: 'btn btn-default btn-xs bold', data: { confirm: 'Вы уверены, что хотите убрать все товары из корзины?' }, remote: true)
   = paginate(line_items, param_name: 'li_page', remote: true, params: {controller: 'line_items', action: 'index'})

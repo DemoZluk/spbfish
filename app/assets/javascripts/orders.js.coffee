@@ -12,19 +12,19 @@ $(document).on 'change', '#order_pay_type', ->
     $('#order_address').parent().find('span').text('')
 $( "#datepicker" ).datepicker( $.datepicker.regional[ "ru" ] );
 $( "#order_shipping_date" ).datepicker({
-constrainInput: true,
-autoSize: true,
-showAnim: 'fade',
-showOtherMonths: true,
-selectOtherMonths: true,
-dateFormat: 'yy-mm-dd',
-# showOn: "both",
-# buttonImage: "/images/calendar.gif",
-# buttonImageOnly: true,
-minDate: +1,
-maxDate: +14,
-showWeek: true,
-firstDay: 1,
-defaultDate: +1,
-hideIfNoPrevNext: true
+  constrainInput: true,
+  autoSize: true,
+  showAnim: 'fade',
+  showOtherMonths: true,
+  selectOtherMonths: true,
+  dateFormat: 'yy-mm-dd',
+  # showOn: "both",
+  # buttonImage: "/images/calendar.gif",
+  # buttonImageOnly: true,
+  minDate: +1,
+  maxDate: +14,
+  showWeek: true,
+  firstDay: 1,
+  defaultDate: +1,
+  hideIfNoPrevNext: true
 });

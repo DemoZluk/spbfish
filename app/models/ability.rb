@@ -19,7 +19,7 @@ class Ability
       end
       if roles.include?('orders_manager')
         can :manage, Order
-        can :manage, @cart
+        can :manage, Cart
       end
       can [:read, :update, :destroy, :clear], Cart, user_id: user.id
       can [:create, :show, :update, :cancel], Order, user_id: user.id

@@ -1,4 +1,4 @@
-- if @cart && !@cart.line_items.empty?
-  = number_to_currency(@cart.total_price)
+- if cart && !cart.line_items.empty?
+  = number_to_currency(cart.total_price)
 - else
   Пусто
