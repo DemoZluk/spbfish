@@ -32,8 +32,14 @@ Fishmarkt::Application.routes.draw do
   resources :carts, param: :cid do
   end
 
+  post '/orders/check' => 'orders#check', as: 'check_order'
+  post '/orders/payment' => 'orders#payment', as: 'payment_order'
   resources :orders do
-    get 'cancel', on: :member
+    member do
+      get 'cancel'
+      get 'confirm'
+      get 'payment'
+    end
   end
   delete 'delete_orders' => 'orders#destroy', as: :destroy
 

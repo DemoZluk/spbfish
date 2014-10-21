@@ -2,10 +2,12 @@ class OrdersController < ApplicationController
   include Redirect
   include CurrentCart
   before_action :set_cart, only: [:new, :create]
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :check_if_empty, :cancel]
+  before_action :set_order, except: [:index, :new, :delete_multiple_orders, :check, :payment]
   before_action :check_if_empty, only: [:edit]
-  skip_before_action :authenticate_user!, only: [:show, :new, :create]
+  skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment]
+  skip_before_action :verify_authenticity_token, only: [:check, :payment]
 
+  layout false, only: [:check, :payment]
   # GET /orders
   # GET /orders.json
   def index
@@ -49,10 +51,10 @@ class OrdersController < ApplicationController
     p = order_params.merge(user_id: current_user.try(:id), status: 'Активен')
     @order = Order.new(p)
     @order.token = params[:authenticity_token]
-    total_price = @order.total_price
     unless @order.add_line_items_from_cart(@cart)
       redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
     end
+    total_price = @order.total_price
 
     respond_to do |format|
       if @order.save
@@ -60,10 +62,10 @@ class OrdersController < ApplicationController
           path = order_path(@order, t: @order.token)
           type = 'cash'
         elsif order_params[:pay_type] == 'Безналичный'
-          path = '/yandex-payment'
+          path = order_path(@order, t: @order.token)
           type = 'noncash'
         end
-        format.html { redirect_to path, flash: {order_created: I18n.t(:order_thanks)} }
+        format.html { redirect_to path, flash: {success: I18n.t(:order_thanks)} }
         format.json { render action: type, status: :created,
         location: @order }
         OrderNotifier.received(@order, total_price).deliver
@@ -81,7 +83,6 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-
     respond_to do |format|
       @old = @order
       total_price = @cart.total_price
@@ -108,6 +109,22 @@ class OrdersController < ApplicationController
       format.html { redirect_to_back_or_default flash: { warning: "Заказ № #{number} удалён"} }
       format.json { head :no_content }
     end
+  end
+
+  # Confirmation of order by manager
+  def confirm
+    
+  end
+
+  def check
+    respond_to do |format|
+      format.html
+      format.json
+    end
+  end
+
+  def payment
+
   end
 
   def cancel

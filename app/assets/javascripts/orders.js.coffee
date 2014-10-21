@@ -30,12 +30,16 @@ $( "#order_shipping_date" ).datepicker({
 });
 
 $(document).ready ->
-  $('#error_explanation').length
-  location.hash = 'info'
-  hash = location.hash
-  unless hash == ''
-    $('.active').toggleClass('active')
-    $('a[href=' + hash + ']').tab('show')
+  console.log 'blah1'
+  if $('body.orders').length
+    console.log 'blah2'
+    if $('#error_explanation').length
+      console.log 'blah3'
+      location.hash = 'info'
+      hash = location.hash
+      unless hash == ''
+        $('.active').toggleClass('active')
+        $('a[href=' + hash + ']').tab('show')
 
 $(document).on 'click', '.nav-tabs a', (e) ->
   e.preventDefault()
