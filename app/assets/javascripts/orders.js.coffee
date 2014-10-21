@@ -28,3 +28,27 @@ $( "#order_shipping_date" ).datepicker({
   defaultDate: +1,
   hideIfNoPrevNext: true
 });
+
+$(document).ready ->
+  $('#error_explanation').length
+  location.hash = 'info'
+  hash = location.hash
+  unless hash == ''
+    $('.active').toggleClass('active')
+    $('a[href=' + hash + ']').tab('show')
+
+$(document).on 'click', '.nav-tabs a', (e) ->
+  e.preventDefault()
+  $(this).tab('show')
+  loc = this.href
+  hash = '#' + loc.split('#')[1]
+  history.pushState({hash: hash}, '', loc)
+
+$(document).on 'click', '.next', (e) ->
+  e.preventDefault
+  href = '#' + this.href.split('#')[1]
+  $('a[href=' + href + ']').tab('show')
+
+window.onpopstate = (e) ->
+  hash = e.state.hash || '#edit'
+  $('a[href=' + hash + ']').tab('show')

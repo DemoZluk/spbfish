@@ -24,24 +24,31 @@ input[type='checkbox'], input[type='checkbox']~label {
   vertical-align: middle;
 }
 
-.img-sm-sq, .img-sm-sq img {
-  height: 135px;
-  width: 135px;
-  display: inline-block;
-}
+.img {
+  &.sm-sq, &.sm-sq img {
+    height: 135px !important;
+    width: 135px;
+    display: inline-block;
+  }
 
-.img-md-sq, .img-md-sq img {
-  height: 300px;
-  width: 300px;
-  display: inline-block;
-}
+  &.md-sq, &.md-sq img {
+    height: 300px;
+    width: 300px;
+    display: inline-block;
+  }
 
-.img-r, .img-r img {
-  width: 100%;
-  display: inline-block;
-  vertical-align: top;
-}
+  &.r {
 
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  &.r img {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+  }
+}
 
 form {
   margin-bottom: 0px;

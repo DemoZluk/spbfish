@@ -1,5 +1,6 @@
 class CartsController < ApplicationController
   include CurrentCart
+  include Redirect
   load_and_authorize_resource
   before_action :set_cart, only: [:show, :create, :update, :clear]
   skip_before_action :authenticate_user!, only: [:create, :show, :update, :clear]
@@ -66,7 +67,7 @@ class CartsController < ApplicationController
   def destroy
     @cart.destroy
     respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_to_back_or_default }
       format.js
       format.json { head :no_content }
     end
@@ -75,7 +76,7 @@ class CartsController < ApplicationController
   def clear
     @cart.line_items.destroy_all
     respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_to_back_or_default }
       format.js
       format.json { head :no_content }
     end
@@ -87,12 +88,12 @@ class CartsController < ApplicationController
       @old_cart.line_items.update_all cart_id: session[:cart_id]
       @old_cart.destroy
     end
-    redirect_to :back
+    redirect_to_back_or_default
   end
 
   def merge_no
     @old_cart.destroy if @user && @old_cart
-    redirect_to :back
+    redirect_to_back_or_default
   end
 
   private

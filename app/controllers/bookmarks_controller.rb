@@ -1,4 +1,5 @@
 class BookmarksController < ApplicationController
+  include Redirect
   before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
 
   # GET /bookmarks
@@ -51,7 +52,7 @@ class BookmarksController < ApplicationController
     if @bookmark = Bookmark.find_by(product_id: @product.id, user_id: current_user.id)
       @bookmark.destroy
       respond_to do |format|
-        format.html {redirect_to :back, notice: 'Product deleted from bookmarks'}
+        format.html {redirect_to_back_or_default notice: 'Product deleted from bookmarks'}
         format.js {render action: :destroy}
         format.json {render product_id: @product.id, status: :deleted_from_bookmarks}
       end
@@ -60,11 +61,11 @@ class BookmarksController < ApplicationController
 
       respond_to do |format|
         if @bookmark.save
-          format.html {redirect_to :back, notice: 'Product bookmarked'}
+          format.html {redirect_to_back_or_default notice: 'Product bookmarked'}
           format.js
           format.json {render product_id: @product.id, status: :success}
         else
-          format.html {redirect_to :back, notice: 'Fail'}
+          format.html {redirect_to_back_or_default notice: 'Fail'}
         end
       end
     end

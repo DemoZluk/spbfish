@@ -1,10 +1,10 @@
-- if @user_cart && @current_cart != @user_cart
+- if @user_cart && @current_cart && @current_cart != @user_cart
   $('#content .items span').text("#{@user_cart.line_items.count}");
   $('#content .grand-total > span').html("#{ j grand_total @user_cart }");
 
 - else
   // Пересчитать общую сумму
-  $('#cart_panel .grand_total').html("#{ j grand_total @current_cart }");
+  $('#cart_block .grand_total').html("#{ j grand_total @current_cart }");
 
   // Количество позиций
   $('#cart_panel .items span').text("#{@current_cart.line_items.count}");
@@ -17,8 +17,6 @@
 
   // Корзина внизу
   $('#cart').html("#{ j render('shared/cart', cart: @current_cart) }");
-  // Сумма внизу
-  $('#cart_block .grand-total').html("#{ j grand_total @current_cart }");
 
   $('#content .items span').text("#{@current_cart.line_items.count}");
   $('#content .grand-total > span').html("#{ j grand_total @current_cart }");

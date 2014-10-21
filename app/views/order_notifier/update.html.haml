@@ -1,0 +1,51 @@
+%html
+  %head
+    %meta{:content => "text/html; charset=utf-8"}/ 
+    %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/
+
+  %body.email
+    %p= 'Пользователь ' + @order.name + ' обновил параметры заказа на сайте'
+
+    %strong Номер заказа:
+    = @order.id
+
+    %p
+      = @old.line_items.length
+      = @order.line_items.length
+
+    %p Он заказал следующие товары:
+
+    %table.order
+      %tr
+        %th Название
+        %th Артикул
+        %th Кол-во
+        %th Цена
+        %th Сумма
+      - @order.line_items.each do |line_item|
+        %tr
+          %td= line_item.product.long_name
+          %td= line_item.product.item
+          %td.right= line_item.quantity
+          %td.right= number_to_currency line_item.price
+          %td.right= number_to_currency(line_item.total_price)
+      %tr
+        %td{ :colspan => 4 } Итого
+        %td.right= number_to_currency(@total_price)
+
+    %p
+      %strong Адрес доставки:
+      %br/
+      = @order.address
+    %p
+      %strong Телефон:
+      %br/ 
+      = @order.phone_number
+    %p
+      %strong Комментарий:
+      %br/ 
+      = @order.comment
+    %p
+      %strong Ссылка на заказ:
+      %br
+        = link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)

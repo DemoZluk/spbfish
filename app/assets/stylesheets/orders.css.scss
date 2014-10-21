@@ -18,6 +18,13 @@
   }
 }
 
+.tab-content {
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  border-color: #DDD;
+  border-radius: 0px 0px 5px 5px;
+}
+
 fieldset.order {
 
   .ui-datepicker-trigger {

@@ -37,7 +37,7 @@
 
     %main#content.container-fluid{role: 'main'}
       .row
-        #alert= bootstrap_alerts
+        #alert= render 'shared/bootstrap_alerts'
         = yield
 
     = render 'shared/metrika.html'

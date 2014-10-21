@@ -82,7 +82,7 @@ class ProductsController < ApplicationController
 
   def search
     if params[:q].length < 3
-      redirect_to :back, notice: t('.query_too_short') and return
+      redirect_to_back_or_default notice: t('.query_too_short') and return
     end
     @search_products = Product.with_price.search(params[:q])
     @products = current_list_of(@search_products).order(@order_by || 'title').page(params[:page]).per(@per_page)

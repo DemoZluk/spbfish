@@ -43,7 +43,7 @@ module CurrentProducts
         products = products.where(query.join(' OR ').gsub(/'/, '"')).group{id}.having{count(product_property_values.property_id) >= c}
       end
     end
-    products
+    products.where{price > 0}
   end
 
   def set_min_max_price_for products

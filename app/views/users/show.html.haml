@@ -1,7 +1,3 @@
-- if flash[:warning]
-  .alert.alert-warning.alert-dismissable
-    %button.close{type: 'button', data: {dismiss: 'alert'}, "aria-hidden" => 'true'} &times;
-    = flash[:warning]
 %h1.underlined
   = "Привет, #{@user.information.try(:name).presence || @user.email}!" # greeting < users_helper.rb
   = link_to 'Редактировать профиль', profile_edit_path

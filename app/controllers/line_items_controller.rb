@@ -70,7 +70,7 @@ class LineItemsController < ApplicationController
           redirect_to store_url
         end
       end
-      format.js {@current_item = @line_item}
+      format.js {@current_item = @line_item; render partial: 'line_item_change_quantity'}
       format.json { head :no_content }
     end
   end

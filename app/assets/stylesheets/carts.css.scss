@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.carts {
+.carts, .orders {
   h3 {
     display: inline-block;
     font-size: 15px;
@@ -82,36 +82,41 @@
     font-size: 15px;
   }
 
-  .product {
-    position: relative;
-    height: 85px;
-    overflow: hidden;
-    margin-top: 0.5em;
-    border: solid 1px #CCC;
-    border-radius: 10px;
+}
 
-    &:hover {
-      border-color: #428BCA;
-      background: #EEE;
+.line-item {
+  position: relative;
+  height: 85px;
+  overflow: hidden;
+  margin-top: 0.5em;
+  border: solid 1px #CCC;
+  border-radius: 10px;
+
+  &:hover {
+    border-color: #428BCA;
+    background: #EEE;
+  }
+
+  h5 {
+    margin: 7px 0px 0px 0px;
+  }
+
+  .description {
+    display: inline-block;
+    width: 55%;
+    vertical-align: top;
+  }
+
+  .info_table {
+    display: inline-block;
+    float: right;
+
+    td {
+      padding: 3px 6px;
     }
 
-    .description {
-      display: inline-block;
-      width: 55%;
-      vertical-align: top;
-    }
-
-    .info_table {
-      display: inline-block;
-      float: right;
-
-      td {
-        padding: 3px 6px;
-      }
-
-      .sum td:nth-child(even) {
-        min-width: 130px;
-      }
+    .sum td:nth-child(even) {
+      min-width: 130px;
     }
   }
 

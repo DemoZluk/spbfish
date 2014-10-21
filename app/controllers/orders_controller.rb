@@ -1,5 +1,7 @@
-#encoding: utf-8
 class OrdersController < ApplicationController
+  include Redirect
+  include CurrentCart
+  before_action :set_cart, only: [:new, :create]
   before_action :set_order, only: [:show, :edit, :update, :destroy, :check_if_empty, :cancel]
   before_action :check_if_empty, only: [:edit]
   skip_before_action :authenticate_user!, only: [:show, :new, :create]
@@ -19,8 +21,9 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
+    @page_title = 'Оформление заказа'
     if @cart.line_items.empty?
-      redirect_to :back, notice: I18n.t(:cart_is_empty)
+      redirect_to_back_or_default notice: I18n.t(:cart_is_empty)
     end
     if user_signed_in?
       info = {email: current_user.email}.merge(Hash(current_user.information.try(:attributes)))
@@ -32,6 +35,8 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
+    @cart = @order
+    @line_items = @order.line_items.page(params[:page])
   end
 
   # POST /orders
@@ -41,25 +46,32 @@ class OrdersController < ApplicationController
       info = Information.find_or_create_by(user_id: current_user.id)
       info.update order_params.slice(*Information.column_names)
     end
-    total_price = @cart.total_price
     p = order_params.merge(user_id: current_user.try(:id), status: 'Активен')
     @order = Order.new(p)
     @order.token = params[:authenticity_token]
+    total_price = @order.total_price
     unless @order.add_line_items_from_cart(@cart)
       redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
     end
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to order_path(@order, t: @order.token), flash: {order_created: I18n.t(:order_thanks)} }
-        format.json { render action: 'show', status: :created,
+        if order_params[:pay_type] == 'Наличный'
+          path = order_path(@order, t: @order.token)
+          type = 'cash'
+        elsif order_params[:pay_type] == 'Безналичный'
+          path = '/yandex-payment'
+          type = 'noncash'
+        end
+        format.html { redirect_to path, flash: {order_created: I18n.t(:order_thanks)} }
+        format.json { render action: type, status: :created,
         location: @order }
         OrderNotifier.received(@order, total_price).deliver
         OrderNotifier.order(@order, total_price).deliver
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
       else
-        format.html { render action: 'new', notice: @order.errors}
+        format.html { render action: 'new', anchor: 'info', notice: @order.errors}
         format.json { render json: @order.errors,
         status: :unprocessable_entity }
       end
@@ -69,10 +81,17 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+
     respond_to do |format|
+      @old = @order
+      total_price = @cart.total_price
+
+      redirect_to_back_or_default notice: I18n.t(:cart_is_empty) and return if @order.line_items.empty?
+
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Order was successfully updated.' }
+        format.html { redirect_to @order, notice: 'Параметры заказа обновлены' }
         format.json { head :no_content }
+        OrderNotifier.update(@old, @order, total_price).deliver
       else
         format.html { render action: 'edit' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -86,7 +105,7 @@ class OrdersController < ApplicationController
     number = @order.id
     @order.try(:destroy)
     respond_to do |format|
-      format.html { redirect_to :back, flash: { warning: "Заказ № #{number} удалён"} }
+      format.html { redirect_to_back_or_default flash: { warning: "Заказ № #{number} удалён"} }
       format.json { head :no_content }
     end
   end
@@ -96,7 +115,7 @@ class OrdersController < ApplicationController
     @order.update_column(:status, 'Отменён')
     OrderNotifier.order_canceled(@order).deliver
     respond_to do |format|
-      format.html { redirect_to :back, flash: { warning: "Заказ № #{number} отменён"} }
+      format.html { redirect_to_back_or_default flash: { warning: "Заказ № #{number} отменён"} }
       format.json { head :no_content }
     end
   end

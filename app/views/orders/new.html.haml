@@ -2,6 +2,18 @@
   Оформить заказ
   = link_to 'Назад', :back
 
-%fieldset.order.container-fluid
-  %legend Информация по заказу
-  .row= render 'form'
+%ul.nav.nav-tabs{role: 'tablist'}
+  %li.active
+    %a{href: "#edit", role: 'tab', data: {toggle: 'tab'}} Правка заказа
+  %li
+    %a{href: "#info", role: 'tab', data: {toggle: 'tab'}} Информация
+
+.tab-content.container-fluid
+  .tab-pane.fade.in.active#edit
+    = render 'carts/cart'
+    .row
+      .col-xs-12.col-lg-8{style: 'margin-bottom: 10px;'}
+        .pull-right= link_to 'Далее', '#info', class: 'btn btn-primary next'
+
+  .tab-pane.fade#info
+    .order= render 'form'

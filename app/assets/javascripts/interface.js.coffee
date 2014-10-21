@@ -40,23 +40,29 @@ $(document).on 'page:change page:load ready', ->
 
 to = 0
 $(document).on "mouseenter", '.gap', ->
-  clearTimeout(to)
-
-  $(this).find('.gap_pages').fadeIn(50)
-
   obj = $(this).find('.page_slider')
   min = parseInt(obj.closest('li').prev().children('a, span').text()) + 1
   max = parseInt(obj.closest('li').next().children('a, span').text()) - 1
-  obj.slider({
-    min: min,
-    max: max,
-    step: 1,
-    slide: (e, ui) ->
-      $a = $(this).closest('.pagination').find('.page:last > a').clone()
-      $a.attr('href', $a[0].href.replace(/page=\d+/, 'page=' + ui.value))
-      $a.text(ui.value)
-      obj.closest('.gap').children('a, span').replaceWith($a)
-  })
+
+  if min != max
+    clearTimeout(to)
+
+    $(this).find('.gap_pages').fadeIn(50)
+
+    obj.slider({
+      min: min,
+      max: max,
+      slide: (e, ui) ->
+        $a = $(this).closest('.pagination').find('.page:last > a').clone()
+        $a.attr('href', $a[0].href.replace(/page=\d+/, 'page=' + ui.value))
+        $a.text(ui.value)
+        obj.closest('.gap').children('a, span').replaceWith($a)
+    })
+  else
+    $a = $(this).closest('.pagination').find('.page:last > a').clone()
+    $a.attr('href', $a[0].href.replace(/page=\d+/, 'page=' + min))
+    $a.text(min)
+    obj.closest('.gap').children('a, span').replaceWith($a)
 
 $(document).on 'mouseleave', '.gap', ->
   obj = $(this)
