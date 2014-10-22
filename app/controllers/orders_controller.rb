@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment]
   skip_before_action :verify_authenticity_token, only: [:check, :payment]
 
-  layout false, only: [:check, :payment]
+  #layout false, only: [:check, :payment]
   # GET /orders
   # GET /orders.json
   def index
@@ -117,10 +117,7 @@ class OrdersController < ApplicationController
   end
 
   def check
-    respond_to do |format|
-      format.html
-      format.json
-    end
+    render 'orders/result.xml'
   end
 
   def payment
