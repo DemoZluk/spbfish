@@ -32,34 +32,7 @@ module ProductModule
 
     private
 
-      def update_partially1(document)
-        #puts "#{prefix}Обновляем частично..."
-
-        document.css('Товар').each do |product|
-
-          new_product = make_product product
-
-          if tmp_product = Product.find_by(item_id: product.at_css('>Ид').try(:content))
-
-            unless tmp_product.slice(\
-              'item_id',\
-              'item',\
-              'title',\
-              'group_id',\
-              'description',\
-              'producer',\
-              'long_name',\
-              'price') == new_product
-              #puts "Обновляем #{tmp_product['title']}..."
-              tmp_product.update!(new_product)
-            end
-
-          end
-          # update_or_create_from_xml(new_product)
-        end
-      end
-
-      def update_partially(document)
+      def update_partially document
         puts "#{prefix}Обновляем частично..."
         counter = 0
 
@@ -102,7 +75,7 @@ module ProductModule
         puts "#{prefix}Товаров изменено: #{counter}"
       end
 
-      def update_all_products(document)
+      def update_all_products document
         puts "#{prefix}Обновляем полностью..."
       end
 
@@ -140,6 +113,10 @@ module ProductModule
         new_product = Product.find_or_initialize_by(item_id: product['item_id'], permalink: permalink)
         new_product.update(product)
 
+      end
+
+      def check_groups_and_properties document
+        
       end
 
   end

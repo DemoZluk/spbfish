@@ -28,7 +28,7 @@
           = highlight product.item || '', query
         - if product.values.any?
           .product_properties
-            = link_to '+ Характеристики', product_path(product.permalink), remote: true, class: 'properties_header btn btn-link'
+            = link_to '+ Характеристики', product_path(product.permalink), class: 'properties_header btn btn-link'
             .properties_table
               = render 'products/properties_table'
     .right_panel

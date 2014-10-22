@@ -30,11 +30,8 @@ $( "#order_shipping_date" ).datepicker({
 });
 
 $(document).ready ->
-  console.log 'blah1'
   if $('body.orders').length
-    console.log 'blah2'
     if $('#error_explanation').length
-      console.log 'blah3'
       location.hash = 'info'
       hash = location.hash
       unless hash == ''

@@ -34,6 +34,8 @@ Fishmarkt::Application.routes.draw do
 
   post '/orders/check' => 'orders#check', as: 'check_order'
   post '/orders/payment' => 'orders#payment', as: 'payment_order'
+  post '/payment_success' => 'orders#payment', status: 'success'
+  post '/payment_failure' => 'orders#payment', status: 'failure'
   resources :orders do
     member do
       get 'cancel'

@@ -124,7 +124,13 @@ class OrdersController < ApplicationController
   end
 
   def payment
-
+    if params[:status] == 'success'
+      render template: 'orders/payment_success'
+    elsif params[:status] == 'failure'
+      render template: 'orders/payment_failure'
+    else
+      redirect_to root_url, flash: {error: 'Неизвестная ошибка'}
+    end
   end
 
   def cancel
