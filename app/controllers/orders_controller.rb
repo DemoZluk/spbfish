@@ -117,6 +117,7 @@ class OrdersController < ApplicationController
   end
 
   def check
+    @params = payment_params
     render 'orders/result.xml'
   end
 
@@ -161,5 +162,9 @@ class OrdersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:name, :address, :email, :pay_type, :shipping_date, :phone_number, :comment)
+    end
+
+    def payment_params
+      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :message, :techMessage)
     end
 end
