@@ -1,0 +1,20 @@
+%table.order{style: 'font-family: "Lucida Console", Monaco, monospace'}
+  %thead 
+    %tr
+      %th Название
+      %th Артикул
+      %th Кол-во
+      %th Цена
+      %th Сумма
+  %tbody 
+    - @order.line_items.each do |line_item|
+      %tr
+        %td= line_item.product.long_name
+        %td= line_item.product.item
+        %td.quantity.right= line_item.quantity
+        %td.right= number_to_currency line_item.price
+        %td.price.right= number_to_currency(line_item.total_price)
+  %tfoot 
+    %tr.bold
+      %td{ colspan: 4 } Итого
+      %td.right= number_to_currency(@order.total_price)

@@ -15,9 +15,8 @@
               %th 
         %tbody
           - @orders.each do |order|
-            %tr
+            %tr{class: "#{order.id}order #{order.state.active? ? 'active' : 'inactive'}"}
               = render order
-              %td.center= link_to "×", cancel_order_path(order), data: { :confirm => 'Вы уверены что хотите отменить заказ?' }, class: 'bold btn btn-link btn-lg'
 
     .col-lg-2
       = submit_tag 'Удалить'

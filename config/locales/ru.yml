@@ -47,13 +47,6 @@ ru:
       order_is_empty: В заказе нет товаров
       no_such_order: Заказа с таким номером не существует
 
-  order_notifier:
-    order:
-      user_made_order: "Пользователь %{user_name} сделал заказ № %{order}"
-    order_canceled:
-      user_canceled_order: "Пользователь %{user_name} отменил заказ № %{order}"
-
-
   products:
     search:
       empty_query: Параметры поиска не заданы
@@ -132,10 +125,8 @@ ru:
     manage:
       all: Нет доступа к данной странице
 
-  from: FISHmarkt <mail@fishmarkt.ru>
-  sign: FISHmarkt
-  mail_subject: '[FISHmarkt] '
-  order_received: Подтверждение заказа
+  from: FishMarkt<mail@fishmarkt.ru>
+  sign: FishMarkt
   order_shipped: Отправка заказа
   order_thanks: "Ваш заказ принят. Для подтверждения заказа с Вами свяжется наш менеджер."
 
@@ -150,7 +141,6 @@ ru:
   not_admin: Вы не имеете прав администратора.
   cart_is_empty: Ваша корзина пуста.
   merge_carts?: 'В прошлый раз в Вашей корзине остались товары, желаете добавить их в Вашу нынешнюю корзину?'
-  order: Заказ
 
   recaptcha_failure: Проверочный код не верен.
 

@@ -1,39 +1,49 @@
 %h1.underlined
   = "Привет, #{@user.information.try(:name).presence || @user.email}!" # greeting < users_helper.rb
   = link_to 'Редактировать профиль', profile_edit_path
-%h3 Текущие заказы
-- if @user.all_orders.active.any?
-  %table.table.table-striped.table-hover
-    %thead 
+%table.table.table-striped.table-hover
+  %thead
+    %tr
+      %th{colspan: 6}
+        %h3 Текущие заказы
+
+    %thead
       %tr 
         %th.center Номер
         %th.center Дата
         %th.center Товары
         %th.center Сумма
         %th.center Статус
-    %tbody
-      - @user.all_orders.active.each do |order|
-        %tr
-          = render order
-          %td.right= link_to "×", cancel_order_path(order), data: { :confirm => 'Вы уверены что хотите отменить заказ?' }, class: 'bold btn btn-link btn-lg' unless order.closed?
-- else
-  У Вас нет активных заказов.
+        %th
+    %tbody.active
+      - if (active_orders = @user.all_orders.active).any?
+        - active_orders.each do |order|
+          %tr{class: "#{order.id}order active"}
+            = render order
 
-%hr/ 
+      - else
+        %tr.none
+          %td{colspan: 6} У вас нет активных заказов.
 
-%h3 История заказов
-- if @user.all_orders.closed.any?
-  %table.history.table.table-striped.table-hover
-    %thead 
-      %tr 
+  %thead
+    %tr
+      %th{colspan: 6}
+        %h3 История заказов
+
+    %thead
+      %tr
         %th.center Номер
         %th.center Дата
         %th.center Товары
         %th.center Сумма
         %th.center Статус
-    %tbody 
-      - @user.all_orders.closed.each do |order|
-        %tr 
-          = render order
-- else
-  История Ваших заказов пуста.
+        %th
+    %tbody.inactive
+      - if (inactive_orders = @user.all_orders.inactive).any?
+        - inactive_orders.each do |order|
+          %tr{class: "#{order.id}order inactive"}
+            = render order
+
+      - else
+        %tr.none
+          %td{colspan: 6} У вас нет заказов в истории.

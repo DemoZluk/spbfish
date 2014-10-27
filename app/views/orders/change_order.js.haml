@@ -1,0 +1,11 @@
+$('#alert').html("#{ j render 'shared/bootstrap_alerts' }")
+order = $(".#{@order.id}order")
+order.find('.state').text("#{ @order.state? }").css('color', "#{@order.state.color_code}")
+order.find('.actions').html("#{ j render 'orders/actions', order: @order }")
+- if @controller == 'users'
+  obj = $(".#{@order.id}order.#{@order.active? ? 'inactive' : 'active'}")
+  clone = obj.clone().toggleClass('active inactive')
+  table = $("tbody.#{@order.active? ? 'active' : 'inactive'}")
+  table.find('.none').remove()
+  obj.fadeOut('fast', function () { $(this).remove() })
+  table.append(clone)

@@ -34,13 +34,15 @@ Fishmarkt::Application.routes.draw do
 
   post '/orders/check' => 'orders#check', as: 'check_order'
   post '/orders/payment' => 'orders#payment', as: 'payment_order'
-  post '/payment_success' => 'orders#payment', status: 'success'
-  post '/payment_failure' => 'orders#payment', status: 'failure'
+  match '/payment_success' => 'orders#payment', status: 'success', via: [:get, :post]
+  match '/payment_failure' => 'orders#payment', status: 'failure', via: [:get, :post]
+  match '/yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
   resources :orders do
     member do
       get 'cancel'
-      get 'confirm'
+      get 'confirm/:token', action: 'confirm', as: 'confirm'
       get 'payment'
+      get 'repeat'
     end
   end
   delete 'delete_orders' => 'orders#destroy', as: :destroy

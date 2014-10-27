@@ -24,7 +24,7 @@ document.createElement('article');
 
 Turbolinks.enableTransitionCache();
 
-$(document).on('ready page:change page:load', function() {
+$(document).ready(function() {
   tinymce.init({
     selector: '.tinymce',
     plugins: ["link image code table fullscreen print preview media", "textcolor"],

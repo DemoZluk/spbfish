@@ -117,7 +117,7 @@ form.centered-form {
   @extend .col-md-offset-2;
   @extend .col-md-8;
 
-  input[type]:not([type=submit]) {
+  input[type]:not([type=submit]):not([type=radio]):not([type=checkbox]) {
     @extend .form-control;
   }
 
@@ -173,6 +173,7 @@ ul.child a.current-page {
 .authform fieldset {
   @extend .well;
 }
+
 #error_explanation {
   @extend .alert;
   @extend .alert-danger;
@@ -180,6 +181,7 @@ ul.child a.current-page {
 #error_explanation h2 {
   font-size: 16px;
 }
+
 .button-xs {
   @extend .btn;
   @extend .btn-primary;
@@ -227,6 +229,9 @@ hr {
 
 .alert-notice {
   @extend .alert-warning;
+}
+.alert-error {
+  @extend .alert-danger;
 }
 
 article.static {

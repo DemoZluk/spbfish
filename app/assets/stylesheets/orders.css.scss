@@ -91,3 +91,8 @@ fieldset.order {
     border-bottom: 1px solid #999;
   }
 }
+
+.order_table {
+  max-height: 150px;
+  overflow: auto;
+}

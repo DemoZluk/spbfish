@@ -3,7 +3,7 @@
     Ваша корзина
     = link_to 'Список корзин', carts_path
 
-  = render 'cart'
+  = render 'carts/cart'
 
   .row
     .col-xs-12.col-lg-4= button_to('Очистить корзину', cart_path, method: :delete, data: {confirm: 'Вы уверены, что хотите убрать все товары из корзины?'}, class: 'btn btn-default', autocomplete: 'off')

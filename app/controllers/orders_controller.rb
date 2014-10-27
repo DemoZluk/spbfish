@@ -2,16 +2,17 @@ class OrdersController < ApplicationController
   include Redirect
   include CurrentCart
   before_action :set_cart, only: [:new, :create]
-  before_action :set_order, except: [:index, :new, :delete_multiple_orders, :check, :payment]
+  before_action :set_order, except: [:index, :new, :create, :delete_multiple_orders, :check, :payment]
   before_action :check_if_empty, only: [:edit]
   skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment]
-  skip_before_action :verify_authenticity_token, only: [:check, :payment]
+  skip_before_action :verify_authenticity_token, only: [:check, :payment, :yandex_payment]
 
   #layout false, only: [:check, :payment]
   # GET /orders
   # GET /orders.json
   def index
-    authorize! :read, Order
+    authorize! :index, Order
+    @controller = controller_name
     @orders = Order.all
   end
 
@@ -48,28 +49,31 @@ class OrdersController < ApplicationController
       info = Information.find_or_create_by(user_id: current_user.id)
       info.update order_params.slice(*Information.column_names)
     end
-    p = order_params.merge(user_id: current_user.try(:id), status: 'Активен')
-    @order = Order.new(p)
+    order_params[:user_id] = current_user.try(:id)
+
+    @order = Order.new(order_params)
+    @order.state = 'Активен'
     @order.token = params[:authenticity_token]
     unless @order.add_line_items_from_cart(@cart)
       redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
     end
-    total_price = @order.total_price
 
     respond_to do |format|
       if @order.save
         if order_params[:pay_type] == 'Наличный'
           path = order_path(@order, t: @order.token)
           type = 'cash'
+          message = 'Вы выбрали наличный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. Вы сможете его оплатить наличными средствами при получнеии.'
         elsif order_params[:pay_type] == 'Безналичный'
           path = order_path(@order, t: @order.token)
           type = 'noncash'
+          message = 'Вы выбрали безналичный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. В письме от менеджера вам придет ссылка, пройдя по которой вы попадёте на страницу с формой оплаты.'
         end
-        format.html { redirect_to path, flash: {success: I18n.t(:order_thanks)} }
-        format.json { render action: type, status: :created,
+        format.html { redirect_to path, flash: {success: message || I18n.t(:order_thanks)} }
+        format.json { render action: type, state: :created,
         location: @order }
-        OrderNotifier.received(@order, total_price).deliver
-        OrderNotifier.order(@order, total_price).deliver
+        OrderNotifier.received(@order).deliver
+        OrderNotifier.order(@order).deliver
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
       else
@@ -85,14 +89,13 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       @old = @order
-      total_price = @cart.total_price
 
       redirect_to_back_or_default notice: I18n.t(:cart_is_empty) and return if @order.line_items.empty?
 
       if @order.update(order_params)
-        format.html { redirect_to @order, notice: 'Параметры заказа обновлены' }
+        format.html { redirect_to_back_or_default @order, notice: 'Параметры заказа обновлены' }
         format.json { head :no_content }
-        OrderNotifier.update(@old, @order, total_price).deliver
+        OrderNotifier.update(@old, @order).deliver
       else
         format.html { render action: 'edit' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -103,6 +106,7 @@ class OrdersController < ApplicationController
   # DELETE /orders/1
   # DELETE /orders/1.json
   def destroy
+    authorize! :destroy, Order
     number = @order.id
     @order.try(:destroy)
     respond_to do |format|
@@ -113,35 +117,91 @@ class OrdersController < ApplicationController
 
   # Confirmation of order by manager
   def confirm
-    
+    authorize! :confirm, Order
+    if @order.token == params[:token] && @order.update_columns(confirmed_at: DateTime.now) && (@order.state = 'Подтверждён') && OrderNotifier.confirmed(@order).deliver
+      respond_to do |format|
+        format.html { redirect_to_back_or_default flash: { success: "Заказ № #{@order.id} подтверждён"} }
+        format.js { flash.now[:success] = "Заказ № #{@order.id} подтверждён"; render 'orders/change_order.js' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to_back_or_default flash: {error: 'Произошла ошибка. Попробоуйте позднее.'} }
+        format.js { flash.now[:error] = 'Произошла ошибка. Попробоуйте позднее.'; render 'orders/change_order.js' }
+        format.json { render json: {message: 'Произошла ошибка. Попробоуйте позднее.'} }
+      end
+    end
+  end
+
+  def yandex_payment
+    if @order.token == order_params[:token]
+      if @order.confirmed?
+        respond_to do |format|
+          format.html
+          format.js
+          format.json { head :no_content }
+        end
+      else
+        redirect_to_back_or_default flash: {error: "Заказ № #{@order.id} ещё не подтверждён."}
+      end
+    else
+      redirect_to_back_or_default flash: {error: 'Ошибка! Неверный ключ.'}
+    end
   end
 
   def check
     @params = payment_params
+    @code = 0
     render 'orders/result.xml'
   end
 
   def payment
     if params[:status] == 'success'
-      render template: 'orders/payment_success'
+      render 'orders/payment_success.html'
     elsif params[:status] == 'failure'
-      render template: 'orders/payment_failure'
+      render 'orders/payment_failure.html'
     else
-      redirect_to root_url, flash: {error: 'Неизвестная ошибка'}
+      render 'static/yandex-payment.html'
     end
   end
 
   def cancel
-    number = @order.id
-    @order.update_column(:status, 'Отменён')
-    OrderNotifier.order_canceled(@order).deliver
-    respond_to do |format|
-      format.html { redirect_to_back_or_default flash: { warning: "Заказ № #{number} отменён"} }
-      format.json { head :no_content }
+    if (@order.state = 'Отменён') && (@order.update_columns(confirmed_at: nil))
+      OrderNotifier.canceled(@order).deliver
+      respond_to do |format|
+        format.html { redirect_to :back, flash: { warning: "Заказ № #{@order.id} отменён"} }
+        format.js {flash.now[:warning] = "Заказ № #{@order.id} отменён"; render 'orders/change_order.js'}
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to_back_or_default flash: { warning: "Не получилось отменть заказ №#{@order.id}"} }
+        format.js { flash.now[:warning] = "Не получилось отменть заказ № #{@order.id}"; render 'orders/change_order.js' }
+        format.json { render json: {status: 'error'} }
+      end
+    end
+  end
+
+  def repeat
+    if @order.state = 'Активен'
+      OrderNotifier.received(@order).deliver
+      OrderNotifier.order(@order).deliver
+      respond_to do |format|
+        format.html { redirect_to_back_or_default flash: {success: 'Заказ заново размещён'} }
+        format.js { flash.now[:success] = 'Заказ заново размещён'; render 'orders/change_order.js'}
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to_back_or_default flash: {success: 'Заказ не может быть заново размещён'} }
+        format.js {render 'orders/change_order.js'}
+        format.json { head :no_content }
+      end      
     end
   end
 
   def delete_multiple_orders
+    authorize! :destroy, Order
     ids = params[:ids]
     @orders = Order.where{id >> ids}
   end
@@ -149,22 +209,23 @@ class OrdersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
-      @order = Order.find(params[:id])
+      @controller = Rails.application.routes.recognize_path(request.referrer)[:controller]
+      @order = Order.find(params[:id] || order_params[:id])
     rescue ActiveRecord::RecordNotFound
-      redirect_to store_path, notice: t('.no_such_order')
+      redirect_to_back_or_default flash: {error: t('orders.show.no_such_order')}
     end
 
     def check_if_empty
       order = Order.find(params[:id])
-      redirect_to(store_path, notice: t('.order_is_empty')) if order.line_items.empty?
+      redirect_to(store_path, notice: I18n.t('orders.show.order_is_empty')) if order.line_items.empty?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:name, :address, :email, :pay_type, :shipping_date, :phone_number, :comment)
+      params.require(:order).permit(:id, :name, :address, :token, :email, :pay_type, :shipping_date, :phone_number, :comment)
     end
 
     def payment_params
-      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :message, :techMessage)
+      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :message, :techMessage, :orderNumber)
     end
 end

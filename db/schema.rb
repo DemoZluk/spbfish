@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430133804) do
+ActiveRecord::Schema.define(version: 20141024090336) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -98,7 +98,8 @@ ActiveRecord::Schema.define(version: 20140430133804) do
     t.string   "phone_number"
     t.string   "token"
     t.string   "comment"
-    t.string   "status"
+    t.integer  "state_id"
+    t.datetime "confirmed_at"
   end
 
   create_table "product_property_values", force: true do |t|
@@ -138,6 +139,12 @@ ActiveRecord::Schema.define(version: 20140430133804) do
 
   create_table "roles", force: true do |t|
     t.string "name"
+  end
+
+  create_table "states", force: true do |t|
+    t.string  "state"
+    t.string  "color_code"
+    t.boolean "active"
   end
 
   create_table "storages", force: true do |t|

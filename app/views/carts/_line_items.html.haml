@@ -5,4 +5,4 @@
       %h5= link_to_product li.product
       %p= li.product.long_name
     .info_table
-      = render(partial: 'carts/info_table', locals: {li: li})
+      = render(partial: "#{(action_name == 'edit' || controller_name == 'carts') ? 'carts' : 'orders'}/info_table", locals: {li: li})
