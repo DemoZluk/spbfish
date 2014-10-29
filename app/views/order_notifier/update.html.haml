@@ -23,13 +23,13 @@
       = @order.address
     %p
       %strong Телефон:
-      %br/ 
+      %br/
       = @order.phone_number
     %p
       %strong Комментарий:
-      %br/ 
+      %br/
       = @order.comment
     %p
       %strong Ссылка на заказ:
-      %br
-        = link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)
+      %br/
+      = link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)

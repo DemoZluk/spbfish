@@ -1,15 +1,18 @@
 %form.centered-form{:action => "https://demomoney.yandex.ru/eshop.xml", :method => "POST", :name => "ShopForm"}
   %input{:type => "hidden", :name => "scid", :value => "57166"}/
   %input{:type => "hidden", :name => "ShopID", :value => "22081"}/
-  %input{:type => "hidden", :name => "CustomerNumber", :value => @order.user_id || 'none'}/
-  %input{:type => "hidden", :name => "orderNumber", value: @order.id}/
   %input{:type => "hidden", :name => "Sum", value: @order.total_price}/
+  %input{:type => "hidden", :name => "orderNumber", value: @order.id}/
   .form-group
     %strong Номер заказа:
     = @order.id
   .form-group
     %label{:for => "sum"}Сумма:
     = number_to_currency @order.total_price
+  .form-group
+    %label{:for => "sum"}Номер телефона:
+    %input{:type => "text", :name => "CustomerNumber", value: @order.user.information.phone_number, required: true}/
+
   %h4 Способ оплаты:
   .form-group
   %input#PC{:type => "radio", :checked => "checked", :name => "paymentType", :value => "PC"}/

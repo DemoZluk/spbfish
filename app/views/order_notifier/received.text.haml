@@ -6,7 +6,7 @@
 \
 - @order.line_items.each do |item|
 	= '  - ' + item.quantity.to_s + ' x ' + item.product.title + ': ' + number_to_currency(item.price*item.quantity)
-= '    Итого: ' + number_to_currency(@total_price)
+= '    Итого: ' + number_to_currency(@order.total_price)
 \
 Как только товар будет готов к отгрузке вы получите ещё одно письмо.
 

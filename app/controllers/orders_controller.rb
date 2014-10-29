@@ -151,8 +151,24 @@ class OrdersController < ApplicationController
 
   def check
     @params = payment_params
-    @code = 0
-    render 'orders/result.xml'
+    if @order = Order.find(@params[:orderNumber])
+      order_parameters = {}
+      order_parameters[:action] = 'checkOrder'
+      order_parameters[:orderSumAmount] = number_with_precision @order.total_price, precision: 2
+      order_parameters[:orderSumCurrencyPaycash] = '10643'
+      order_parameters[:orderSumBankPaycash] = @params[:shopSumBankPaycash]
+      order_parameters[:shopId] = '22081'
+      order_parameters[:invoiceId] = @params[:invoiceId]
+      order_parameters[:customerNumber] = @order.user_id || 'none'
+      order_parameters[:shopPassword] = 'sdf'
+
+      md5 = Digest::MD5.hexdigest(order_parameters.values.join(';'))
+
+      File.open('tmp/test.txt', 'w+') { |f| f.puts "#{md5}\n#{@params[:md5]}" }
+
+      @code = 0 if md5 == @params[:md5]
+      render 'orders/result.xml'
+    end
   end
 
   def payment
@@ -226,6 +242,6 @@ class OrdersController < ApplicationController
     end
 
     def payment_params
-      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :message, :techMessage, :orderNumber)
+      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :message, :techMessage, :orderNumber, :md5)
     end
 end
