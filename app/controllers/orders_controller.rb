@@ -154,20 +154,20 @@ class OrdersController < ApplicationController
     if @order = Order.find(@params[:orderNumber])
       order_parameters = {}
       order_parameters[:action] = 'checkOrder'
-      order_parameters[:orderSumAmount] = number_with_precision @order.total_price, precision: 2
+      order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
       order_parameters[:orderSumCurrencyPaycash] = '10643'
-      order_parameters[:orderSumBankPaycash] = @params[:shopSumBankPaycash]
+      order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
-      order_parameters[:customerNumber] = @order.user_id || 'none'
+      order_parameters[:customerNumber] = @params[:customerNumber] || 'none'
       order_parameters[:shopPassword] = 'sdf'
 
-      md5 = Digest::MD5.hexdigest(order_parameters.values.join(';'))
+      md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 
-      File.open('tmp/test.txt', 'w+') { |f| f.puts "#{md5}\n#{@params[:md5]}" }
-
-      @code = 0 if md5 == @params[:md5]
+      @code = 0 if md5 == @params[:md5].upcase
       render 'orders/result.xml'
+    else
+      puts 'fail'
     end
   end
 
@@ -242,6 +242,6 @@ class OrdersController < ApplicationController
     end
 
     def payment_params
-      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :message, :techMessage, :orderNumber, :md5)
+      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :shopSumBankPaycash, :message, :techMessage, :orderNumber, :md5)
     end
 end
