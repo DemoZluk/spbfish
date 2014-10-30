@@ -5,8 +5,9 @@
 
   %h3
     Ваш заказ подтверждён.
-  %p Перейдите по ссылке ниже для оплаты заказа.
-  = link_to yandex_pay_url(order: {id: @order.id, token: @order.token}), yandex_pay_url(order: {id: @order.id, token: @order.token})
+  - if @order.noncash?
+    %p Перейдите по ссылке ниже для оплаты заказа.
+    = link_to yandex_pay_url(order: {id: @order.id, token: @order.token}), yandex_pay_url(order: {id: @order.id, token: @order.token})
 
   %p Состав заказа:
 

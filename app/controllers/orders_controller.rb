@@ -25,11 +25,12 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @page_title = 'Оформление заказа'
-    if @cart.line_items.empty?
+    if @current_cart.line_items.empty?
       redirect_to_back_or_default notice: I18n.t(:cart_is_empty)
     end
     if user_signed_in?
-      info = {email: current_user.email}.merge(Hash(current_user.information.try(:attributes)))
+      info = Hash(current_user.information.try(:attributes))
+      info[:email] = current_user.email
       @order = Order.new(info)
     else
       @order = Order.new
@@ -48,38 +49,36 @@ class OrdersController < ApplicationController
     if user_signed_in? && params[:remember]
       info = Information.find_or_create_by(user_id: current_user.id)
       info.update order_params.slice(*Information.column_names)
+      order_params[:user_id] = current_user.id
     end
-    order_params[:user_id] = current_user.try(:id)
 
     @order = Order.new(order_params)
-    @order.state = 'Активен'
-    @order.token = params[:authenticity_token]
-    unless @order.add_line_items_from_cart(@cart)
-      redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
-    end
-
     respond_to do |format|
-      if @order.save
-        if order_params[:pay_type] == 'Наличный'
-          path = order_path(@order, t: @order.token)
+      if @order.save && @order.add_line_items_from_cart(@cart)
+        @order.state = 'Активен'
+
+        if @order.pay_type == 'Наличный'
           type = 'cash'
           message = 'Вы выбрали наличный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. Вы сможете его оплатить наличными средствами при получнеии.'
-        elsif order_params[:pay_type] == 'Безналичный'
-          path = order_path(@order, t: @order.token)
+        elsif @order.pay_type == 'Безналичный'
           type = 'noncash'
-          message = 'Вы выбрали безналичный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. В письме от менеджера вам придет ссылка, пройдя по которой вы попадёте на страницу с формой оплаты.'
+          message = 'Вы выбрали безналичный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. После подтверждения в письме вам придет ссылка, пройдя по которой, вы попадёте на страницу с формой оплаты.'
+        else
+          redirect_to store_path, flash: {error: 'Способ оплаты не определён'} and return
         end
-        format.html { redirect_to path, flash: {success: message || I18n.t(:order_thanks)} }
-        format.json { render action: type, state: :created,
-        location: @order }
+
+        unless 
+          redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
+        end
+        format.html { redirect_to order_path(@order, t: @order.token), flash: {success: message || I18n.t(:order_thanks)} }
+        format.json { render action: type, state: :created, location: @order }
         OrderNotifier.received(@order).deliver
         OrderNotifier.order(@order).deliver
         Cart.destroy(session[:cart_id])
         session[:cart_id] = nil
       else
-        format.html { render action: 'new', anchor: 'info', notice: @order.errors}
-        format.json { render json: @order.errors,
-        status: :unprocessable_entity }
+        format.html { render action: 'new'}
+        format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -107,10 +106,10 @@ class OrdersController < ApplicationController
   # DELETE /orders/1.json
   def destroy
     authorize! :destroy, Order
-    number = @order.id
     @order.try(:destroy)
     respond_to do |format|
-      format.html { redirect_to_back_or_default flash: { warning: "Заказ № #{number} удалён"} }
+      format.html { redirect_to store_path, flash: { warning: "Заказ № #{@order.id} удалён"} }
+      format.js { flash.now[:notice] = "Заказ № #{@order.id} удалён"; render 'orders/change_order.js' }
       format.json { head :no_content }
     end
   end
@@ -164,7 +163,12 @@ class OrdersController < ApplicationController
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 
-      @code = 0 if md5 == @params[:md5].upcase
+      if md5 == @params[:md5].upcase
+        @code = 0
+      else
+        @code = 1
+      end
+
       render 'orders/result.xml'
     else
       puts 'fail'
@@ -223,6 +227,9 @@ class OrdersController < ApplicationController
   end
 
   private
+    def check
+      File.open('tmp/test.txt', 'a+') { |f| f << action_name + "\n" }
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @controller = Rails.application.routes.recognize_path(request.referrer)[:controller]

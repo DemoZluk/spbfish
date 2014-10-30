@@ -40,6 +40,6 @@ class OrderNotifier < ActionMailer::Base
   def update old, order
     @old = old
     @order = order
-    mail to: 'mail@fishmarkt.ru', subject: "[#{I18n.t('activerecord.models.order')}] " + t('.user_made_order', user_name: @order.name, order: @order.id)
+    mail to: 'mail@fishmarkt.ru', subject: "[Обновление заказа] № #{@order.id} обновлён", user_name: @order.name, order: @order.id
   end
 end

@@ -2,6 +2,11 @@ $('#alert').html("#{ j render 'shared/bootstrap_alerts' }")
 order = $(".#{@order.id}order")
 order.find('.state').text("#{ @order.state? }").css('color', "#{@order.state.color_code}")
 order.find('.actions').html("#{ j render 'orders/actions', order: @order }")
+- if action_name == 'destroy'
+  order.hide('fast', function () {
+  $(this).remove();
+  });
+
 - if @controller == 'users'
   obj = $(".#{@order.id}order.#{@order.active? ? 'inactive' : 'active'}")
   clone = obj.clone().toggleClass('active inactive')

@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   PAYMENT_TYPES = ['Наличный', 'Безналичный']
   validates :name, :email, :shipping_date, :phone_number, presence: true
   validates :address, presence: true, unless: 'pay_type == "Самовывоз"'
-  validates :pay_type, inclusion: PAYMENT_TYPES
+  validates :pay_type, presence: true, inclusion: PAYMENT_TYPES
   validates :comment, length: {maximum: 200}
   validate :check_date
 
@@ -55,6 +55,14 @@ class Order < ActiveRecord::Base
 
   def confirmed?
     confirmed_at.present?
+  end
+
+  def cash?
+    @order.pay_type == 'Наличный'
+  end
+
+  def noncash?
+    @order.pay_type == 'Безналичный'
   end
 
   def active?

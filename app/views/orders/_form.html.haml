@@ -29,7 +29,7 @@
       .form-group.col-md-6
         = f.label(:shipping_date)
         %span.required *
-        = f.text_field :shipping_date, class: 'form-control', placeholder: 'гггг-мм-дд', autocomplete: 'off'#, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
+        = f.text_field :shipping_date, class: 'form-control', placeholder: 'гггг-мм-дд', autocomplete: 'off', required: true #, use_two_digit_numbers: true, start_year: Time.now.year, end_year: Time.now.year+1, default: DateTime.tomorrow
     .row
       .form-group.col-md-6
         = f.label(:address)
