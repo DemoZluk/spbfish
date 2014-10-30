@@ -20,6 +20,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def test_string string, mode = 'w+'
+    File.open('tmp/test.txt', mode) do |f|
+      f.puts "#{string}\n"
+    end
+  end
+
   protected
     
 end

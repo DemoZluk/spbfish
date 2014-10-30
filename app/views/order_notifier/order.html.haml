@@ -13,18 +13,24 @@
 
     = render 'order_table'
 
-    %p
-      %strong Адрес доставки:
-      %br/
-      = @order.address
-    %p
-      %strong Телефон:
-      %br/ 
-      = @order.phone_number
-    %p
-      %strong Комментарий:
-      %br/ 
-      = @order.comment
+    %table
+      %tr
+        %td
+          %strong Адрес доставки:
+        %td= @order.address
+      %tr
+        %td
+          %strong Тип расчёта:
+        %td= @order.pay_type
+      %tr
+        %td
+          %strong Телефон:
+        %td= @order.phone_number
+      %tr
+        %td
+          %strong Комментарий:
+        %td= @order.comment
+      
     %p
       %strong Ссылка на заказ:
       %br

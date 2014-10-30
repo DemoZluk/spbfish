@@ -11,20 +11,20 @@
     = number_to_currency @order.total_price
   .form-group
     %label{:for => "sum"}Номер телефона:
-    %input{:type => "text", :name => "CustomerNumber", value: @order.user.information.phone_number, required: true}/
+    %input{:type => "text", :name => "CustomerNumber", value: @order.try(:phone_number), placeholder: '8-812-987-65-43-21', required: true}/
 
   %h4 Способ оплаты:
   .form-group
-  %input#PC{:type => "radio", :checked => "checked", :name => "paymentType", :value => "PC"}/
-  %label{:for => "PC"}Со счета в Яндекс.Деньгах
+    %input#PC{:type => "radio", :checked => "checked", :name => "paymentType", :value => "PC"}/
+    %label{:for => "PC"}Со счета в Яндекс.Деньгах
   .form-group
-  %input#AC{:type => "radio", :name => "paymentType", :value => "AC"}/
-  %label{:for => "AC"}С банковской карты
+    %input#AC{:type => "radio", :name => "paymentType", :value => "AC"}/
+    %label{:for => "AC"}С банковской карты
   .form-group
-  %input#WM{:type => "radio", :name => "paymentType", :value => "WM"}/
-  %label{:for => "WM"}Со счета WebMoney
+    %input#WM{:type => "radio", :name => "paymentType", :value => "WM"}/
+    %label{:for => "WM"}Со счета WebMoney
   .form-group
-  %input#GP{:type => "radio", :name => "paymentType", :value => "GP"}/
-  %label{:for => "GP"}По коду через терминал
+    %input#GP{:type => "radio", :name => "paymentType", :value => "GP"}/
+    %label{:for => "GP"}По коду через терминал
   .form-group
-  %input{:type => "submit", :value => "Оплатить"}/
+    %input{:type => "submit", :value => "Оплатить"}/

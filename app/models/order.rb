@@ -58,11 +58,11 @@ class Order < ActiveRecord::Base
   end
 
   def cash?
-    @order.pay_type == 'Наличный'
+    pay_type == 'Наличный'
   end
 
   def noncash?
-    @order.pay_type == 'Безналичный'
+    pay_type == 'Безналичный'
   end
 
   def active?

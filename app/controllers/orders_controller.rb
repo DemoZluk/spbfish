@@ -46,13 +46,22 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    if user_signed_in? && params[:remember]
-      info = Information.find_or_create_by(user_id: current_user.id)
-      info.update order_params.slice(*Information.column_names)
-      order_params[:user_id] = current_user.id
+    params = order_params
+    if user_signed_in?
+      if params[:remember]
+        info = Information.find_or_create_by(user_id: current_user.id)
+        info.update order_params.slice(*Information.column_names)
+      end
+    end
+    params[:user_id] = current_user.id
+    test_string params['user_id'], 'a+'
+
+    if @cart.line_items.empty?
+      redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
     end
 
-    @order = Order.new(order_params)
+    @order = Order.new(params)
+    test_string params, 'a+'
     respond_to do |format|
       if @order.save && @order.add_line_items_from_cart(@cart)
         @order.state = 'Активен'
@@ -65,10 +74,6 @@ class OrdersController < ApplicationController
           message = 'Вы выбрали безналичный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. После подтверждения в письме вам придет ссылка, пройдя по которой, вы попадёте на страницу с формой оплаты.'
         else
           redirect_to store_path, flash: {error: 'Способ оплаты не определён'} and return
-        end
-
-        unless 
-          redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
         end
         format.html { redirect_to order_path(@order, t: @order.token), flash: {success: message || I18n.t(:order_thanks)} }
         format.json { render action: type, state: :created, location: @order }
@@ -227,9 +232,6 @@ class OrdersController < ApplicationController
   end
 
   private
-    def check
-      File.open('tmp/test.txt', 'a+') { |f| f << action_name + "\n" }
-    end
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @controller = Rails.application.routes.recognize_path(request.referrer)[:controller]

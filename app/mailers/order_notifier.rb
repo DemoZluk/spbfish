@@ -14,12 +14,12 @@ class OrderNotifier < ActionMailer::Base
   
   def order order
     @order = order
-    mail to: 'mail@fishmarkt.ru', subject: "[Заказ] Сделан заказ №#{order.id} пользователем #{order.name}"
+    mail to: 'mail@fishmarkt.ru', subject: "[Заказ №#{order.id}] Сделан пользователем #{order.name}"
   end
   
   def canceled order
     @order = order
-    mail to: "mail@fishmarkt.ru", subject: "[Заказ отменён] №#{order.id} пользователя #{order.name} отменён"
+    mail to: "mail@fishmarkt.ru", subject: "[Заказ №#{order.id}] Отменён пользователем #{order.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -40,6 +40,6 @@ class OrderNotifier < ActionMailer::Base
   def update old, order
     @old = old
     @order = order
-    mail to: 'mail@fishmarkt.ru', subject: "[Обновление заказа] № #{@order.id} обновлён", user_name: @order.name, order: @order.id
+    mail to: 'mail@fishmarkt.ru', subject: "[Заказ  №#{@order.id}] обновлён", user_name: @order.name, order: @order.id
   end
 end
