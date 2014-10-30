@@ -54,14 +54,12 @@ class OrdersController < ApplicationController
       end
     end
     params[:user_id] = current_user.id
-    test_string params['user_id'], 'a+'
 
     if @cart.line_items.empty?
       redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
     end
 
     @order = Order.new(params)
-    test_string params, 'a+'
     respond_to do |format|
       if @order.save && @order.add_line_items_from_cart(@cart)
         @order.state = 'Активен'
@@ -182,11 +180,12 @@ class OrdersController < ApplicationController
 
   def payment
     if params[:status] == 'success'
+
       render 'orders/payment_success.html'
     elsif params[:status] == 'failure'
       render 'orders/payment_failure.html'
     else
-      render 'static/yandex-payment.html'
+      render 'orders/yandex-payment.html'
     end
   end
 
@@ -251,6 +250,6 @@ class OrdersController < ApplicationController
     end
 
     def payment_params
-      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :shopSumBankPaycash, :message, :techMessage, :orderNumber, :md5)
+      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :shopSumBankPaycash, :message, :techMessage, :orderNumber, :md5, :customerNumber)
     end
 end

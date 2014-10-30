@@ -1,15 +1,7 @@
 %ul.parent
   -# application_helper: menu_item(path = {}, name = nil, html_options = nil, &block)
   - if user_signed_in? && current_user.role?.any?
-    %li
-      %ul= menu_item(true, 'Панель управления')
-      %ul.child
-        %li= menu_item(can?(:manage, Order), 'Заказы', orders_path)
-        %li= menu_item(can?(:manage, Order), 'Корзины', carts_path)
-        %li= menu_item(can?(:manage, Product), 'Товары', products_path)
-        %li= menu_item(can?(:manage, User), 'Пользователи', users_path)
-        %li= menu_item(can?(:manage, @article), 'Статьи', articles_path)
-        %li= menu_item(can?(:manage, MenuItem), 'Меню', menu_items_path)
+    %li= render 'shared/control_panel'
   %li= link_to('Каталог', store_path, class: 'btn-gray')
   - MenuItem.all_published.primary.each do |item|
     %li

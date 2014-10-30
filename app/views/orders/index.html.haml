@@ -6,6 +6,7 @@
       %table.table
         %thead
           %tr
+            %th email
             %th ID
             %th Дата
             %th Товары
@@ -16,6 +17,7 @@
         %tbody
           - @orders.each do |order|
             %tr{class: "#{order.id}order #{order.state.active? ? 'active' : 'inactive'}"}
+              %td= order.email
               = render order
 
     .col-lg-2
