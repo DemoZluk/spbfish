@@ -1,4 +1,4 @@
-- if (messages = flash.to_hash.slice(:error, :warning, :notice, :success)).any?
+- if (messages = flash.to_hash.slice(:danger, :error, :warning, :notice, :success)).any?
   - messages.each do |key, value|
     .div{class: ('alert alert-dismissable  alert-' + key.to_s)}
       = button_tag "×", class: 'close', type: 'button', data: {dismiss: 'alert'}, 'aria-hidden' => 'true'

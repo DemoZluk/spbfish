@@ -6,7 +6,7 @@
 .row.total
   .col-xs-6.col-lg-4.items
     Всего товаров:
-    %span= @cart.line_items.count
+    %span= @line_items.length
   .col-xs-6.col-lg-4.right.grand-total
     Итого: 
     %span= number_to_currency @cart.total_price

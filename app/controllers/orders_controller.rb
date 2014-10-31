@@ -2,7 +2,7 @@ class OrdersController < ApplicationController
   include Redirect
   include CurrentCart
   before_action :set_cart, only: [:new, :create]
-  before_action :set_order, except: [:index, :new, :create, :delete_multiple_orders, :check, :payment]
+  before_action :set_order, except: [:index, :new, :create, :multiple_orders]
   before_action :check_if_empty, only: [:edit]
   skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment]
   skip_before_action :verify_authenticity_token, only: [:check, :payment, :yandex_payment]
@@ -95,7 +95,8 @@ class OrdersController < ApplicationController
       redirect_to_back_or_default notice: I18n.t(:cart_is_empty) and return if @order.line_items.empty?
 
       if @order.update(order_params)
-        format.html { redirect_to_back_or_default @order, notice: 'Параметры заказа обновлены' }
+        @cart = @order
+        format.html { redirect_to @order, notice: 'Параметры заказа обновлены' }
         format.json { head :no_content }
         OrderNotifier.update(@old, @order).deliver
       else
@@ -153,7 +154,7 @@ class OrdersController < ApplicationController
 
   def check
     @params = payment_params
-    if @order = Order.find(@params[:orderNumber])
+    if @order
       order_parameters = {}
       order_parameters[:action] = 'checkOrder'
       order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
@@ -161,7 +162,7 @@ class OrdersController < ApplicationController
       order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
-      order_parameters[:customerNumber] = @params[:customerNumber] || 'none'
+      order_parameters[:customerNumber] = @params[:customerNumber] || ''
       order_parameters[:shopPassword] = 'sdf'
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
@@ -178,14 +179,40 @@ class OrdersController < ApplicationController
     end
   end
 
-  def payment
-    if params[:status] == 'success'
+  def payment_success
+    respond_to do |format|
+      format.html { flash.now[:success] = 'Платеж успешно проведён' }
+      format.json { render json: {message: 'Платеж успешно проведён'} }
+    end
+  end
 
-      render 'orders/payment_success.html'
-    elsif params[:status] == 'failure'
-      render 'orders/payment_failure.html'
+  def payment_failure
+    respond_to do |format|
+      format.html { flash.now[:danger] = 'Платеж не проведён' }
+      format.json { render json: {message: 'Платеж не проведён'} }
+    end
+  end
+
+  def payment
+    @params = payment_params
+    @code = 0
+    if @order
+      order_parameters = {}
+      order_parameters[:action] = 'paymentAviso'
+      order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
+      order_parameters[:orderSumCurrencyPaycash] = '10643'
+      order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
+      order_parameters[:shopId] = '22081'
+      order_parameters[:invoiceId] = @params[:invoiceId]
+      order_parameters[:customerNumber] = @params[:customerNumber] || ''
+      order_parameters[:shopPassword] = 'sdf'
+
+      md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
+      test_string md5
+      test_string @params[:md5], 'a+'
+      render 'orders/payment.xml'
     else
-      render 'orders/yandex-payment.html'
+      redirect_to '/payment_failure',  flash: {error: 'Предоставлены неизвестные параметры'}
     end
   end
 
@@ -224,29 +251,40 @@ class OrdersController < ApplicationController
     end
   end
 
-  def delete_multiple_orders
-    authorize! :destroy, Order
-    ids = params[:ids]
-    @orders = Order.where{id >> ids}
+  def multiple_orders
+    if params[:commit] == 'Удалить'
+      authorize! :destroy, Order
+      ids = params[:ids].map(&:to_i) if params[:ids]
+      puts ids
+      orders = Order.where{id >> ids}
+      if orders.destroy_all
+        redirect_to orders_path, notice: "Заказы #{ids} удалены"
+      end
+    else
+      redirect_to orders_path, flash: {error: 'Не верно заданы параметры'}
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @controller = Rails.application.routes.recognize_path(request.referrer)[:controller]
-      @order = Order.find(params[:id] || order_params[:id])
+      @order = Order.find(payment_params[:orderNumber] || params[:id] || order_params[:id])
+      @line_items = @order.line_items.page params[:page]
     rescue ActiveRecord::RecordNotFound
       redirect_to_back_or_default flash: {error: t('orders.show.no_such_order')}
     end
 
     def check_if_empty
-      order = Order.find(params[:id])
-      redirect_to(store_path, notice: I18n.t('orders.show.order_is_empty')) if order.line_items.empty?
+      set_order
+      redirect_to(store_path, notice: I18n.t('orders.show.order_is_empty')) if @order.line_items.empty?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
       params.require(:order).permit(:id, :name, :address, :token, :email, :pay_type, :shipping_date, :phone_number, :comment)
+    rescue ActionController::ParameterMissing
+      {}
     end
 
     def payment_params

@@ -3,8 +3,13 @@ order = $(".#{@order.id}order")
 order.find('.state').text("#{ @order.state? }").css('color', "#{@order.state.color_code}")
 order.find('.actions').html("#{ j render 'orders/actions', order: @order }")
 
-obj = $(".#{@order.id}order").toggleClass('active inactive')
-console.log(obj)
+obj = $(".#{@order.id}order")
+- if @order.active?
+  obj.removeClass('inactive')
+  obj.addClass('active')
+- else
+  obj.removeClass('active')
+  obj.addClass('inactive')
 
 - if action_name == 'destroy'
   order.hide('fast', function () {

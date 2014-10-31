@@ -1,11 +1,12 @@
 .container-fluid
   %h1.underlined Список заказов
 
-  = form_tag({action: :destroy}, {method: :delete, class: 'row'}) do
+  = form_tag multiple_orders_path, {method: :delete, class: 'row'} do
     .col-sm-12.col-lg-10
       %table.table
         %thead
           %tr
+            %th
             %th email
             %th ID
             %th Дата
@@ -17,8 +18,9 @@
         %tbody
           - @orders.each do |order|
             %tr{class: "#{order.id}order #{order.state.active? ? 'active' : 'inactive'}"}
+              %td= check_box_tag "#{order.id}chk", "#{order.id}chkbx", false, {name: 'ids[]'}
               %td= order.email
               = render order
 
     .col-lg-2
-      = submit_tag 'Удалить'
+      = submit_tag 'Удалить', data: {confirm: 'Удалить отмеченные заказы?'}

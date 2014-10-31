@@ -21,6 +21,14 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def self.owned_by user
+    if can? :index, Order
+      all
+    else
+      find_by email: user.email
+    end
+  end
+
   def state= state
     if st = State.find_by(state: state)
       update_attribute :state_id, st.id

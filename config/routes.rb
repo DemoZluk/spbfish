@@ -32,10 +32,10 @@ Fishmarkt::Application.routes.draw do
   resources :carts, param: :cid do
   end
 
-  post '/orders/check' => 'orders#check', as: 'check_order'
-  post '/orders/payment' => 'orders#payment', as: 'payment_order'
-  match '/payment_success' => 'orders#payment', status: 'success', via: [:get, :post]
-  match '/payment_failure' => 'orders#payment', status: 'failure', via: [:get, :post]
+  post  '/orders/check' => 'orders#check', as: 'check_order'
+  post  '/orders/payment' => 'orders#payment', as: 'payment_order'
+  get   '/payment_success' => 'orders#payment_success'
+  get   '/payment_failure' => 'orders#payment_failure'
   match '/yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
   resources :orders do
     member do
@@ -45,7 +45,7 @@ Fishmarkt::Application.routes.draw do
       get 'repeat'
     end
   end
-  delete 'delete_orders' => 'orders#destroy', as: :destroy
+  delete 'multiple_orders' => 'orders#multiple_orders', action: 'delete'
 
   get 'profile' => 'users#show', as: 'user_root'
   devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }

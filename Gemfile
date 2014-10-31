@@ -71,7 +71,7 @@ gem 'haml-rails'
 
 gem 'russian'
 
-gem 'roadie'
+gem 'roadie', '~>2.4'
 
 gem "letter_opener", group: :development
 
@@ -88,7 +88,7 @@ gem 'bcrypt-ruby', '~> 3.0'
 gem 'devise'
 
 # Authorization system
-gem 'cancan'
+gem 'cancancan', '~>1.9'
 
 # Create thumbnails
 gem 'mini_magick'
