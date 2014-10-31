@@ -30,4 +30,14 @@
 	td {
 		padding: 5px;
 	}
+
+	.paid-order {
+		td:first-child {
+			font-weight: bold;
+		}
+
+		td {
+			padding: 10px;
+		}
+	}
 }

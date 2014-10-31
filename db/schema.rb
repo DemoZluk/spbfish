@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141024090336) do
+ActiveRecord::Schema.define(version: 20141031141554) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20141024090336) do
     t.string   "permalink"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "priority"
   end
 
   create_table "images", force: true do |t|
@@ -100,6 +101,7 @@ ActiveRecord::Schema.define(version: 20141024090336) do
     t.string   "comment"
     t.integer  "state_id"
     t.datetime "confirmed_at"
+    t.string   "invoice_id"
   end
 
   create_table "product_property_values", force: true do |t|

@@ -16,6 +16,12 @@ class OrderNotifier < ActionMailer::Base
     @order = order
     mail to: 'mail@fishmarkt.ru', subject: "[Заказ №#{order.id}] Сделан пользователем #{order.name}"
   end
+
+  def paid order, params
+    @order = order
+    @params = params
+    mail to: 'mail@fishmarkt.ru', subject: "[Заказ №#{order.id}] Оплачен"
+  end
   
   def canceled order
     @order = order

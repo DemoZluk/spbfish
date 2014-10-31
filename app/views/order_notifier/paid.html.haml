@@ -1,0 +1,33 @@
+%html
+  %head
+    %title Уведомление о заказе
+    %meta{:content => "text/html; charset=utf-8"}/ 
+    %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/ 
+
+  %body.email
+    %h4 Заказ #{@order.id} оплачен
+    - if @params[:paymentType] == 'PC'
+      - pay_type = "Яндекс.Деньги"
+    - elsif @params[:paymentType] == 'AC'
+      - pay_type = "Банковская карта"
+    - elsif @params[:paymentType] == 'WM'
+      - pay_type = "WebMoney"
+    - elsif @params[:paymentType] == 'GP'
+      - pay_type = "Терминал"
+
+    %table.paid-order
+      %tr
+        %td Дата платежа
+        %td= @params[:paymentDatetime]
+      %tr
+        %td Сумма платежа
+        %td= @params[:orderSumAmount]
+      %tr
+        %td Сумма зачислений на счёт
+        %td= @params[:shopSumAmount]
+      %tr
+        %td Номер транзакции
+        %td= @params[:invoiceId]
+      %tr
+        %td Тип оплаты
+        %td= pay_type

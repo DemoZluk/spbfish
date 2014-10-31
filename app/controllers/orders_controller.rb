@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   include Redirect
   include CurrentCart
+  load_and_authorize_resource
   before_action :set_cart, only: [:new, :create]
   before_action :set_order, except: [:index, :new, :create, :multiple_orders]
   before_action :check_if_empty, only: [:edit]
@@ -13,7 +14,7 @@ class OrdersController < ApplicationController
   def index
     authorize! :index, Order
     @controller = controller_name
-    @orders = Order.all
+    @orders = Order.accessible_by(current_ability).page(params[:page])
   end
 
   # GET /orders/1
@@ -167,6 +168,8 @@ class OrdersController < ApplicationController
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 
+      @code = 200
+
       if md5 == @params[:md5].upcase
         @code = 0
       else
@@ -195,7 +198,6 @@ class OrdersController < ApplicationController
 
   def payment
     @params = payment_params
-    @code = 0
     if @order
       order_parameters = {}
       order_parameters[:action] = 'paymentAviso'
@@ -208,8 +210,19 @@ class OrdersController < ApplicationController
       order_parameters[:shopPassword] = 'sdf'
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
-      test_string md5
-      test_string @params[:md5], 'a+'
+
+      @code = 200
+
+      if md5 == @params[:md5].upcase
+        @code = 0
+        @order.state = 'Оплачен'
+        @order.update_column(invoice_id: @params[:invoiceId])
+        OrderNotifier.paid(@order, @params).deliver
+      else
+        @code = 1
+      end
+
+
       render 'orders/payment.xml'
     else
       redirect_to '/payment_failure',  flash: {error: 'Предоставлены неизвестные параметры'}
@@ -247,7 +260,7 @@ class OrdersController < ApplicationController
         format.html { redirect_to_back_or_default flash: {success: 'Заказ не может быть заново размещён'} }
         format.js {render 'orders/change_order.js'}
         format.json { head :no_content }
-      end      
+      end
     end
   end
 
@@ -255,13 +268,12 @@ class OrdersController < ApplicationController
     if params[:commit] == 'Удалить'
       authorize! :destroy, Order
       ids = params[:ids].map(&:to_i) if params[:ids]
-      puts ids
       orders = Order.where{id >> ids}
       if orders.destroy_all
         redirect_to orders_path, notice: "Заказы #{ids} удалены"
       end
     else
-      redirect_to orders_path, flash: {error: 'Не верно заданы параметры'}
+      redirect_to orders_path, flash: {error: 'Неверно заданы параметры'}
     end
   end
 
@@ -288,6 +300,6 @@ class OrdersController < ApplicationController
     end
 
     def payment_params
-      params.permit(:performedDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :shopSumBankPaycash, :message, :techMessage, :orderNumber, :md5, :customerNumber)
+      params.permit(:performedDatetime, :paymentDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :shopSumAmount, :shopSumBankPaycash, :message, :techMessage, :orderNumber, :md5, :customerNumber)
     end
 end

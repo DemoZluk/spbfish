@@ -62,7 +62,7 @@ class Order < ActiveRecord::Base
   end
 
   def confirmed?
-    confirmed_at.present?
+    confirmed_at.present? && state? == 'Подтверждён'
   end
 
   def cash?
