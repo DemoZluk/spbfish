@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
   def index
     authorize! :index, Order
     @controller = controller_name
-    @orders = Order.accessible_by(current_ability).page(params[:page])
+    @orders = Order.accessible_by(current_ability).order('created_at DESC').page(params[:page])
   end
 
   # GET /orders/1
