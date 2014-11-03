@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: [:new, :create]
   before_action :set_order, except: [:index, :new, :create, :multiple_orders]
   before_action :check_if_empty, only: [:edit]
-  skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment]
+  skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment, :yandex_payment]
   skip_before_action :verify_authenticity_token, only: [:check, :payment, :yandex_payment]
 
   #layout false, only: [:check, :payment]
