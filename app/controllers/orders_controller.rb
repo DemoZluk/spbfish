@@ -1,7 +1,6 @@
 class OrdersController < ApplicationController
   include Redirect
   include CurrentCart
-  load_and_authorize_resource
   before_action :set_cart, only: [:new, :create]
   before_action :set_order, except: [:index, :new, :create, :multiple_orders]
   before_action :check_if_empty, only: [:edit]
@@ -90,6 +89,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
+    authorize! :update, @order
     respond_to do |format|
       @old = @order
 
@@ -230,6 +230,7 @@ class OrdersController < ApplicationController
   end
 
   def cancel
+    authorize! :cancel, Order
     if (@order.state = 'Отменён') && (@order.update_columns(confirmed_at: nil))
       OrderNotifier.canceled(@order).deliver
       respond_to do |format|
