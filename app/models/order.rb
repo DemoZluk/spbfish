@@ -14,18 +14,11 @@ class Order < ActiveRecord::Base
 
   scope :active, -> { joins{state}.where{states.active == true} }
   scope :inactive, -> { joins{state.outer}.where{states.active >> [false, nil]} }
+  scope :paid, -> { where{invoice_id} }
 
   def check_date
     if shipping_date.present? && (shipping_date < DateTime.tomorrow || shipping_date > DateTime.current+60)
       errors.add(:shipping_date, I18n.t(:please_enter_correct_date))
-    end
-  end
-
-  def self.owned_by user
-    if can? :index, Order
-      all
-    else
-      find_by email: user.email
     end
   end
 
@@ -58,7 +51,7 @@ class Order < ActiveRecord::Base
   end
 
   def total_price
-    line_items.to_a.sum { |item| item.total_price }
+    line_items.to_a.sum(&:total_price)
   end
 
   def confirmed?

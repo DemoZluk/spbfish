@@ -5,7 +5,7 @@
     %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/ 
 
   %body.email
-    %h4 Заказ #{@order.id} оплачен
+    %h3 Заказ №#{@order.id} успешно оплачен
     - if @params[:paymentType] == 'PC'
       - pay_type = "Яндекс.Деньги"
     - elsif @params[:paymentType] == 'AC'
@@ -30,4 +30,4 @@
         %td= @params[:invoiceId]
       %tr
         %td Тип оплаты
-        %td= pay_type
+        %td= @params[:paymentType]

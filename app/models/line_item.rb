@@ -5,6 +5,6 @@ class LineItem < ActiveRecord::Base
   validates :quantity, inclusion: 0..999
 
   def total_price
-    product.price * quantity
+    price * quantity
   end
 end

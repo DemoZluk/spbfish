@@ -52,8 +52,8 @@ class OrdersController < ApplicationController
         info = Information.find_or_create_by(user_id: current_user.id)
         info.update order_params.slice(*Information.column_names)
       end
+      params[:user_id] = current_user.id
     end
-    params[:user_id] = current_user.id
 
     if @cart.line_items.empty?
       redirect_to store_url, flash: {warning: t('orders.show.order_is_empty')} and return
@@ -216,7 +216,7 @@ class OrdersController < ApplicationController
       if md5 == @params[:md5].upcase
         @code = 0
         @order.state = 'Оплачен'
-        @order.update_column(invoice_id: @params[:invoiceId])
+        @order.update_attribute(:invoice_id, @params[:invoiceId])
         OrderNotifier.paid(@order, @params).deliver
       else
         @code = 1
