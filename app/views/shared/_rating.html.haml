@@ -1,4 +1,4 @@
-%div{role: 'rating', itemprop: 'aggregateRating', itemscope: true, itemtype: 'http://schema.org/AggregateRating'}
+%div{itemprop: 'aggregateRating', itemscope: true, itemtype: 'http://schema.org/AggregateRating'}
   .rating
     - if session && session[:voted] && session[:voted][product.id]
       .voted{style: "width: #{session[:voted][product.id].to_i*120/5}px"}

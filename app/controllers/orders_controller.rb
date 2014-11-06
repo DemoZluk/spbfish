@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   before_action :set_cart, only: [:new, :create]
   before_action :set_order, except: [:index, :new, :create, :multiple_orders]
   before_action :check_if_empty, only: [:edit]
-  skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment, :yandex_payment]
+  skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment, :yandex_payment, :payment_success, :payment_failure]
   skip_before_action :verify_authenticity_token, only: [:check, :payment, :yandex_payment]
 
   #layout false, only: [:check, :payment]
@@ -71,9 +71,9 @@ class OrdersController < ApplicationController
           type = 'noncash'
           message = 'Вы выбрали безналичный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. После подтверждения в письме вам придет ссылка, пройдя по которой, вы попадёте на страницу с формой оплаты.'
         else
-          redirect_to store_path, flash: {error: 'Способ оплаты не определён'} and return
+          redirect_to store_url, flash: {error: 'Способ оплаты не определён'} and return
         end
-        format.html { redirect_to order_path(@order, t: @order.token), flash: {success: message || I18n.t(:order_thanks)} }
+        format.html { redirect_to order_url(@order, t: @order.token), flash: {success: message || I18n.t(:order_thanks)} }
         format.json { render action: type, state: :created, location: @order }
         OrderNotifier.received(@order).deliver
         OrderNotifier.order(@order).deliver
@@ -113,7 +113,7 @@ class OrdersController < ApplicationController
     authorize! :destroy, Order
     @order.try(:destroy)
     respond_to do |format|
-      format.html { redirect_to store_path, flash: { warning: "Заказ № #{@order.id} удалён"} }
+      format.html { redirect_to store_url, flash: { warning: "Заказ № #{@order.id} удалён"} }
       format.js { flash.now[:notice] = "Заказ № #{@order.id} удалён"; render 'orders/change_order.js' }
       format.json { head :no_content }
     end
@@ -159,7 +159,7 @@ class OrdersController < ApplicationController
       order_parameters = {}
       order_parameters[:action] = 'checkOrder'
       order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
-      order_parameters[:orderSumCurrencyPaycash] = '10643'
+      order_parameters[:orderSumCurrencyPaycash] = '643'
       order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
@@ -202,7 +202,7 @@ class OrdersController < ApplicationController
       order_parameters = {}
       order_parameters[:action] = 'paymentAviso'
       order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
-      order_parameters[:orderSumCurrencyPaycash] = '10643'
+      order_parameters[:orderSumCurrencyPaycash] = '643'
       order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
@@ -229,12 +229,23 @@ class OrdersController < ApplicationController
     end
   end
 
+  def close
+    authorize! :close, Order
+    if (@order.state = 'Закрыт')
+      respond_to do |format|
+        format.html { redirect_to orders_url, flash: { warning: "Заказ № #{@order.id} закрыт"} }
+        format.js {flash.now[:warning] = "Заказ № #{@order.id} закрыт"; render 'orders/change_order.js'}
+        format.json { head :no_content }
+      end
+    end
+  end
+
   def cancel
     authorize! :cancel, Order
     if (@order.state = 'Отменён') && (@order.update_columns(confirmed_at: nil))
       OrderNotifier.canceled(@order).deliver
       respond_to do |format|
-        format.html { redirect_to :back, flash: { warning: "Заказ № #{@order.id} отменён"} }
+        format.html { redirect_to orders_url, flash: { warning: "Заказ № #{@order.id} отменён"} }
         format.js {flash.now[:warning] = "Заказ № #{@order.id} отменён"; render 'orders/change_order.js'}
         format.json { head :no_content }
       end
@@ -271,10 +282,10 @@ class OrdersController < ApplicationController
       ids = params[:ids].map(&:to_i) if params[:ids]
       orders = Order.where{id >> ids}
       if orders.destroy_all
-        redirect_to orders_path, notice: "Заказы #{ids} удалены"
+        redirect_to orders_url, notice: "Заказы #{ids} удалены"
       end
     else
-      redirect_to orders_path, flash: {error: 'Неверно заданы параметры'}
+      redirect_to orders_url, flash: {error: 'Неверно заданы параметры'}
     end
   end
 
@@ -290,7 +301,7 @@ class OrdersController < ApplicationController
 
     def check_if_empty
       set_order
-      redirect_to(store_path, notice: I18n.t('orders.show.order_is_empty')) if @order.line_items.empty?
+      redirect_to(store_url, notice: I18n.t('orders.show.order_is_empty')) if @order.line_items.empty?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

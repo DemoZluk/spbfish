@@ -30,7 +30,10 @@
         %td
           %strong Комментарий:
         %td= @order.comment
-      
+
+    %p
+      = link_to "Подтвердить заказ", confirm_order_url(@order.id, @order.token)
+
     %p
       %strong Ссылка на заказ:
       %br

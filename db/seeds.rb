@@ -29,7 +29,8 @@ def create_groups
   groups.each do |g|
     parent = g.xpath('ancestor::Группа').last
     group_id = g.at_css('>Ид').try(:content)
-    title = g.at_css('>Наименование').try(:content)
+    title = g.at_css('>Наименование').try(:content).split('. ')[1]
+    priority = g.at_css('>Наименование').try(:content).split('. ')[0]
 
     if parent
       parent_id = parent.at_css('>Ид').try(:content)
@@ -43,7 +44,8 @@ def create_groups
       id: group_id,
       title: title,
       parent_id: parent_id,
-      permalink: permalink
+      permalink: permalink,
+      priority: priority
     )
     groups_progress.increment
   end

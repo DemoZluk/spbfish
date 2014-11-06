@@ -12,13 +12,10 @@ module ProductModule
 
       puts "#{prefix}Начинаем выгрузку..."
 
-      if document.at_css('Каталог').attribute('СодержитТолькоИзменения').value == 'true'
-        update_partially(document)
-      else
-        update_all_products(document)
-      end
+      #update_groups_and_properties(document.at_css('Классификатор'))
+      update_products(document.at_css('Каталог'))
 
-      puts "#{prefix}Выгрузка завершена"
+      puts "#{prefix}Выгрузка завершена."
     end
 
     def generate_images
@@ -27,74 +24,82 @@ module ProductModule
         counter += 1 if product.generate_images
       end
 
-      puts "Images for #{counter} products generated."
+      puts "Картинки для #{counter} товаров сгенерированы."
     end
 
     private
 
-      def update_partially document
-        puts "#{prefix}Обновляем частично..."
+      def update_products document
+        any_errors = false
+        log_location = 'log/products_update.log'
+        logger = Logger.new(log_location)
+        logger.level = Logger::ERROR
+
+        puts "#{prefix}Обновляем товары..."
         counter = 0
+        offers = Nokogiri::XML( File.read('xml/offers.xml') ).at_css('Предложения')
 
-        document.css('Товар').first(50).each do |product|
+        products = document.css('Товар')
+        prod_progress = progress products.length
 
-          changed = false
-          new_product = make_product product
-          item_id = product.at_css('>Ид').try(:content)
+        products[2530..2540].each do |product|
+          begin
 
-          if tmp_product = Product.find_by(item_id: item_id)
-
-            diff = {}
-            tmp_product.slice(\
-              'item_id',\
-              'item',\
-              'title',\
-              'group_id',\
-              'description',\
-              'producer',\
-              'long_name',\
-              'price').each {|k, v| diff[k] = new_product[k] unless new_product[k] == v}
-
-            if diff.empty?
-              #puts "#{new_product['title']}: товар не изменен"
+            if offer = offers.at_xpath("//Предложение[Ид='#{product.at_css('>Ид').try(:content)}']")
+              price = offer.at_xpath('.//ЦенаЗаЕдиницу').content.to_f
             else
-              puts "#{tmp_product['title']}: #{diff}"
-              tmp_product.update! diff
-              changed = true
+              #puts "Цена не указана..."
+              price = 0
             end
 
-            changed = true unless tmp_product.images_equal_to?(product) == true
+            changed = false
+            new_product = make_product product, price
+            item_id = product.at_css('>Ид').try(:content)
 
+            if tmp_product = Product.find_by(item_id: item_id)
+
+              diff = {}
+              tmp_product.slice(\
+                'item_id',\
+                'item',\
+                'title',\
+                'group_id',\
+                'description',\
+                'producer',\
+                'long_name',\
+                'price').each {|k, v| diff[k] = new_product[k] unless new_product[k] == v}
+
+              if diff.empty?
+                logger.info "#{new_product['title']}: товар не изменен"
+              else
+                prod_progress.log "#{tmp_product['title']}: #{diff}"
+                tmp_product.update! diff
+                changed = true
+              end
+              changed = true unless tmp_product.images_equal_to?(product) == true
+            else
+              Product.create!(new_product)
+            end
+            prod_progress.increment
+            counter += 1 if changed == true
+
+          rescue ActiveRecord::RecordInvalid => error
+            logger.error "#{error}: #{new_product['title']}"
+            any_errors = true
           end
-
-
-          counter += 1 if changed == true
-          # update_or_create_from_xml(new_product)
         end
+        puts "#{prefix}Во время выгрузки товаров возникли ошибки. Подробности смотри в #{log_location}" if any_errors
 
         puts "#{prefix}Товаров изменено: #{counter}"
       end
 
-      def update_all_products document
-        puts "#{prefix}Обновляем полностью..."
-      end
-
-      def make_product product
+      def make_product product, price
         item_id = product.at_css('>Ид').try(:content)
-
-        offers   = Nokogiri::XML( File.read('xml/offers.xml') )
-        if offer = offers.at_xpath("//Предложение[Ид='#{item_id}']")
-          price = offer.at_xpath('.//ЦенаЗаЕдиницу').content.to_f
-        else
-          #puts "Цена не указана..."
-          price = 0
-        end
 
         title = product.at_css('>Наименование').try(:content)
         permalink = title.mb_chars.parameterize('-')
 
-        {
-          "item_id"     => item_id,
+        { "item_id"     => item_id,
           "item"        => product.at_css('>Артикул').try(:content),
           "title"       => title,
           "group_id"    => product.at_css('>Группы>Ид').try(:content),
@@ -102,22 +107,67 @@ module ProductModule
           "producer"    => product.at_css('>Изготовитель>Наименование').try(:content),
           "long_name"   => product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").try(:content),
           "price"       => price,
-          "permalink"   => permalink
-        }
+          "permalink"   => permalink }
       end
 
-      def update_or_create_from_xml product
+      def update_groups_and_properties document
+        puts "#{prefix}Обновляем группы и свойства товаров..."
 
-        permalink   = product['title'].mb_chars.parameterize('-')
+        document.xpath('//Группы/descendant::Группа').each do |g|
+          group_id = g.at_css('>Ид').try(:content)
+          name = g.at_css('>Наименование').try(:content)
+          if name.match(/^\d*\.\s.*/)
+            title = name.split('. ')[1]
+            priority = name.split('. ')[0]
+          else
+            title = name
+            priority = nil
+          end
 
-        new_product = Product.find_or_initialize_by(item_id: product['item_id'], permalink: permalink)
-        new_product.update(product)
+          if parent = g.xpath('ancestor::Группа').last
+            parent_name = parent.at_css('>Наименование').try(:content)
+            parent_name = parent_name.split('. ')[1] if parent_name.match(/^\d*\.\s.*/)
+            parent_id = parent.at_css('>Ид').try(:content)
+            permalink = "#{parent_name.mb_chars.parameterize}/#{title.mb_chars.parameterize}"
+          else
+            parent_id = ''
+            permalink = title.mb_chars.parameterize('-')
+          end
 
+          new_group = {title: title, parent_id: parent_id, permalink: permalink, priority: priority}
+
+          if group = Group.find_by(id: group_id)
+            group.update(new_group)
+          else
+            Group.create(new_group)
+          end
+
+        end
+
+        properties = document.at_css('Свойства')
+        val_progress = progress properties.css('Значение').length
+
+        properties.css('Свойство').each do |prop|
+          prop_id = prop.at_css('Ид').try(:content)
+          title = prop.at_css('Наименование').try(:content)
+          property = Property.find_or_initialize_by(property_id: prop_id)
+          property.update(title: title)
+          prop.css('>ВариантыЗначений>Справочник').each do |value|
+            vt = value.at_css('Значение').try(:content)
+            vid = value.at_css('ИдЗначения').try(:content)
+
+            new_value = {property_id: property.id, title: vt, value: ((vt.split(' ')[0].match(/^\d+(.\d+)?$/)) ? vt.split(' ')[0].to_f : nil)}
+            val = property.values.find_or_initialize_by(value_id: vid)
+            val.update(new_value)
+
+            val_progress.increment
+          end
+        end
       end
 
-      def check_groups_and_properties document
-        
-      end
+    def progress total
+      ProgressBar.create(total: total, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+    end
 
   end
 
@@ -154,7 +204,7 @@ module ProductModule
 
         img.save
 
-        File.chmod 0644, original_url, medium_url, thumbnail_url
+        File.chmod 0644, prefix + original_url, prefix + medium_url, prefix + thumbnail_url
 
         puts "Image for #{title} generated." unless silent
       end
@@ -168,17 +218,39 @@ module ProductModule
   def images_equal_to? new_product
     new_images = new_product.css('>Картинка').map(&:text)
     old_images = images.map(&:url)
-    if new_images == old_images
+    if new_images.empty? || new_images == old_images
       true
     else
+      (new_images - old_images).each do |img|
+        
+      end
       images.each_with_index do |img, i|
         puts "#{img.url} -> #{new_images[i]}"
-        img.update!(url: new_images[i])
+        if new_images[i]
+          img.update!(url: new_images[i])
+        else
+          puts delete_image old_images[i]
+        end
       end
       generate_images
       false
     end
 
+  end
+
+  def delete_image url
+    if img = Image.select('original_url, medium_url, thumbnail_url, id').find_by(url: url)
+      #puts img.attributes.values.to_s
+      img.attributes.values.first(3).each do |i|
+        File.delete "public/#{i}" if File.exists? "public/#{i}"
+      end
+
+      File.delete("public/images/#{url}") if File.exists? "public/images/#{url}"
+      img.destroy!
+
+    else
+      puts "Image #{url} not found"
+    end
   end
 
 

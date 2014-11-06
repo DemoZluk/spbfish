@@ -15,12 +15,13 @@ class Ability
       end
       if roles.include?('content_manager')
         can :manage, Article
-        can :update, Product
+        can [:update, :read], Product
       end
       if roles.include?('orders_manager')
         can :manage, Order
         can :manage, Cart
       end
+      can [:read], Product.with_price
       can [:read, :update, :destroy, :clear], Cart, user_id: user.id
       can [:create, :show, :update, :cancel], Order, email: user.email
       can [:read, :create, :update, :decrement, :increment, :destroy], LineItem

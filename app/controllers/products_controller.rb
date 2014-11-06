@@ -11,12 +11,14 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    current_list_of Product.all
+    authorize! :index, Product
+    current_list_of Product.accessible_by(current_ability)
   end
 
   # GET /products/1
   # GET /products/1.json
   def show
+    authorize! :show, Product
     respond_to do |format|
       format.html
       format.js

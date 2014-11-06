@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  include ActionView::Helpers::TextHelper
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: [:show, :index, :new_feedback]
 
@@ -75,7 +76,7 @@ class ArticlesController < ApplicationController
 
   def feedback
     GeneralMailer.feedback(feedback_params[:email], feedback_params[:subject], simple_format(feedback_params[:body])).deliver
-    redirect_to root_path, flash: {success: 'Спасибо за ваше внимание.'}
+    redirect_to store_path, flash: {success: 'Спасибо за ваше внимание.'}
   end
 
   private

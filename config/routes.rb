@@ -43,6 +43,7 @@ Fishmarkt::Application.routes.draw do
       get 'confirm/:token', action: 'confirm', as: 'confirm'
       get 'payment'
       get 'repeat'
+      get 'close'
     end
   end
   delete 'multiple_orders' => 'orders#multiple_orders', action: 'delete'
@@ -54,7 +55,7 @@ Fishmarkt::Application.routes.draw do
     post '/profile/add_data' => 'users#add_data', as: :add_data
     get 'login' => "users/sessions#new"
     post 'login' => "users/sessions#create", constraints: {subdomain: 'secure'}
-    delete 'logout' => "users/sessions#destroy"
+    get 'logout' => "users/sessions#destroy"
     get 'sign_up' => "users/registrations#new"
     get 'profile/edit' => "devise/registrations#edit"
     get 'users' => "users#index"

@@ -20,13 +20,11 @@ class Product < ActiveRecord::Base
   validates :price, numericality: { greater_than_or_equal_to: 0.00 }
   validates :title, :permalink, :item_id, uniqueness: true
 
+  scope :with_price, -> { where{price > 0} }
+
 
   def to_param
     permalink
-  end
-
-  def self.with_price
-    where{price > 0}
   end
 
   def thumb

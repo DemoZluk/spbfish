@@ -20,7 +20,7 @@
           Личный кабинет
           %br/ 
           %small= current_user.email
-        = link_to 'Выйти', logout_path, method: :delete, class: 'btn btn-link'
+        = link_to 'Выйти', logout_path, class: 'btn btn-link'
       - else
         = render "shared/login_form"
   #top_menu_wrapper

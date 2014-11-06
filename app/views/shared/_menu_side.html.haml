@@ -3,5 +3,5 @@
     .show_hide_tree ▼ Каталог ▼
     %nav.menu_side
       %ul
-        - Group.where(parent_id: '').each do |group|
+        - Group.where(parent_id: '').order('-priority DESC').each do |group|
           = menu_for_group(group)
