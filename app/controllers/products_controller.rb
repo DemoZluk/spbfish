@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
   # GET /products/1
   # GET /products/1.json
   def show
-    authorize! :show, Product
+    authorize! :show, @product
     respond_to do |format|
       format.html
       format.js

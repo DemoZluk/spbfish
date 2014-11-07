@@ -160,11 +160,11 @@ class OrdersController < ApplicationController
       order_parameters[:action] = 'checkOrder'
       order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
       order_parameters[:orderSumCurrencyPaycash] = '643'
-      order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
+      order_parameters[:orderSumBankPaycash] = '1001' #@params[:shopSumBankPaycash]
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
       order_parameters[:customerNumber] = @params[:customerNumber] || ''
-      order_parameters[:shopPassword] = 'sdf'
+      order_parameters[:shopPassword] = 'fishMarktShopPassword'
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 
@@ -203,11 +203,11 @@ class OrdersController < ApplicationController
       order_parameters[:action] = 'paymentAviso'
       order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
       order_parameters[:orderSumCurrencyPaycash] = '643'
-      order_parameters[:orderSumBankPaycash] = '1003' #@params[:shopSumBankPaycash]
+      order_parameters[:orderSumBankPaycash] = '1001' #@params[:shopSumBankPaycash]
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
       order_parameters[:customerNumber] = @params[:customerNumber] || ''
-      order_parameters[:shopPassword] = 'sdf'
+      order_parameters[:shopPassword] = 'fishMarktShopPassword'
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 

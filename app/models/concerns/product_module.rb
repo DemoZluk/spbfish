@@ -12,7 +12,7 @@ module ProductModule
 
       puts "#{prefix}Начинаем выгрузку..."
 
-      #update_groups_and_properties(document.at_css('Классификатор'))
+      update_groups_and_properties(document.at_css('Классификатор'))
       update_products(document.at_css('Каталог'))
 
       puts "#{prefix}Выгрузка завершена."
@@ -42,9 +42,8 @@ module ProductModule
         products = document.css('Товар')
         prod_progress = progress products.length
 
-        products[2530..2540].each do |product|
+        products.each do |product|
           begin
-
             if offer = offers.at_xpath("//Предложение[Ид='#{product.at_css('>Ид').try(:content)}']")
               price = offer.at_xpath('.//ЦенаЗаЕдиницу').content.to_f
             else
@@ -168,45 +167,52 @@ module ProductModule
     def progress total
       ProgressBar.create(total: total, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
     end
-
   end
 
   def generate_images(silent = true)
     if images.any?
-      ext = '.jpg'
-      prefix = 'public'
-      # path = '/catalog/' + group.parent.permalink + '/' + group.permalink + '/' + permalink + '/'
-      path = "/catalog/#{group.permalink}/#{permalink}/"
-      FileUtils.makedirs prefix + path unless File.exists? prefix + path
+      # ext = '.jpg'
+      # prefix = 'public'
+      # puts path = "/catalog/#{group.permalink}/#{permalink}/"
+      # FileUtils.makedirs prefix + path unless File.exists? prefix + path
+      # FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
 
       images.each_with_index do |img, i|
-        image = MiniMagick::Image.open prefix + '/images/' + img.url, ext
-        watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
-        index = '-' + (i+1).to_s.rjust(2, '0')
+        index = ('-%02d' % i+1).to_s
 
-        original_url = path + permalink + index + ext
-        image.resize '800'
-        original = image.composite(watermark) do |i|
-          i.gravity 'Center'
+        if new_image img.url, id, index
+          puts "Image for #{title} generated." unless silent
         end
-        original.write prefix + original_url
-        img.original_url = original_url
+        # if File.exists?(prefix + '/images/' + img.url)
+        #   image = MiniMagick::Image.open prefix + '/images/' + img.url, ext
+        #   watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
+        #   index = '-' + (i+1).to_s.rjust(2, '0')
 
-        medium_url = path + 'medium-' + permalink + index + ext
-        original.resize '300'
-        original.write prefix + medium_url
-        img.medium_url = medium_url
+        #   puts original_url = path + permalink + index + ext
+        #   image.resize '800'
+        #   original = image.composite(watermark) do |i|
+        #     i.gravity 'Center'
+        #   end
+        #   original.write prefix + original_url
+        #   img.original_url = original_url
 
-        thumbnail_url = path + 'thumb-' + permalink + index + ext
-        image.resize '135'
-        image.write prefix + thumbnail_url
-        img.thumbnail_url = thumbnail_url
+        #   medium_url = path + 'medium-' + permalink + index + ext
+        #   original.resize '300'
+        #   original.write prefix + medium_url
+        #   img.medium_url = medium_url
 
-        img.save
+        #   thumbnail_url = path + 'thumb-' + permalink + index + ext
+        #   image.resize '135'
+        #   image.write prefix + thumbnail_url
+        #   img.thumbnail_url = thumbnail_url
 
-        File.chmod 0644, prefix + original_url, prefix + medium_url, prefix + thumbnail_url
+        #   img.save
+        #   puts img.attributes
+        #   File.chmod 0644, prefix + original_url, prefix + medium_url, prefix + thumbnail_url
 
-        puts "Image for #{title} generated." unless silent
+        # else
+        #   puts "Файл картинки #{img.url} для #{title} отсутствует"
+        # end
       end
 
       return true
@@ -221,27 +227,58 @@ module ProductModule
     if new_images.empty? || new_images == old_images
       true
     else
-      (new_images - old_images).each do |img|
-        
+      (old_images - new_images).each do |img|
+        delete_image img
       end
-      images.each_with_index do |img, i|
-        puts "#{img.url} -> #{new_images[i]}"
-        if new_images[i]
-          img.update!(url: new_images[i])
-        else
-          puts delete_image old_images[i]
-        end
+      (new_images - old_images).each_with_index do |img, i|
+        new_image img, id, i
       end
-      generate_images
+      #generate_images
       false
     end
+  end
 
+  def new_image url, pid, index = 0
+    index = ('-%02d' % (index + 1)).to_s
+    ext = '.jpg'
+    prefix = 'public'
+    path = "/catalog/#{group.permalink}/#{permalink}/"
+    FileUtils.makedirs prefix + path unless File.exists? prefix + path
+    FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
+
+    if File.exists?(prefix + '/images/' + url)
+      image = MiniMagick::Image.open prefix + '/images/' + url, ext
+      watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
+
+      original_url = path + permalink + index + ext
+      image.resize '800'
+      original = image.composite(watermark) do |i|
+        i.gravity 'Center'
+      end
+      original.write prefix + original_url
+
+      medium_url = "#{path}medium-#{permalink}#{index}#{ext}"
+      original.resize '300'
+      original.write prefix + medium_url
+
+      thumbnail_url = "#{path}thumb-#{permalink}#{index}#{ext}"
+      image.resize '135'
+      image.write prefix + thumbnail_url
+
+      File.chmod 0644, prefix + original_url, prefix + medium_url, prefix + thumbnail_url
+
+      Image.create!(url: url, product_id: pid, original_url: original_url, medium_url: medium_url, thumbnail_url: thumbnail_url)
+      return true
+    else
+      puts "Файл картинки #{url} для #{title} отсутствует"
+      return false
+    end
   end
 
   def delete_image url
     if img = Image.select('original_url, medium_url, thumbnail_url, id').find_by(url: url)
       #puts img.attributes.values.to_s
-      img.attributes.values.first(3).each do |i|
+      img.attributes.values.first(3).select(&:present?).each do |i|
         File.delete "public/#{i}" if File.exists? "public/#{i}"
       end
 

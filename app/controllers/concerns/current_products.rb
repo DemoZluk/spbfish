@@ -3,7 +3,7 @@ module CurrentProducts
 
   # Define product list
   def current_list_of products
-    @products = filter(products).page(params[:page]).per(@per_page)
+    @products = filter(products.accessible_by(current_ability)).page(params[:page]).per(@per_page)
     # redirect_to store_path, notice: 'No results' if @products.empty?
   end
 

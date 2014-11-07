@@ -2,7 +2,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the passed in user here. For example:
 
     user ||= User.new # guest user (not logged in)
     roles = user.role?
@@ -21,7 +20,9 @@ class Ability
         can :manage, Order
         can :manage, Cart
       end
-      can [:read], Product.with_price
+      can [:read], Product, Product.with_price do |p|
+        p.price > 0
+      end
       can [:read, :update, :destroy, :clear], Cart, user_id: user.id
       can [:create, :show, :update, :cancel], Order, email: user.email
       can [:read, :create, :update, :decrement, :increment, :destroy], LineItem
