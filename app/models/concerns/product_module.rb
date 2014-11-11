@@ -178,9 +178,8 @@ module ProductModule
       # FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
 
       images.each_with_index do |img, i|
-        index = ('-%02d' % i+1).to_s
 
-        if new_image img.url, id, index
+        if new_image img.url, id, i
           puts "Image for #{title} generated." unless silent
         end
         # if File.exists?(prefix + '/images/' + img.url)

@@ -1,30 +1,33 @@
 %form.centered-form{:action => "https://money.yandex.ru/eshop.xml", :method => "POST", :name => "ShopForm"}
-  %input{:type => "hidden", :name => "scid", :value => "11796"}/
-  %input{:type => "hidden", :name => "ShopID", :value => "22081"}/
-  %input{:type => "hidden", :name => "Sum", value: @order.total_price}/
-  %input{:type => "hidden", :name => "orderNumber", value: @order.id}/
-  .form-group
-    %strong Номер заказа:
-    = @order.id
-  .form-group
-    %label{:for => "sum"}Сумма:
-    = number_to_currency @order.total_price
-  .form-group
-    %label{:for => "sum"}Номер телефона:
-    %input{:type => "text", :name => "CustomerNumber", value: @order.try(:phone_number), placeholder: '8-812-987-65-43-21', required: true}/
+  - if @order.state? == 'Оплачен'
+    %strong Ваш заказ уже оплачен
+  - else
+    %input{:type => "hidden", :name => "scid", :value => "11796"}/
+    %input{:type => "hidden", :name => "ShopID", :value => "22081"}/
+    %input{:type => "hidden", :name => "Sum", value: @order.total_price}/
+    %input{:type => "hidden", :name => "orderNumber", value: @order.id}/
+    .form-group
+      %strong Номер заказа:
+      = @order.id
+    .form-group
+      %label{:for => "sum"}Сумма:
+      = number_to_currency @order.total_price
+    .form-group
+      %label{:for => "sum"}Номер телефона:
+      %input{:type => "text", :name => "CustomerNumber", value: @order.try(:phone_number), placeholder: '8-812-987-65-43-21', required: true}/
 
-  %h4 Способ оплаты:
-  .form-group
-    %input#PC{:type => "radio", :checked => "checked", :name => "paymentType", :value => "PC"}/
-    %label{:for => "PC"}Со счета в Яндекс.Деньгах
-  .form-group
-    %input#AC{:type => "radio", :name => "paymentType", :value => "AC"}/
-    %label{:for => "AC"}С банковской карты
-  .form-group
-    %input#WM{:type => "radio", :name => "paymentType", :value => "WM"}/
-    %label{:for => "WM"}Со счета WebMoney
-  .form-group
-    %input#GP{:type => "radio", :name => "paymentType", :value => "GP"}/
-    %label{:for => "GP"}По коду через терминал
-  .form-group
-    %input{:type => "submit", :value => "Оплатить"}/
+    %h4 Способ оплаты:
+    .form-group
+      %input#PC{:type => "radio", :checked => "checked", :name => "paymentType", :value => "PC"}/
+      %label{:for => "PC"}Со счета в Яндекс.Деньгах
+    .form-group
+      %input#AC{:type => "radio", :name => "paymentType", :value => "AC"}/
+      %label{:for => "AC"}С банковской карты
+    .form-group
+      %input#WM{:type => "radio", :name => "paymentType", :value => "WM"}/
+      %label{:for => "WM"}Со счета WebMoney
+    .form-group
+      %input#GP{:type => "radio", :name => "paymentType", :value => "GP"}/
+      %label{:for => "GP"}По коду через терминал
+    .form-group
+      %input{:type => "submit", :value => "Оплатить"}/

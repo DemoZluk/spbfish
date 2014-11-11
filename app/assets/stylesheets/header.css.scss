@@ -35,6 +35,13 @@
       display: inline-block;
       float: left;
     }
+
+    p {
+      font-size: 17px;
+      font-weight: bold;
+      color: #EEE;
+      text-shadow: 0 0 3px #333;
+    }
   }
 
   #title {
@@ -54,7 +61,7 @@
 #left_header_part {
   display: inline-block;
   vertical-align: top;
-  margin-left: 20px;
+  //margin-left: 20px;
   color: #EEE;
   text-shadow: 0 0 3px #333;
   font-weight: bold;
@@ -86,6 +93,7 @@
 }
 #top_menu {
   display: block;
+  text-align: right;
 
   li:hover {
     text-decoration: underline;
@@ -157,6 +165,7 @@ a.phone_number {
 }
 
 #enter_form {
+  text-align: right;
   a {
     color: #FFF;
   }

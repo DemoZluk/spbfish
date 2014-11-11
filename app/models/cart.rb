@@ -19,6 +19,10 @@ class Cart < ActiveRecord::Base
     line_items.to_a.sum { |item| item.total_price }
   end
 
+  def discount_price
+    total_price * (1 - user.discount.to_f/100)
+  end
+
   def self.destroy_abandoned_carts(time = 1.day)
     time = time.ago
     carts = Cart.select{id}.joins{line_items.outer}.where{(updated_at < time)}.group{id}.having{count(line_items.id) == 0}.try(:destroy_all)

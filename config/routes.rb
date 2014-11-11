@@ -2,7 +2,7 @@ Fishmarkt::Application.routes.draw do
 
   root 'store#index', as: 'store'
 
-  resources :menu_items
+  resources :menu_items, except: :index
 
   get 'catalog', to: 'store#index'
   get '/catalog/:id' => 'groups#show', as: :group, constraints: {id: /([\-\w]*\/)?[\-\w]*/}
@@ -10,7 +10,7 @@ Fishmarkt::Application.routes.draw do
     # get ':id/page=:page', action: :show, on: :collection
   end
 
-  resources :products, except: [:new, :create, :destroy] do
+  resources :products, except: [:new, :create, :destroy, :index] do
     # get :who_bought, on: :member
     get :vote, on: :member
   end
@@ -29,15 +29,14 @@ Fishmarkt::Application.routes.draw do
 
   get 'cart' => "carts#show", as: :cart
   delete 'cart' => 'carts#clear'
-  resources :carts, param: :cid do
-  end
+  resources :carts, param: :cid, except: :index
 
-  post  '/orders/check' => 'orders#check', as: 'check_order'
-  post  '/orders/payment' => 'orders#payment', as: 'payment_order'
-  get   '/payment_success' => 'orders#payment_success'
-  get   '/payment_failure' => 'orders#payment_failure'
-  match '/yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
-  resources :orders do
+  post  'orders/check' => 'orders#check', as: 'check_order'
+  post  'orders/payment' => 'orders#payment', as: 'payment_order'
+  get   'payment_success' => 'orders#payment_success'
+  get   'payment_failure' => 'orders#payment_failure'
+  match 'yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
+  resources :orders, except: :index do
     member do
       get 'cancel'
       get 'confirm/:token', action: 'confirm', as: 'confirm'
@@ -67,14 +66,20 @@ Fishmarkt::Application.routes.draw do
   get 'merge_yes' => 'carts#merge_yes'
   get 'merge_no' => 'carts#merge_no'
 
-  namespace :admin do
-    root 'admin#index'
+  scope '/admin' do
+    get 'main' => 'admin#index', as: 'admin_main'
+    get 'orders' => 'orders#index', as: 'admin_orders'
+    get 'carts' => 'carts#index', as: 'admin_carts'
+    get 'products' => 'products#index', as: 'admin_products'
+    get 'users' => 'users#index', as: 'admin_users'
+    get 'articles' => 'articles#index', as: 'admin_articles'
+    get 'menu_items' => 'menu_items#index', as: 'admin_menu_items'
   end
   
   get '/feedback' => 'articles#new_feedback'
   post '/feedback' => 'articles#feedback'
 
-  resources :articles
+  resources :articles, except: :index
   get '/:id' => 'articles#show'
 
   # resources :users

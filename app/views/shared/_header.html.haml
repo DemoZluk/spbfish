@@ -1,20 +1,13 @@
-#header
-  - cache 'header' do
-    .banner{role: 'banner'}
-      #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
+#header.container-fluid
+  .row
+    .banner.col-sm-12.col-md-6{role: 'banner'}
+      -# #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
       #left_header_part
         = link_to t('default_title'), store_path, id: 'title'
         %br
         %p Интернет-магазин товаров для аквариумов, прудов и террариумов
-        #phone_number
-          = image_tag 'phone.png'
-          %p{itemprop: "telephone"}
-            = t('phone1')
-            %br/
-            = t('phone2')
-    #under_development
-  #right_header_part
-    #enter_form
+
+    .col-sm-12.col-md-6#enter_form
       - if user_signed_in?
         = link_to user_root_path, class: 'btn btn-link' do
           Личный кабинет
@@ -23,6 +16,14 @@
         = link_to 'Выйти', logout_path, class: 'btn btn-link'
       - else
         = render "shared/login_form"
-  #top_menu_wrapper
-    %nav#top_menu
-      = render 'shared/menu_top'
+  .row
+    .col-sm-12.col-md-4
+      #phone_number
+        = image_tag 'phone.png'
+        %p{itemprop: "telephone"}
+          = t('phone1')
+          %br/
+          = t('phone2')
+    .col-sm-12.col-md-8
+      %nav#top_menu
+        = render 'shared/menu_top'

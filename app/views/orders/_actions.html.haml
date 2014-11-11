@@ -8,6 +8,6 @@
     - if ["Подтверждён","Оплачен"].exclude?(order.state?)
       = link_to "☑", confirm_order_path(order.id, order.token), data: { confirm: "Вы уверены что хотите подтвердить заказ №#{order.id}?", remote: true, disable_with: '⚪' }, class: 'bold btn btn-link btn-lg', title: 'Подтвердить заказ', style: 'color: green;'
   - if (can? :close, Order) && (order.state? == 'Оплачен')
-    = link_to "☑", close_order_path(order.id), data: { confirm: "Вы уверены что хотите закрыть заказ №#{order.id}?", remote: true, disable_with: '⚪' }, class: 'bold btn btn-link btn-lg', title: 'Подтвердить заказ', style: 'color: black;'
+    = link_to "☑", close_order_path(order.id), data: { confirm: "Вы уверены что хотите закрыть заказ №#{order.id}?", remote: true, disable_with: '⚪' }, class: 'bold btn btn-link btn-lg', title: 'Закрыть заказ', style: 'color: black;'
   - if (can? :cancel, order) && (!order.confirmed? || @controller == 'orders')
     = link_to "☒", cancel_order_path(order), data: { :confirm => 'Вы уверены что хотите отменить заказ?', remote: true, disable_with: '⚪' }, class: 'bold btn btn-link btn-lg', title: 'Отменить заказ', style: 'color: orange;'

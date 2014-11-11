@@ -15,8 +15,9 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  validates :email, uniqueness: {case_sensitive: false}
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: {case_sensitive: false}
+  validates :discount, numericality: { only_integer: true }, inclusion: { in: 0..100, message: 'Скидка должна быть в пределах от 0 до 100' }
+
 
   def admin?
     role? 'admin'
@@ -53,7 +54,7 @@ class User < ActiveRecord::Base
         true
       else
         answer = HighLine.ask("Role '#{role}' not found. Create new and assign to user? [y/n]: ")
-        if answer == 'y'
+        if answer.match(/y\w*/)
           Role.create(name: role)
           assign_role(role)
           true

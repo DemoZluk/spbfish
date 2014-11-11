@@ -21,5 +21,5 @@
             - sort_types = ['title', 'price', 'rating']
             -# "Order items by" select pseudo-tag
             = render partial: 'shared/select', locals: {current: @order_by.slice(/\.\w+/).gsub('.', '') || 'title', array: sort_types, controller: controller_name, action: action_name, param: 'order_by', name: 'order_by'}
-            = check_box_tag 'descending', true, (@desc), autocomplete: 'off'
+            = check_box_tag 'descending', true, (@desc)
             = label_tag 'descending', 'по убыванию', id: 'desc_label'

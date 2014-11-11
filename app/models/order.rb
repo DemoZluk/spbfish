@@ -51,7 +51,7 @@ class Order < ActiveRecord::Base
   end
 
   def total_price
-    line_items.to_a.sum(&:total_price)
+    line_items.to_a.sum(&:total_price) * (1 - user.try(:discount).to_f/100)
   end
 
   def confirmed?

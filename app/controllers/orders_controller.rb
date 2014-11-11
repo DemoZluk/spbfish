@@ -52,7 +52,6 @@ class OrdersController < ApplicationController
         info = Information.find_or_create_by(user_id: current_user.id)
         info.update order_params.slice(*Information.column_names)
       end
-      params[:user_id] = current_user.id
     end
 
     if @cart.line_items.empty?
@@ -60,6 +59,7 @@ class OrdersController < ApplicationController
     end
 
     @order = Order.new(params)
+    @order.user_id = @cart.user_id
     respond_to do |format|
       if @order.save && @order.add_line_items_from_cart(@cart)
         @order.state = 'Активен'
@@ -164,7 +164,7 @@ class OrdersController < ApplicationController
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
       order_parameters[:customerNumber] = @params[:customerNumber] || ''
-      order_parameters[:shopPassword] = 'fishMarktShopPassword'
+      order_parameters[:shopPassword] = 'fishMarkt'
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 
@@ -207,7 +207,7 @@ class OrdersController < ApplicationController
       order_parameters[:shopId] = '22081'
       order_parameters[:invoiceId] = @params[:invoiceId]
       order_parameters[:customerNumber] = @params[:customerNumber] || ''
-      order_parameters[:shopPassword] = 'fishMarktShopPassword'
+      order_parameters[:shopPassword] = 'fishMarkt'
 
       md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
 
