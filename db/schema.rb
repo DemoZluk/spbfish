@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141110080307) do
+ActiveRecord::Schema.define(version: 20141113150259) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -77,6 +77,19 @@ ActiveRecord::Schema.define(version: 20141110080307) do
 
   add_index "line_items", ["cart_id"], name: "index_line_items_on_cart_id", using: :btree
   add_index "line_items", ["product_id"], name: "index_line_items_on_product_id", using: :btree
+
+  create_table "mailers", force: true do |t|
+    t.string   "title"
+    t.string   "subject"
+    t.text     "body"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mailers_users", id: false, force: true do |t|
+    t.integer "user_id",   null: false
+    t.integer "mailer_id", null: false
+  end
 
   create_table "menu_items", force: true do |t|
     t.string   "title"
@@ -156,6 +169,16 @@ ActiveRecord::Schema.define(version: 20141110080307) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "subscriptions", force: true do |t|
+    t.string   "mailer_id"
+    t.string   "email"
+    t.string   "token"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "subscriptions", ["mailer_id"], name: "index_subscriptions_on_mailer_id", using: :btree
 
   create_table "user_roles", force: true do |t|
     t.integer "user_id"

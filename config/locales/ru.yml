@@ -69,6 +69,7 @@ ru:
       order: Заказ
       menu_item: Меню
       products: Товар
+      mailers: Рассылка
     attributes:
       product:
         title: Наименование
@@ -106,6 +107,10 @@ ru:
         permalink: Ссылка
         parent_id: Родитель
         published: Опубликовано
+      mailer:
+        title: Название
+        subject: Тема
+        body: Тело
 
   number:
     currency:

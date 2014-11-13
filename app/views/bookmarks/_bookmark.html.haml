@@ -1,4 +1,6 @@
 %tr{id: "bm-#{bookmark.id}"}
+  -# %td
+  -#   %span.to_cart.glyphicon.glyphicon-shopping-cart
   %td.date= bookmark.created_at.strftime("%y.%m.%d")
   %td.product= link_to_product Product.find(bookmark.product_id), target: '_blank'
   %td= button_to '×', bookmark_path(bookmark), method: :delete, class: 'btn btn-xs btn-link', remote: true

@@ -6,10 +6,15 @@ class User < ActiveRecord::Base
   has_many :carts, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :ratings
+
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
+
   has_many :bookmarks
   has_many :bookmarked_products, through: :bookmarks, source: :product
+
+  has_many :subscriptions, primary_key: :email, foreign_key: :email
+  has_many :mailers, through: :subscriptions
 
   has_one :information, dependent: :destroy
 
@@ -64,5 +69,4 @@ class User < ActiveRecord::Base
       end
     end
   end
-
 end

@@ -6,3 +6,4 @@
   %li= menu_item(can?(:manage, User), 'Пользователи', admin_users_path)
   %li= menu_item(can?(:manage, @article), 'Статьи', admin_articles_path)
   %li= menu_item(can?(:manage, MenuItem), 'Меню', admin_menu_items_path)
+  %li= menu_item(can?(:manage, Mailer), 'Рассылки', admin_mailers_path)

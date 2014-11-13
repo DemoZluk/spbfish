@@ -51,7 +51,12 @@ class Order < ActiveRecord::Base
   end
 
   def total_price
-    line_items.to_a.sum(&:total_price) * (1 - user.try(:discount).to_f/100)
+    sum = line_items.to_a.sum(&:total_price)
+    if user && user.discount.in?(1..99)
+      sum * (1 - user.try(:discount).to_f/100)
+    else
+      sum
+    end
   end
 
   def confirmed?
@@ -69,4 +74,6 @@ class Order < ActiveRecord::Base
   def active?
     state.active?
   end
+
+  alias_method :discount_price, :total_price
 end

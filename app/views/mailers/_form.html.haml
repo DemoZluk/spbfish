@@ -1,0 +1,19 @@
+= form_for @mailer do |f|
+  - if @mailer.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@mailer.errors.count, "error")} prohibited this mailer from being saved:"
+      %ul
+        - @mailer.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :subject
+    = f.text_field :subject
+  .field
+    = f.label :body
+    = f.text_area :body
+  .actions
+    = f.submit 'Сохранить'

@@ -86,6 +86,23 @@ class OrdersController < ApplicationController
     end
   end
 
+  def add_by_item
+    if product = Product.find_by(item: params[:item])
+      prod_attr = product.attributes.slice('id', 'price')
+
+      @order = Cart.find(params[:id]) unless controller_name == 'orders'
+
+      li = @order.line_items.find_or_initialize_by(product_id: prod_attr['id'])
+      li.price = prod_attr['price']
+      li.quantity += (params[:qt] || 1).to_i
+      if li.save
+        redirect_to :back, notice: "#{product.title} добавлен в этот заказ"
+      end
+    else
+      redirect_to :back, notice: 'Товар с таким артикулом не найден'
+    end
+  end
+
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update

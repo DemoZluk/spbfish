@@ -13,6 +13,14 @@
           display: block;
         }
 
+        #filters .body {
+          display: block;
+        }
+
+        #filters .toggle_text {
+          display: none;
+        }
+
         .no_js {
           display: block;
         }
@@ -26,7 +34,7 @@
           %button.close{data: {dismiss: 'modal'}} &times;
 
     #error_wrapper
-      - test_message = "Внимание! Сайт находится в тестовом режиме. Заказы начнут приниматься с 15.11. Всем зарегистрировавшимся до этого числа - постоянная скидка 5%."
+      - test_message = "Внимание! Сайт находится в тестовом режиме. Заказы начнут приниматься с 15.12.14. Всем зарегистрировавшимся до этого числа - скидка 5%."
       #error{style: (error = flash[:error] || alert || test_message) ? nil : 'display: none'}
         = error
       #etw

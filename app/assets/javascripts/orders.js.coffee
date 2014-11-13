@@ -30,6 +30,8 @@ $( "#order_shipping_date" ).datepicker({
 });
 
 $(document).ready ->
+  $('.tab-content #info, .tab-content #edit').addClass('tab-pane fade')
+
   if $('body.orders').length
     if $('#error_explanation').length
       location.hash = 'info'

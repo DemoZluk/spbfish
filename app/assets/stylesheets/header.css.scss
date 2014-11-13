@@ -49,13 +49,6 @@
     color: #EEE;
   }
 
-  #under_development {
-    font: /*small-caps*/ 20px verdana,helvetica,arial, sans-serif;
-    color: #333;
-    display: inline-block;
-    vertical-align: top;
-    margin: 5px 15px;
-  }
 }
 
 #left_header_part {
@@ -71,26 +64,12 @@
   }
 }
 
-#right_header_part {
+#enter_form {
   display: inline-block;
-  bottom: 0px;
-  float: right;
-  height: 100%;
   text-align: right;
-
-  #enter_form {
-    display: inline-block;
-    text-align: right;
-    margin-bottom: 40px;
-  }
-
+  margin-bottom: 40px;
 }
 
-#top_menu_wrapper {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-}
 #top_menu {
   display: block;
   text-align: right;

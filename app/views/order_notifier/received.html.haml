@@ -18,12 +18,6 @@
       %br/ 
       = @order.comment
 
-    %p Как только товар будет готов к отгрузке вы получите ещё одно письмо.
-    %b Добавить:
-    %p &nbsp;&nbsp;Информация о стоимости доставки
-    %p &nbsp;&nbsp;Информация о доставке
-    %p &nbsp;&nbsp;Информация о дате доставки
-
     Ссылка на ваш заказ:
 
     = link_to order_url(@order, t: @order.token), order_url(@order, t: @order.token)

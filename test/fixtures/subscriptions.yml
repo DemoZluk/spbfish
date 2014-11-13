@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  mailer_id: MyString
+  email: MyString
+  token: MyString
+
+two:
+  mailer_id: MyString
+  email: MyString
+  token: MyString

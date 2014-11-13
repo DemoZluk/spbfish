@@ -1,0 +1,48 @@
+- @page_title = t('.')
+.container-fluid
+  .row
+    .container-fluid.col-lg-offset-2.col-lg-8
+      .row.well.well-lg
+        .col-sm-6
+          .authform
+            %h3 Настройки
+            = form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :role => 'form'}) do |f|
+              = devise_error_messages!
+              .form-group
+                = f.label :email
+                = f.email_field :email, :autofocus => true, class: 'form-control'
+                - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+                  %div
+                    Ждём подтверждения почты: #{resource.unconfirmed_email}
+              %fieldset
+                %p Оставьте незаполненным, если не хотите изменить.
+                .form-group
+                  = f.label :password
+                  = f.password_field :password, :autocomplete => 'off', class: 'form-control'
+                .form-group
+                  = f.label :password_confirmation
+                  = f.password_field :password_confirmation, class: 'form-control'
+              %p Чтобы изменения вступили в силу, ввдите текущий пароль.
+              .form-group
+                = f.label :current_password
+                = f.password_field :current_password, class: 'form-control'
+              = f.submit 'Сохранить', :class => 'button right'
+        .col-sm-6
+          .authform
+            %h3 Дополнительная информация
+            = form_for(:user, url: add_data_path) do |f|
+              - info = Information.find_by(user_id: current_user.id)
+              .form-group
+                %label{:for => "name"} ФИО
+                = text_field_tag 'information[name]', info.try(:name), placeholder: 'Иванов Иван Иванович', class: 'form-control'
+              .form-group
+                %label{:for => "phone_number"} Номер телефона
+                = text_field_tag 'information[phone_number]', info.try(:phone_number), placeholder: '8-987-654-32-10', class: 'form-control'
+              .form-group
+                %label{:for => "address"} Адрес
+                = text_area_tag 'information[address]', info.try(:address), placeholder: 'г. Санкт-Петербург, ул. Ленина, д. 1, корпус 1, кв. 15', class: 'form-control'
+              = f.submit "#{ info ? 'Обновить' : 'Сохранить' }", :class => 'button right'
+          .authform
+            %h3 Удалить аккаунт
+            %p Нажмите на кнопку, если желаете удалить аккаунт.
+            = button_to "Удалить аккаунт", registration_path(resource_name), :data => { :confirm => "Вместе с аккаунтом удалятся все ваши данные и вся история заказов, продолжить?" }, :method => :delete, :class => 'btn btn-block btn-danger'

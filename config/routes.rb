@@ -45,6 +45,8 @@ Fishmarkt::Application.routes.draw do
       get 'close'
     end
   end
+  post 'add_by_item/:id' => 'orders#add_by_item', as: 'add_by_item'
+
   delete 'multiple_orders' => 'orders#multiple_orders', action: 'delete'
 
   get 'profile' => 'users#show', as: 'user_root'
@@ -53,7 +55,7 @@ Fishmarkt::Application.routes.draw do
   devise_scope :user do
     post '/profile/add_data' => 'users#add_data', as: :add_data
     get 'login' => "users/sessions#new"
-    post 'login' => "users/sessions#create", constraints: {subdomain: 'secure'}
+    post 'login' => "users/sessions#create"
     get 'logout' => "users/sessions#destroy"
     get 'sign_up' => "users/registrations#new"
     get 'profile/edit' => "devise/registrations#edit"
@@ -74,7 +76,15 @@ Fishmarkt::Application.routes.draw do
     get 'users' => 'users#index', as: 'admin_users'
     get 'articles' => 'articles#index', as: 'admin_articles'
     get 'menu_items' => 'menu_items#index', as: 'admin_menu_items'
+    get 'mailers' => 'mailers#index', as: 'admin_mailers'
   end
+
+  resources :mailers do
+    member do
+      get 'start'
+    end
+  end
+
   
   get '/feedback' => 'articles#new_feedback'
   post '/feedback' => 'articles#feedback'

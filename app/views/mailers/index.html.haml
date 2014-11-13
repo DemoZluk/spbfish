@@ -1,0 +1,24 @@
+%h1.underlined
+  Все расслыки
+  = link_to 'Новая расслыка', new_mailer_path
+
+%table.table
+  %tr
+    %th Название
+    %th Тема
+    %th Тело
+    %th
+    %th
+    %th
+
+  - @mailers.each do |mailer|
+    %tr
+      %td= mailer.title
+      %td= mailer.subject
+      %td= mailer.body
+      %td= link_to 'Открыть', mailer
+      %td= link_to 'Правка', edit_mailer_path(mailer)
+      %td= link_to 'Удалить', mailer, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+

@@ -1,8 +1,17 @@
-.container-fluid
-  %h1.underlined
-    Правка заказа
-    = link_to 'Заказы', orders_path
+%h1.underlined
+  Правка заказа
+  = link_to 'Заказы', orders_path
 
-  .row= render 'form'
+%ul.nav.nav-tabs{role: 'tablist'}
+  %li.active
+    %a{href: "#edit", role: 'tab', data: {toggle: 'tab'}} Правка заказа
+  %li
+    %a{href: "#info", role: 'tab', data: {toggle: 'tab'}} Информация
 
-  = render template: 'carts/show'
+.tab-content.container-fluid
+  .in.active.row.container-fluid#edit
+    = render 'carts/cart'
+
+  .row#info
+    .order= render 'form'
+
