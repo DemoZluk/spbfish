@@ -1,5 +1,5 @@
 %div.add_to_cart_wrapper<
-  = form_tag line_items_path(product_id: product), class: 'add_to_cart input-group input-group-sm', remote: true, authenticity_token: true do
-    = text_field_tag('amount', '1', {id: nil, class: 'form-control add_amount', autocomplete: 'off'})
+  = form_tag line_items_path(product_id: product), class: 'add_to_cart input-group input-group-sm', remote: true, authenticity_token: true, autocomplete: 'off' do
+    = text_field_tag('amount', '1', {id: nil, class: 'form-control add_amount'})
 
     .input-group-btn= button_tag 'В корзину', type: 'submit', class: 'btn btn-primary bold', data: {disable_with: "В корзину"}

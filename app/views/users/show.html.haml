@@ -1,7 +1,7 @@
 %h1.underlined
   = "Привет, #{@user.information.try(:name).presence || @user.email}!" # greeting < users_helper.rb
   = link_to 'Редактировать профиль', profile_edit_path
-  = link_to "Мои подписки", mailers_path
+  -# link_to "Мои подписки", subscriptions_path
 %table.table.table-striped.table-hover
   %thead
     %tr
@@ -48,3 +48,9 @@
       - else
         %tr.none
           %td{colspan: 6} У вас нет заказов в истории.
+
+%h4 Подписаться на рассылку
+%p Мы будем использовать этот email только для того чтобы присылать вам важные новости, прайсы и рекламные акции.
+= form_tag subscribe_path do
+  = text_field_tag 'email', '', placeholder: 'email'
+  = submit_tag 'Подписаться'

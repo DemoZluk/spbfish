@@ -2,10 +2,12 @@
 
 one:
   title: MyString
+  description: Description
   subject: MyString
   body: MyText
 
 two:
   title: MyString
+  description: Description
   subject: MyString
   body: MyText

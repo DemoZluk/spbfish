@@ -41,12 +41,48 @@ class MailersController < ApplicationController
     respond_with(@mailer)
   end
 
+  def subscribe
+    mail = params[:email]
+    success = false
+    if params[:id]
+      @mailer = Mailer.find(params[:id])
+      success = true if @mailer.subscriptions.create(email: mail)
+    else
+      Mailer.all.each do |m|
+        m.subscriptions.create(email: mail)
+      end
+      success = true
+    end
+    if success
+      redirect_to store_path, flash: {success: "Вы успешно подписались на рассылк#{@mailer ? 'у' : 'и'}"}
+    else
+      redirect_to store_path, flash: {error: "Не удалось подписаться на рассылку"}
+    end
+  end
+
+  def subscriptions
+    if params[:t]
+      sub = Subscription.find_by(token: params[:t])
+      @subscriptions = Subscription.where{ email == sub.email }
+    elsif user_signed_in?
+      @subscriptions = current_user.subscriptions
+    end
+    @mailers = Mailer.all
+    respond_with(@mailers)
+  end
+
+  def unsubscribe
+    t = params[:t]
+    @subscripted = Subscription.where{ token == t }
+    render :index
+  end
+
   private
     def set_mailer
       @mailer = Mailer.find(params[:id])
     end
 
     def mailer_params
-      params.require(:mailer).permit(:title, :subject, :body)
+      params.require(:mailer).permit(:title, :description, :subject, :body)
     end
 end

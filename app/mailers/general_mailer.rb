@@ -13,7 +13,7 @@ class GeneralMailer < ActionMailer::Base
   def newsletter mailer
     @mailer = mailer
     mailer.subscriptions.each do |s|
-      mail to: s.email, subject: mailer.subject, from: I18n.t(:store_email)
+      mail to: s.email, subject: "[FishMarkt] #{mailer.subject}", from: I18n.t(:store_email)
     end
   end
 end

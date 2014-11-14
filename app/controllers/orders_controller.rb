@@ -108,7 +108,7 @@ class OrdersController < ApplicationController
   def update
     authorize! :update, @order
     respond_to do |format|
-      @old = @order
+      @old_lis = @order.line_items
 
       redirect_to_back_or_default notice: I18n.t(:cart_is_empty) and return if @order.line_items.empty?
 
@@ -116,8 +116,9 @@ class OrdersController < ApplicationController
         @cart = @order
         format.html { redirect_to @order, notice: 'Параметры заказа обновлены' }
         format.json { head :no_content }
-        OrderNotifier.update(@old, @order).deliver
+        OrderNotifier.update(@old_lis, @order).deliver
       else
+        @cart = @order
         format.html { render action: 'edit' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end

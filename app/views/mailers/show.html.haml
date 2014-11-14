@@ -1,19 +1,22 @@
-%p
-  %b Название:
-  = @mailer.title
-%p
-  %b Тема:
-  = @mailer.subject
-%p
-  %b Тело:
-  = (@mailer.body).html_safe
+.container
+  %p
+    %h3= @mailer.title
+  %p
+    %b Описние:
+    = @mailer.description
+  %p
+    %b Тема:
+    = @mailer.subject
+  %p
+    %b Тело:
+    = (@mailer.body).html_safe
 
-%p
-  %b Подписчиков:
-  = @mailer.subscribers.length
+  %p
+    %b Подписчиков:
+    = @mailer.subscribers.length
 
-= link_to 'Правка', edit_mailer_path(@mailer)
-\|
-= link_to 'Назад', mailers_path
-\|
-= link_to 'Запустить рассылку', start_mailer_path(@mailer)
+  = link_to 'Правка', edit_mailer_path(@mailer)
+  \|
+  = link_to 'Назад', mailers_path
+  \|
+  = link_to 'Запустить рассылку', start_mailer_path(@mailer)

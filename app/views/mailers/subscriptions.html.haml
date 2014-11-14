@@ -1,0 +1,14 @@
+.container
+  %h3 Подписки
+  - if @subscriptions.empty?
+    Нет активных подписок
+  = render 'subscriptions'
+  - @mailers.each do |mailer|
+    = button_to mailer.title, subscribe_mailer_path(mailer, email: current_user.email), method: 'POST'
+
+  - @mailers.each do |m|
+    = form_tag do
+      %strong= m.title
+      = m.description
+      = text_field_tag 'email'
+      = submit_tag 'Подписаться'

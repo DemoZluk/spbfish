@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113150259) do
+ActiveRecord::Schema.define(version: 20141114163456) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20141113150259) do
     t.datetime "updated_at"
     t.integer  "priority"
   end
+
+  add_index "groups", ["id"], name: "index_groups_on_id", using: :btree
 
   create_table "images", force: true do |t|
     t.string   "url"
@@ -80,15 +82,11 @@ ActiveRecord::Schema.define(version: 20141113150259) do
 
   create_table "mailers", force: true do |t|
     t.string   "title"
+    t.string   "description"
     t.string   "subject"
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "mailers_users", id: false, force: true do |t|
-    t.integer "user_id",   null: false
-    t.integer "mailer_id", null: false
   end
 
   create_table "menu_items", force: true do |t|

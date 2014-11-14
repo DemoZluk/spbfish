@@ -10,9 +10,9 @@
         - if @current_cart
           #cart=# render('shared/cart', cart: @cart)
       
-      = button_to('Заказать', new_order_path, style: ((controller_name == 'orders') ? ("display: none") : false), class:  'order primary_button', method: :get, autocomplete: 'off')
+      = button_to('Заказать', new_order_path, style: ((controller_name == 'orders') ? ("display: none") : false), class:  'order primary_button', method: :get)
   .pull-right= link_to 'Наверх', '#top', class: 'back-to-top'
-  
+
   - if user_signed_in?
     #bookmarks_list.pull-right
       .bookmarks

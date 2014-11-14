@@ -109,6 +109,7 @@ ru:
         published: Опубликовано
       mailer:
         title: Название
+        description: Описание
         subject: Тема
         body: Тело
 

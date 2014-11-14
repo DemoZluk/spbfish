@@ -179,6 +179,10 @@ module ProductModule
 
       images.each_with_index do |img, i|
 
+        prefix = 'public'
+        path = "/catalog/#{group.permalink}/#{permalink}/"
+        FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
+
         if new_image img.url, id, i
           puts "Image for #{title} generated." unless silent
         end
@@ -243,7 +247,6 @@ module ProductModule
     prefix = 'public'
     path = "/catalog/#{group.permalink}/#{permalink}/"
     FileUtils.makedirs prefix + path unless File.exists? prefix + path
-    FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
 
     if File.exists?(prefix + '/images/' + url)
       image = MiniMagick::Image.open prefix + '/images/' + url, ext
@@ -275,14 +278,14 @@ module ProductModule
   end
 
   def delete_image url
-    if img = Image.select('original_url, medium_url, thumbnail_url, id').find_by(url: url)
+    if imgs = Image.select('original_url, medium_url, thumbnail_url, id').where(url: url)
       #puts img.attributes.values.to_s
-      img.attributes.values.first(3).select(&:present?).each do |i|
+      imgs.first.attributes.values.first(3).select(&:present?).each do |i|
         File.delete "public/#{i}" if File.exists? "public/#{i}"
       end
 
       File.delete("public/images/#{url}") if File.exists? "public/images/#{url}"
-      img.destroy!
+      imgs.destroy_all
 
     else
       puts "Image #{url} not found"

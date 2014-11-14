@@ -79,11 +79,15 @@ Fishmarkt::Application.routes.draw do
     get 'mailers' => 'mailers#index', as: 'admin_mailers'
   end
 
+  post 'subscribe' => 'mailers#subscribe', as: 'subscribe'
   resources :mailers do
     member do
       get 'start'
+      get 'subscribe'
     end
   end
+  get '/subscriptions' => 'mailers#subscriptions'
+  get '/unsubscribe/:t' => 'mailers#unsubscribe'
 
   
   get '/feedback' => 'articles#new_feedback'
