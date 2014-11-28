@@ -11,7 +11,7 @@
 db/*.sqlite3*
 config/database.yml
 
-/public/images/
+/public/images/import_files
 /public/catalog/
 
 # Ignore all logfiles and tempfiles.

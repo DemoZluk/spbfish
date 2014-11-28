@@ -83,7 +83,7 @@ class ProductsController < ApplicationController
   end
 
   def search
-    if params[:q].length < 3
+    if params[:q].size < 3
       redirect_to_back_or_default notice: t('.query_too_short') and return
     end
     @search_products = Product.with_price.search(params[:q])

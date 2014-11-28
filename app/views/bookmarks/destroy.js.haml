@@ -1,5 +1,5 @@
 $("##{@product.permalink} .add_to_bookmarks").html("#{j render 'products/add_to_bookmarks', product: @product}")
 $('##{@product.permalink} .add_to_bookmarks button').tooltip()
 $("#bm-#{@bookmark.id}").fadeOut('fast')
-- if @bookmarks.length == 0
+- if @bookmarks.size == 0
   $('#bookmarks_list .list').html("#{ j render 'shared/bookmarks_table' }")

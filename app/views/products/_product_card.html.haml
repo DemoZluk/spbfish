@@ -12,7 +12,7 @@
       %p.price{itemprop: 'offers', itemscope: true, itemtype: 'http://schema.org/Offer'}
         %span{itemprop: 'price'}= number_to_currency @product.price
         %br/ 
-        %small= "за 1 #{@product.storages.first.unit}."
+        %small= "за 1 #{@product.storages.first.try(:unit) || 'шт'}."
       %p.item
         Артикул:
         = @product.item

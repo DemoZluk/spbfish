@@ -19,10 +19,26 @@ module ProductModule
     end
 
     def generate_images
+      document = Nokogiri::XML( File.read('xml/import.xml') )
+      products = document.css('Товар')
+      puts "Начинаем генерацию изображений"
+      img_progress = progress products.size
       counter = 0
-      images = joins{images}.each do |product|
-        counter += 1 if product.generate_images
+
+      products.each do |p|
+        product = Product.find_by(item_id: p.at_css('Ид').try(:content))
+        unless product.images_equal_to?(p)
+          counter += 1
+        end
+        img_progress.increment
       end
+
+      # images = joins{images}.each do |product|
+      #   if product.generate_images
+      #     counter += 1
+      #   end
+      # end
+
 
       puts "Картинки для #{counter} товаров сгенерированы."
     end
@@ -40,7 +56,7 @@ module ProductModule
         offers = Nokogiri::XML( File.read('xml/offers.xml') ).at_css('Предложения')
 
         products = document.css('Товар')
-        prod_progress = progress products.length
+        prod_progress = progress products.size
 
         products.each do |product|
           begin
@@ -75,10 +91,17 @@ module ProductModule
                 tmp_product.update! diff
                 changed = true
               end
-              changed = true unless tmp_product.images_equal_to?(product) == true
             else
-              Product.create!(new_product)
+              tmp_product = Product.create!(new_product)
             end
+
+            changed = true unless (tmp_product.images_equal_to?(product) && tmp_product.values_equal_to?(product)) == true
+
+            unless 
+              tmp_product.update_properties_and_values product
+              changed = true
+            end
+
             prod_progress.increment
             counter += 1 if changed == true
 
@@ -133,18 +156,18 @@ module ProductModule
             permalink = title.mb_chars.parameterize('-')
           end
 
-          new_group = {title: title, parent_id: parent_id, permalink: permalink, priority: priority}
+          new_group = {id: group_id, title: title, parent_id: parent_id, permalink: permalink, priority: priority}
 
           if group = Group.find_by(id: group_id)
             group.update(new_group)
           else
-            Group.create(new_group)
+            Group.create!(new_group)
           end
 
         end
 
         properties = document.at_css('Свойства')
-        val_progress = progress properties.css('Значение').length
+        val_progress = progress properties.css('Значение').size
 
         properties.css('Свойство').each do |prop|
           prop_id = prop.at_css('Ид').try(:content)
@@ -164,9 +187,9 @@ module ProductModule
         end
       end
 
-    def progress total
-      ProgressBar.create(total: total, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
-    end
+      def progress total
+        ProgressBar.create(total: total, progress_mark: '█', format: "%P%%: |%B| %c of %C %E")
+      end
   end
 
   def generate_images(silent = true)
@@ -178,11 +201,6 @@ module ProductModule
       # FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
 
       images.each_with_index do |img, i|
-
-        prefix = 'public'
-        path = "/catalog/#{group.permalink}/#{permalink}/"
-        FileUtils.rm_rf(Dir.glob(prefix + path + '*'))
-
         if new_image img.url, id, i
           puts "Image for #{title} generated." unless silent
         end
@@ -227,12 +245,17 @@ module ProductModule
   def images_equal_to? new_product
     new_images = new_product.css('>Картинка').map(&:text)
     old_images = images.map(&:url)
+
+    #puts new_images
+
+    (old_images - new_images).each do |img|
+      delete_image img
+    end
+
     if new_images.empty? || new_images == old_images
+      #puts "Skipping..."
       true
     else
-      (old_images - new_images).each do |img|
-        delete_image img
-      end
       (new_images - old_images).each_with_index do |img, i|
         new_image img, id, i
       end
@@ -241,15 +264,29 @@ module ProductModule
     end
   end
 
-  def new_image url, pid, index = 0
-    index = ('-%02d' % (index + 1)).to_s
-    ext = '.jpg'
-    prefix = 'public'
-    path = "/catalog/#{group.permalink}/#{permalink}/"
-    FileUtils.makedirs prefix + path unless File.exists? prefix + path
+  def values_equal_to? product
+    if product.css('ЗначенияСвойства').size == 
+      pid = id
+      ProductPropertyValue.where{product_id == pid}.destroy_all
+      product.css('ЗначенияСвойства').each do |p|
+        ProductPropertyValue.create!(
+          product_id: pid,
+          value_id: Value.find_by(value_id: p.at_css('Значение').try(:content)).try(:id),
+          property_id: Property.find_by(property_id: p.at_css('Ид').try(:content)).id
+        )
+      end
+    end
+  end
 
-    if File.exists?(prefix + '/images/' + url)
-      image = MiniMagick::Image.open prefix + '/images/' + url, ext
+  def new_image url, pid, index = 0
+    begin
+      index = ('-%02d' % (index + 1)).to_s
+      ext = '.jpg'
+      prefix = 'public'
+      path = "/catalog/#{group.permalink}/#{permalink}/"
+      FileUtils.makedirs prefix + path unless File.exists? prefix + path
+      FileUtils.rm_rf(Dir.glob(prefix + path + '*' + index + '.' + ext))
+      image = MiniMagick::Image.open(prefix + '/images/' + url, ext)
       watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
 
       original_url = path + permalink + index + ext
@@ -259,21 +296,28 @@ module ProductModule
       end
       original.write prefix + original_url
 
-      medium_url = "#{path}medium-#{permalink}#{index}#{ext}"
+      medium_url = "#{path}medium-#{permalink + index + ext}"
       original.resize '300'
       original.write prefix + medium_url
 
-      thumbnail_url = "#{path}thumb-#{permalink}#{index}#{ext}"
+      thumbnail_url = "#{path}thumb-#{permalink + index + ext}"
       image.resize '135'
       image.write prefix + thumbnail_url
 
       File.chmod 0644, prefix + original_url, prefix + medium_url, prefix + thumbnail_url
 
-      Image.create!(url: url, product_id: pid, original_url: original_url, medium_url: medium_url, thumbnail_url: thumbnail_url)
+      img = Image.find_or_initialize_by(url: url)
+
+      img.update(url: url, product_id: pid, original_url: original_url, medium_url: medium_url, thumbnail_url: thumbnail_url)
       return true
-    else
-      puts "Файл картинки #{url} для #{title} отсутствует"
-      return false
+      
+    rescue Errno::ENOENT => e
+      log_location = 'log/products_update.log'
+      logger = Logger.new(log_location)
+      logger.level = Logger::ERROR
+      logger.error "Файл картинки #{url} для #{title} отсутствует"
+      #logger.error e
+      false
     end
   end
 
@@ -285,12 +329,10 @@ module ProductModule
       end
 
       File.delete("public/images/#{url}") if File.exists? "public/images/#{url}"
-      imgs.destroy_all
+      imgs.delete_all
 
     else
       puts "Image #{url} not found"
     end
   end
-
-
 end

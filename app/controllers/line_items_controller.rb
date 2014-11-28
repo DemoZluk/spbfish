@@ -64,7 +64,7 @@ class LineItemsController < ApplicationController
     @line_item.destroy
     respond_to do |format|
       format.html do
-        if LineItem.all.length > 0 then
+        if LineItem.all.size > 0 then
           redirect_to cart_url(session[:cart_id], notice: 'Удалён')
         else
           redirect_to store_url

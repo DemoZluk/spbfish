@@ -4,12 +4,13 @@
 require "highline/import"
 
 def main
-  open_files
-  create_groups
-  create_properties
-  create_products_and_values
-  setup_prices
-  add_values_to_values
+  Product.update_products_table
+  # open_files
+  # create_groups
+  # create_properties
+  # create_products_and_values
+  # setup_prices
+  # add_values_to_values
   init_roles
   create_first_admin_user
 end
@@ -31,7 +32,7 @@ def create_groups
     group_id = g.at_css('>Ид').try(:content)
     title = g.at_css('>Наименование').try(:content).split('. ')[1]
     priority = g.at_css('>Наименование').try(:content).split('. ')[0]
-
+    puts g.at_css('>Наименование').try(:content)
     if parent
       parent_id = parent.at_css('>Ид').try(:content)
       permalink = "#{parent.at_css('>Наименование').try(:content).mb_chars.parameterize}/#{title.mb_chars.parameterize}"
