@@ -32,7 +32,7 @@
         - title = prop.title.split(',')
         %section.filter.well.well-sm{id: prop.title.mb_chars.parameterize('_')}
           %h4= title[0]
-          - if vals.numerical.size > 5
+          - if vals.numerical.length > 5
             .numerical{ data: { id: prop.id } }
               %input.min{:type => "text", placeholder: vals.min_by(&:value).value, name: "r[#{prop.id}][]", value: (params[:r].try(:[], prop.id.to_s).try(:[], 0))}/
               \ - 

@@ -18,7 +18,7 @@ add () {
 commit () {
   git commit
 }
-
+ 
 push () {
   git push fishmarkt master
 }

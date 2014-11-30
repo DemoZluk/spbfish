@@ -12,7 +12,7 @@ module ProductModule
 
       puts "#{prefix}Начинаем выгрузку..."
 
-      update_groups_and_properties(document.at_css('Классификатор'))
+      update_groups_properties_and_values(document.at_css('Классификатор'))
       update_products(document.at_css('Каталог'))
 
       puts "#{prefix}Выгрузка завершена."
@@ -39,13 +39,13 @@ module ProductModule
       #   end
       # end
 
-
       puts "Картинки для #{counter} товаров сгенерированы."
     end
 
     private
 
       def update_products document
+        items = document.css('Товар>Ид').map{ |i| i.content }
         any_errors = false
         log_location = 'log/products_update.log'
         logger = Logger.new(log_location)
@@ -67,7 +67,7 @@ module ProductModule
               price = 0
             end
 
-            changed = false
+            @changed = false
             new_product = make_product product, price
             item_id = product.at_css('>Ид').try(:content)
 
@@ -89,21 +89,18 @@ module ProductModule
               else
                 prod_progress.log "#{tmp_product['title']}: #{diff}"
                 tmp_product.update! diff
-                changed = true
+                @changed = true
               end
             else
               tmp_product = Product.create!(new_product)
             end
 
-            changed = true unless (tmp_product.images_equal_to?(product) && tmp_product.values_equal_to?(product)) == true
+            tmp_product.images_equal_to?(product)
 
-            unless 
-              tmp_product.update_properties_and_values product
-              changed = true
-            end
+            tmp_product.compare_and_update_values product
 
             prod_progress.increment
-            counter += 1 if changed == true
+            counter += 1 if @changed == true
 
           rescue ActiveRecord::RecordInvalid => error
             logger.error "#{error}: #{new_product['title']}"
@@ -132,7 +129,7 @@ module ProductModule
           "permalink"   => permalink }
       end
 
-      def update_groups_and_properties document
+      def update_groups_properties_and_values document
         puts "#{prefix}Обновляем группы и свойства товаров..."
 
         document.xpath('//Группы/descendant::Группа').each do |g|
@@ -181,6 +178,7 @@ module ProductModule
             new_value = {property_id: property.id, title: vt, value: ((vt.split(' ')[0].match(/^\d+(.\d+)?$/)) ? vt.split(' ')[0].to_f : nil)}
             val = property.values.find_or_initialize_by(value_id: vid)
             val.update(new_value)
+            val.save
 
             val_progress.increment
           end
@@ -259,22 +257,9 @@ module ProductModule
       (new_images - old_images).each_with_index do |img, i|
         new_image img, id, i
       end
+      @changed = true
       #generate_images
       false
-    end
-  end
-
-  def values_equal_to? product
-    if product.css('ЗначенияСвойства').size == 
-      pid = id
-      ProductPropertyValue.where{product_id == pid}.destroy_all
-      product.css('ЗначенияСвойства').each do |p|
-        ProductPropertyValue.create!(
-          product_id: pid,
-          value_id: Value.find_by(value_id: p.at_css('Значение').try(:content)).try(:id),
-          property_id: Property.find_by(property_id: p.at_css('Ид').try(:content)).id
-        )
-      end
     end
   end
 
@@ -334,5 +319,25 @@ module ProductModule
     else
       puts "Image #{url} not found"
     end
+  end
+
+  def compare_and_update_values product
+    old_properties = product_property_values.pluck(:property_id)
+    new_properties = properties.where { property_id >> product.css('ЗначенияСвойства').map { |e| e.at_css('Ид').content } }.pluck(:id)
+    product_property_values.where{ property_id >> (old_properties - new_properties) }.destroy_all
+    product.css('ЗначенияСвойства').each do |value|
+      property_id = Property.find_by(property_id: value.at_css('>Ид').content).id
+      value_id = Value.find_by(value_id: value.at_css('>Значение').content).try(:id)
+      ppv = product_property_values.find_or_initialize_by(property_id: property_id)
+      ppv.update(value_id: value_id)
+      ppv.save
+    end
+
+    # if (p_vals = product.css('ЗначенияСвойства')).size != values.size
+
+    #   p_vals.each do |v|
+
+    #     puts id + val
+    #   end
   end
 end
