@@ -140,7 +140,7 @@ $(document).on 'click', '.show_hide_tree, nav.menu_side a', ->
 # Sorting params and filtering ajax processing
 $(document).on 'ajax:beforeSend', '#filters form, .control form', (event, xhr, settings) ->
   arr = $.map $('#filters form, .control form').serializeArray(), (e) ->
-    if (e.value == '' || $.inArray(e.name, ['authenticity_token', 'utf8']) != -1) then null else e
+    if (e.value == '') then null else e
   filters = $.param arr
   settings.url = this.action + '?' + filters
   history.pushState({turbolinks: true, url: settings.url}, document.title, settings.url)

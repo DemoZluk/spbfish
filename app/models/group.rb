@@ -2,6 +2,8 @@ class Group < ActiveRecord::Base
   belongs_to :parent, class_name: 'Group', foreign_key: :parent_id, touch: true
   has_many :children, class_name: 'Group', foreign_key: :parent_id
   has_many :products
+  has_many :images, through: :products
+  has_many :properties, -> { uniq }, through: :products
 
   validates :id, uniqueness: true
 
@@ -15,12 +17,12 @@ class Group < ActiveRecord::Base
     permalink
   end
 
-  def properties
-    products.select('properties.*').joins{properties}.uniq
-  end
+  # def properties
+  #   products.select('properties.*').joins{properties}.uniq
+  # end
 
   def producers
-    all_products.uniq.pluck(:producer)
+    all_products.pluck(:producer).uniq
   end
 
   # If group has any children, join products, groups and their parents

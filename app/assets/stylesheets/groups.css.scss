@@ -37,6 +37,17 @@
   }
 }
 
+.group_images {
+  position: relative;
+  height: 150px;
+  margin: 3px;
+
+  img {
+    position: absolute;
+    left: 2px;
+  }
+}
+
 .slider {
   margin: 7px;
 }

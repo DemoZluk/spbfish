@@ -9,3 +9,17 @@ $(document).on 'click', '.properties_header', (e) ->
   table = $(this).siblings('.properties_table')
   e.preventDefault()
   table.stop().slideToggle('fast')
+
+$(document).ready ->
+  $('.group_images').each ->
+    $obj = $(this)
+    imgs = $(this).find('img')
+    l = imgs.length
+    i = l-1
+    setInterval ->
+      index = Math.abs(i % l)
+      $(imgs[index]).fadeOut('slow')
+      i--
+      new_i = Math.abs(i % l)
+      $(imgs[new_i]).fadeIn('slow')
+    , 5000

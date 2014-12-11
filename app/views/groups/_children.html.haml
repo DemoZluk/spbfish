@@ -4,5 +4,10 @@
       - @group.children.each do |child_group|
         .child_group_link
           = link_to group_path(pid: child_group.parent.permalink, id: child_group) do
-            = image_tag 'no_photo.png', {alt: child_group.title}
+            - if child_group.images.any?
+              .group_images
+                - child_group.images.order("RAND()").limit(3).pluck(:thumbnail_url).each_with_index do |img, i|
+                  = image_tag img, {alt: child_group.title, data: { index: i }}
+            - else
+              = image_tag ('no_photo.png'), {alt: child_group.title, data: { img_list: false }}
             %span.link= child_group.title

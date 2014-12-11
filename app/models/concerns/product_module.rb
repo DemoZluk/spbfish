@@ -269,7 +269,9 @@ module ProductModule
       ext = '.jpg'
       prefix = 'public'
       path = "/catalog/#{group.permalink}/#{permalink}/"
-      FileUtils.makedirs prefix + path unless File.exists? prefix + path
+      unless File.exists?(prefix + path)
+        FileUtils.makedirs prefix + path
+      end
       FileUtils.rm_rf(Dir.glob(prefix + path + '*' + index + '.' + ext))
       image = MiniMagick::Image.open(prefix + '/images/' + url, ext)
       watermark = MiniMagick::Image.open(prefix + '/images/watermark.png', ext)
@@ -307,7 +309,7 @@ module ProductModule
   end
 
   def delete_image url
-    if imgs = Image.select('original_url, medium_url, thumbnail_url, id').where(url: url)
+    if (imgs = Image.select('original_url, medium_url, thumbnail_url, id').where(url: url)).any?
       #puts img.attributes.values.to_s
       imgs.first.attributes.values.first(3).select(&:present?).each do |i|
         File.delete "public/#{i}" if File.exists? "public/#{i}"

@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 ruby '2.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.0'
-gem 'activerecord', '< 4.1'
+gem 'rails', '~> 4'
+gem 'activerecord'
 
 # Need pg for heroku
 # group :production, :staging do
@@ -71,7 +71,7 @@ gem 'haml-rails'
 
 gem 'russian'
 
-gem 'roadie', '~>2.4'
+gem 'roadie', '~> 2.4'
 
 gem "letter_opener", group: :development
 
@@ -81,6 +81,9 @@ gem 'paperclip', '~> 4.1'
 # Pageinate results
 gem 'kaminari'
 
+# XML parser
+gem 'nokogiri', '~> 1.6.4'
+
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0'
 
@@ -88,7 +91,7 @@ gem 'bcrypt-ruby', '~> 3.0'
 gem 'devise'
 
 # Authorization system
-gem 'cancancan', '~>1.9'
+gem 'cancancan', '~> 1.9'
 
 # Create thumbnails
 gem 'mini_magick'
