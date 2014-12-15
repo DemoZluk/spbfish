@@ -15,7 +15,7 @@ Fishmarkt::Application.routes.draw do
     # get :who_bought, on: :member
     get :vote, on: :member
   end
-  get '/catalog(/:gid)/:id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
+  get '/catalog(/*gid)/:id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
   get '/search' => 'products#search'
 
   post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product

@@ -29,6 +29,6 @@
   $('##{@line_item.product.permalink} .change-quantity input').animate({'background-color':'#BBB'}, 100).animate({'background-color':'#FFF'}, 100);
 
   // Пересчитать кол-во товара в корзине и вывод в строку над кнопкой покупки
-  $('##{@line_item.product.permalink} .cart_quantity').text("В корзине #{ @line_item.quantity } #{@line_item.product.storages.first.unit}.")
+  $('##{@line_item.product.permalink} .cart_quantity').text("В корзине #{ @line_item.quantity } #{@line_item.product.storages.first.try(:unit)}.")
 - else
   $('##{@line_item.product.permalink}').hide('blind')
