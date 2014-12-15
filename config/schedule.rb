@@ -29,3 +29,7 @@ env :GEM_HOME, ENV['GEM_HOME']
 every :day do
   rake 'destroy_abandoned_carts'
 end
+
+every :hour do
+  runner 'Products.update_products_table'
+end

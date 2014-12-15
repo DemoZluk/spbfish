@@ -21,13 +21,14 @@ class Group < ActiveRecord::Base
   #   products.select('properties.*').joins{properties}.uniq
   # end
 
+  # If group has any children, join products, groups and their parents
+  def all_products(order = 'products.title')
+    ids = [id] << children.pluck(:id)
+    Product.where{group_id >> ids}.order(order)
+  end
+
   def producers
     all_products.pluck(:producer).uniq
   end
 
-  # If group has any children, join products, groups and their parents
-  def all_products(order = 'title')
-    ids = [id] << children.pluck(:id)
-    Product.where{group_id >> ids}.order(order)
-  end
 end

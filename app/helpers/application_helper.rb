@@ -10,12 +10,14 @@ module ApplicationHelper
 
   def values_of prop
     if @group
-      prods = @group.all_products
-      Value.joins{products}.merge(prods).where{property_id == prop.id}.group{title}
-      # prop_id = property.id
+      prods = @group.all_products.with_price.joins{properties}.where{properties.id == prop.id}.pluck(:id).uniq
+      prop.values.joins{products}.where{products.id >> prods}.group{id}.uniq.order{count(products.id).desc}
+      # prop_id = prop.id
       # product_ids = @group.products.pluck(:id).uniq
       # value_ids = ProductPropertyValue.where{(property_id == prop_id) & (product_id >> product_ids)}.uniq.pluck(:value_id)
       # Value.where{id >> value_ids}.order_by_products_count#.joins{products}.uniq.group{id}#.order{count(products.id).desc}
+    else
+      []
     end
   end
 
