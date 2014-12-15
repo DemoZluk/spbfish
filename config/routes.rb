@@ -1,3 +1,4 @@
+#utf-8
 Fishmarkt::Application.routes.draw do
 
   root 'store#index', as: 'store'
@@ -5,7 +6,7 @@ Fishmarkt::Application.routes.draw do
   resources :menu_items, except: :index
 
   get 'catalog', to: 'store#index'
-  get '/catalog/:id' => 'groups#show', as: :group, constraints: {id: /([\-\w]*\/)?[\-\w]*/}
+  get '/catalog/*id' => 'groups#show', as: :group, constraints: {id: /([\-\w]*\/)?[\-\w]*/}
   resources :catalog,  controller: 'groups', as: 'group' do
     # get ':id/page=:page', action: :show, on: :collection
   end
