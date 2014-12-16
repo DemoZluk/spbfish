@@ -1,0 +1,9 @@
+%tr
+  %td.center= index
+  %td= line_item.product.title
+  %td.center= line_item.quantity
+  %td.right= line_item.price
+  - if @discount > 0
+    %td.center= @discount
+    %td.right= discount line_item.price, @discount
+  %td.right= discount line_item.total_price, @discount

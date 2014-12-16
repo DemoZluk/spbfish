@@ -1,0 +1,58 @@
+.print_preview
+  %h4.title Заказ №#{@order.id} от #{@order.created_at.strftime('%d-%m-%Y')}
+  
+  %table.order_data
+    %tr
+      %td Поставщик
+      %td ИП Беляев Борис Юрьевич
+    %tr
+      %td Покупатель
+      %td= @order.name
+    %tr
+      %td email
+      %td= @order.email
+    %tr
+      %td Телефон
+      %td= @order.phone_number
+    %tr
+      %td Адрес
+      %td= @order.address
+
+  %table.line_items
+    %thead
+      %th №
+      %th Наименование
+      %th Кол-во
+      %th Цена
+      - if @discount > 0
+        %th Скидка, %
+        %th Цена со скидкой
+      %th Сумма
+    %tbody
+      - @order.line_items.each_with_index do |li, i|
+        = render 'orders/line_item', index: i + 1, line_item: li
+      - if @shipping > 0
+        %td.center= @order.line_items.size + 1
+        %td{contentEditable: true} Доставка
+        %td.center{contentEditable: true} 1
+        %td.right= number_with_precision @shipping, precision: 1
+        - if @discount > 0
+          %td.center -
+          %td.center -
+        %td.right= number_with_precision @shipping, precision: 1
+    %tfoot
+      %td.right{colspan: 4} Итого:
+      %td.right= @order.line_items.to_a.sum { |li| li.price }.to_f + @shipping
+      - if @discount > 0
+        %td.right Итого со скидкой:
+        %td.right= @order.line_items.to_a.sum { |li| discount(li.price, @discount) }.to_f + @shipping
+  %p.total Всего наименований #{ @order.line_items.size } на сумму #{ number_to_currency( @order.line_items.to_a.sum{ |li| discount li.price, @discount }.to_f + @shipping ) }
+  
+  %table
+    %tbody
+      %tr
+        %td.bold Отпустил
+        %td.underlined.right{contentEditable: true}
+        %td.gap
+        %td.bold Получил
+        %td.underlined

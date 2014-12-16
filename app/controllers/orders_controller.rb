@@ -7,6 +7,8 @@ class OrdersController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :new, :create, :check, :payment, :yandex_payment, :payment_success, :payment_failure]
   skip_before_action :verify_authenticity_token, only: [:check, :payment, :yandex_payment]
 
+  layout 'simple', only: :print_preview
+
   #layout false, only: [:check, :payment]
   # GET /orders
   # GET /orders.json
@@ -153,6 +155,17 @@ class OrdersController < ApplicationController
         format.json { render json: {message: 'Произошла ошибка. Попробоуйте позднее.'} }
       end
     end
+  end
+
+  def print
+    authorize! :print, @order
+  end
+
+  def print_preview
+    authorize! :print, @order
+    @page_title = "Печать заказа №#{@order.id}"
+    @discount = params[:discount].to_i
+    @shipping = params[:shipping].to_i
   end
 
   def yandex_payment

@@ -1,4 +1,4 @@
-!!! 5 utf-8
+!!!
 %html
   %head
     %meta{charset: 'utf-8'}
@@ -35,7 +35,7 @@
           %button.close{data: {dismiss: 'modal'}} &times;
 
     #error_wrapper
-      - test_message = "Внимание! Сайт находится в тестовом режиме. Заказы начнут приниматься с 15.12.14. Всем зарегистрировавшимся до этого числа - скидка 5%."
+      - test_message = "Внимание! Сайт принимает заказы и находится в режиме наполнения информации."
       #error{style: (error = flash[:error] || alert || test_message) ? nil : 'display: none'}
         = error
       #etw

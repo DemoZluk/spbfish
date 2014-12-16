@@ -44,6 +44,8 @@ Fishmarkt::Application.routes.draw do
       get 'payment'
       get 'repeat'
       get 'close'
+      get 'print'
+      match 'print_preview', via: [:get, :post]
     end
   end
   post 'add_by_item/:id' => 'orders#add_by_item', as: 'add_by_item'

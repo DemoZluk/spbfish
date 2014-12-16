@@ -96,3 +96,10 @@ fieldset.order {
   max-height: 150px;
   overflow: auto;
 }
+
+.orders .form-horizontal {
+  label {
+    text-align: right;
+    font-size: 15px;
+  }
+}

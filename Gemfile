@@ -76,7 +76,7 @@ gem 'roadie', '~> 2.4'
 gem "letter_opener", group: :development
 
 # Paperclip - attachment manager
-gem 'paperclip', '~> 4.1'
+gem 'paperclip', '~> 4.2'
 
 # Pageinate results
 gem 'kaminari'
@@ -98,6 +98,9 @@ gem 'mini_magick'
 
 # Alternative server to WEBrick
 gem 'puma'
+
+# To make db dumpfile
+gem 'seed_dump'
 
 # Use unicorn as the app server
 # gem 'unicorn'

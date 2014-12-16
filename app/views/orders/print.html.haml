@@ -1,0 +1,10 @@
+.container
+  %h2 Печать заказ №#{@order.id}
+  = form_tag print_preview_order_path(@order), class: 'form-horizontal' do
+    .form-group
+      = label_tag 'discount', 'Размер скидки, %', class: 'col-sm-2'
+      .col-sm-2= text_field_tag 'discount', '', class: 'form-control', placeholder: 0
+    .form-group
+      = label_tag 'shipping', 'Стоимость доставки', class: 'col-sm-2'
+      .col-sm-2= text_field_tag 'shipping', '', class: 'form-control', placeholder: 0
+    .form-group= submit_tag 'Печать', class: 'btn btn-primary col-sm-4 bold'

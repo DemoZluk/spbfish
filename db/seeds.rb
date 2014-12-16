@@ -12,7 +12,11 @@ def main
   # setup_prices
   # add_values_to_values
   init_roles
+
+  State.create([{state: 'Активен', color_code: 'orange', active: true}, {state: 'Подтверждён', color_code: 'blue', active: true}, {state: 'Оплачен', color_code: 'green', active: true}, {state: 'Отменён', color_code: 'red', active: false}, {state: 'Закрыт', color_code: 'black', active: false}])
+
   create_first_admin_user
+
 end
 
 def open_files

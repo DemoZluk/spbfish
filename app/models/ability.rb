@@ -24,7 +24,7 @@ class Ability
         p.price > 0
       end
       can [:read, :update, :destroy, :clear], Cart, user_id: user.id
-      can [:create, :show, :update, :cancel], Order, email: user.email
+      can [:create, :show, :update, :cancel, :print], Order, email: user.email
       can [:read, :create, :update, :decrement, :increment, :destroy], LineItem
     end
 

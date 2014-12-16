@@ -9,23 +9,23 @@ class OrderNotifier < ActionMailer::Base
   def received order
     @order = order
 
-    mail to: order.email.to_s, subject: "[FishMarkt] Ваш заказ №#{order.id} принят"
+    mail to: order.email.to_s, subject: "[FishMarkt] Ваш заказ #{order.id} принят"
   end
   
   def order order
     @order = order
-    mail to: 'mail@fishmarkt.ru', subject: "[Заказ №#{order.id}] Сделан пользователем #{order.name}"
+    mail to: 'mail@fishmarkt.ru', subject: "[Заказ #{order.id}] Сделан пользователем #{order.name}"
   end
 
   def paid order, params
     @order = order
     @params = params
-    mail to: 'mail@fishmarkt.ru', subject: "[Заказ №#{order.id}] Оплачен"
+    mail to: 'mail@fishmarkt.ru', subject: "[Заказ #{order.id}] Оплачен"
   end
   
   def canceled order
     @order = order
-    mail to: "mail@fishmarkt.ru", subject: "[Заказ №#{order.id}] Отменён пользователем #{order.name}"
+    mail to: "mail@fishmarkt.ru", subject: "[Заказ #{order.id}] Отменён пользователем #{order.name}"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -40,12 +40,12 @@ class OrderNotifier < ActionMailer::Base
 
   def confirmed order
     @order = order
-    mail to: @order.email, subject: "[FishMarkt] Заказ № #{@order.id} подтверждён"
+    mail to: @order.email, subject: "[FishMarkt] Заказ #{@order.id} подтверждён"
   end
 
   def update old, order
     @old = old
     @order = order
-    mail to: 'mail@fishmarkt.ru', subject: "[Заказ  №#{@order.id}] обновлён", user_name: @order.name, order: @order.id
+    mail to: 'mail@fishmarkt.ru', subject: "[Заказ #{@order.id}] обновлён", user_name: @order.name, order: @order.id
   end
 end
