@@ -25,6 +25,6 @@ module Fishmarkt
     config.encoding = "utf-8"
     
     #config.i18n.enforce_available_locales = true
-    config.assets.precompile += ['jquery.js']
+    config.assets.precompile += ['jquery.js', 'simple.css']
   end
 end
