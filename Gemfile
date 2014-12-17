@@ -102,6 +102,8 @@ gem 'puma'
 # To make db dumpfile
 gem 'seed_dump'
 
+gem 'rubyzip'
+
 # Use unicorn as the app server
 # gem 'unicorn'
 

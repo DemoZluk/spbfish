@@ -1,4 +1,5 @@
 module ProductModule
+  require 'zip'
   extend ActiveSupport::Concern
 
   module ClassMethods
@@ -16,6 +17,39 @@ module ProductModule
       update_products(document.at_css('Каталог'))
 
       puts "#{prefix}Выгрузка завершена."
+    end
+
+    def get_webdata
+      shared_path = '/home/fish/www/fishmarkt/shared/'
+      webdata_file = 'webdata.zip'
+      if File.exists? shared_path + webdata_file
+        puts "#{prefix}Начинаем подготовку к выгрузке..."
+        puts 'Unzipping webdata.zip'
+        Zip::File.open shared_path + webdata_file do |zip|
+          zip.each do |entry|
+            entry.extract shared_path + entry.name
+          end
+        end
+        if File.exists?(shared_path + 'webdata/import_files') && File.exists?(shared_path + 'webdata/import.xml') && File.exists?(shared_path + 'webdata/offers.xml')
+          puts 'Removing old import_files...'
+          FileUtils.rm_rf(shared_path + 'public/images/import_files') if File.exists?(shared_path + 'public/images/import_files')
+          puts 'Moving import_files...'
+          FileUtils.mv(shared_path + 'webdata/import_files', shared_path + 'public/images/import_files')
+          puts 'Moving import.xml...'
+          FileUtils.mv(shared_path + 'webdata/import.xml', shared_path + 'xml', force: true)
+          puts 'Moving offers.xml...'
+          FileUtils.mv(shared_path + 'webdata/offers.xml', shared_path + 'xml', force: true)
+          puts 'Cleaning up...'
+          FileUtils.rm_rf(shared_path + 'webdata')
+          FileUtils.rm_rf(shared_path + webdata_file)
+          puts 'End.'
+        else
+          puts 'Contents of archive is invalid'
+        end
+        update_products_table
+      else
+        puts 'webdata archive not found, skipping...'
+      end
     end
 
     def generate_images

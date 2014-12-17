@@ -1,5 +1,5 @@
 .container
-  %h2 Печать заказ №#{@order.id}
+  %h2 Печать заказа №#{@order.id}
   = form_tag print_preview_order_path(@order), class: 'form-horizontal' do
     .form-group
       = label_tag 'discount', 'Размер скидки, %', class: 'col-sm-2'

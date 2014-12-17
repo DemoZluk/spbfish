@@ -42,11 +42,11 @@
         %td.right= number_with_precision @shipping, precision: 1
     %tfoot
       %td.right{colspan: 4} Итого:
-      %td.right= @order.line_items.to_a.sum { |li| li.price }.to_i.to_f + @shipping
+      %td.right= @order.line_items.to_a.sum{ |li| li.price }.to_i.to_f + @shipping
       - if @discount > 0
         %td.right Итого со скидкой:
-        %td.right= @order.line_items.to_a.sum { |li| discount(li.price, @discount) }.to_i.to_f + @shipping
-  %p.total Всего наименований #{ @order.line_items.size } на сумму #{ number_to_currency( @order.line_items.to_a.sum{ |li| discount li.price, @discount }.to_i.to_f + @shipping ) }
+        %td.right= @order.line_items.to_a.sum { |li| discount(li.price, @discount).to_i }.to_f + @shipping
+  %p.total Всего наименований #{ @order.line_items.size } на сумму #{ number_to_currency( @order.line_items.to_a.sum{ |li| discount(li.price, @discount).to_i }.to_f + @shipping ) }
   
   %table
     %tbody

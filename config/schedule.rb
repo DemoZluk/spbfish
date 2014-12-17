@@ -30,6 +30,6 @@ every :day do
   rake 'destroy_abandoned_carts'
 end
 
-every :hour do
-  runner 'Products.update_products_table'
+every :day, at: '2:00am' do
+  runner 'Product.get_webdata'
 end
