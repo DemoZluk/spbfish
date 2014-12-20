@@ -1,4 +1,3 @@
-#utf-8
 Fishmarkt::Application.routes.draw do
 
   root 'store#index', as: 'store'
@@ -15,6 +14,7 @@ Fishmarkt::Application.routes.draw do
     # get :who_bought, on: :member
     get :vote, on: :member
   end
+  match 'force_update' => 'products#force_update', via: [:post, :get]
   get '/catalog(/*gid)/:id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
   get '/search' => 'products#search'
 

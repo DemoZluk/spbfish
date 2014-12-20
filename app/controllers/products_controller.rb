@@ -3,6 +3,8 @@ class ProductsController < ApplicationController
   include CurrentSettings
   include CurrentProducts
 
+  load_and_authorize_resource except: [:vote, :search]
+
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
   before_action :change_user_prefs, only: [:index, :search]
 
@@ -11,14 +13,12 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    authorize! :index, Product
     current_list_of Product.accessible_by(current_ability)
   end
 
   # GET /products/1
   # GET /products/1.json
   def show
-    authorize! :show, @product
     respond_to do |format|
       format.html
       format.js
@@ -97,6 +97,20 @@ class ProductsController < ApplicationController
     if stale?(@latest_order)
       respond_to do |format|
         format.atom
+      end
+    end
+  end
+
+  def force_update
+    respond_to do |format|
+      format.html
+      format.json do
+        output = capture(:stdout) do
+          Rails.logger.level = 1
+          Product.get_webdata
+        end
+
+        render json: {output: output.split("\n")}
       end
     end
   end

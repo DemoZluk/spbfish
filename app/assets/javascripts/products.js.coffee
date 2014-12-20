@@ -8,3 +8,9 @@ $('.thumb a').on 'click', ->
   if url != src
     $('.product-image a').attr('href', $(this).attr('href'))
     $('.product-image img').attr('src', url)
+
+$(document).on 'ajax:beforeSend', '.output', ->
+  $('#log code').append('<p>Начинаем обновление. Это может занять несколько минут, пожалуйста, подождите...</p>')
+
+$(document).on 'ajax:complete', '.output', (data, xhr, status) ->
+  $('#log code').append('<p>' + xhr.responseJSON.output.join("\n") + '</p>')

@@ -24,31 +24,41 @@ module ProductModule
       webdata_file = 'webdata.zip'
       if File.exists? shared_path + webdata_file
         puts "#{prefix}Начинаем подготовку к выгрузке..."
-        puts 'Unzipping webdata.zip'
+        puts 'Распаковка webdata.zip'
+        if File.exists?(shared_path + 'webdata')
+          puts 'Папка webdata уже есть, удаляем вместе с содержимым...'
+          FileUtils.rm_rf(shared_path + 'webdata')
+        else
+          puts 'Папка webdata не существует, создаём...'
+          Dir.mkdir shared_path + 'webdata'
+        end
         Zip::File.open shared_path + webdata_file do |zip|
           zip.each do |entry|
             entry.extract shared_path + entry.name
           end
         end
         if File.exists?(shared_path + 'webdata/import_files') && File.exists?(shared_path + 'webdata/import.xml') && File.exists?(shared_path + 'webdata/offers.xml')
-          puts 'Removing old import_files...'
+          puts 'Удаляем предыдущие import_files...'
           FileUtils.rm_rf(shared_path + 'public/images/import_files') if File.exists?(shared_path + 'public/images/import_files')
-          puts 'Moving import_files...'
+          puts 'Перемещаем import_files...'
           FileUtils.mv(shared_path + 'webdata/import_files', shared_path + 'public/images/import_files')
-          puts 'Moving import.xml...'
+          puts 'Перемещаем import.xml...'
           FileUtils.mv(shared_path + 'webdata/import.xml', shared_path + 'xml', force: true)
-          puts 'Moving offers.xml...'
+          puts 'Перемещаем offers.xml...'
           FileUtils.mv(shared_path + 'webdata/offers.xml', shared_path + 'xml', force: true)
-          puts 'Cleaning up...'
+          puts 'Удаляем остатки...'
           FileUtils.rm_rf(shared_path + 'webdata')
           FileUtils.rm_rf(shared_path + webdata_file)
-          puts 'End.'
+          puts 'Конец.'
+
+          update_products_table
         else
-          puts 'Contents of archive is invalid'
+          puts 'Содержимое архива неверно, пропускаем...'
+
+          FileUtils.rm_rf(shared_path + 'webdata') if File.exists?(shared_path + 'webdata')
         end
-        update_products_table
       else
-        puts 'webdata archive not found, skipping...'
+        puts 'Файл webdata.zip не найден, пропускаем...'
       end
     end
 

@@ -1,0 +1,6 @@
+.output
+  = button_to 'Запуск', force_update_path(format: :json), remote: true, class: 'btn btn-primary', id: 'force_update'
+  #log
+    %pre
+      %h5 Журнал обновления
+      %code

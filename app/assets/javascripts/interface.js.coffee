@@ -17,7 +17,7 @@ clearForm = (form) ->
     else if (tag == 'select')
       this.selectedIndex = -1
 
-$(document).on 'page:change page:load ready', ->
+$(document).ready ->
   $('.slider').each ->
     obj = $(this)
     min = parseFloat $(this).data('min')
@@ -104,7 +104,7 @@ $(document).on 'click', '#reset_button', (e) ->
 #--- Ajax hooks' processing ---#
 $(document).on 'ajax:beforeSend', '#side', ->
   #$('input:not(.primary_button)').attr('disabled', true)
-  $('#loading').fadeIn(50)
+  $('#loading').fadeIn(10)
 
 $(document).on 'ajax:error', (xhr, error) ->
   #console.log error
@@ -113,7 +113,7 @@ $(document).on 'ajax:error', (xhr, error) ->
 
 $(document).on 'ajaxSuccess', (data, status, xhr) ->
   $('#error').hide('blind')
-  $('#loading').fadeOut(50)
+  $('#loading').fadeOut(10)
   #$('input').removeAttr('disabled')
 #------------------------------#
 
