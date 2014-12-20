@@ -1,6 +1,16 @@
+%h1.underlined
+  Ручное обновление
 .output
-  = button_to 'Запуск', force_update_path(format: :json), remote: true, class: 'btn btn-primary', id: 'force_update'
+  %p.bold 
+    Порядок действий:
+  %ol
+    %li Убедитесь, что файл webdata.zip лежит в папке '/home/fish/www/fishmarkt/shared/'.
+    %li Нажмите кнопку 'Пуск'.
+    %li Дождитесь завершения операции обновления.
+
+  = button_to 'Пуск', force_update_path(format: :json), remote: true, class: 'btn btn-primary', id: 'force_update', style: 'margin: 10px;'
   #log
-    %pre
-      %h5 Журнал обновления
-      %code
+    %fieldset
+      %legend Журнал обновления
+      %pre
+        %code

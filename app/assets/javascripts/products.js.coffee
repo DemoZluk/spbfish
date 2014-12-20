@@ -10,7 +10,7 @@ $('.thumb a').on 'click', ->
     $('.product-image img').attr('src', url)
 
 $(document).on 'ajax:beforeSend', '.output', ->
-  $('#log code').append('<p>Начинаем обновление. Это может занять несколько минут, пожалуйста, подождите...</p>')
+  $('#log code').append('<p>Начинаем обновление. Это может занять несколько минут. Пожалуйста, подождите...</p>')
 
 $(document).on 'ajax:complete', '.output', (data, xhr, status) ->
   $('#log code').append('<p>' + xhr.responseJSON.output.join("\n") + '</p>')

@@ -49,17 +49,20 @@ module ProductModule
           puts 'Удаляем остатки...'
           FileUtils.rm_rf(shared_path + 'webdata')
           FileUtils.rm_rf(shared_path + webdata_file)
-          puts 'Конец.'
+          puts 'Конец иницализации.'
 
           update_products_table
         else
           puts 'Содержимое архива неверно, пропускаем...'
+          puts 'Обновление не удалось.'
 
           FileUtils.rm_rf(shared_path + 'webdata') if File.exists?(shared_path + 'webdata')
         end
       else
-        puts 'Файл webdata.zip не найден, пропускаем...'
+        puts 'Файл webdata.zip не найден. Убедитесь, что он лежит в нужной папке.'
+        puts 'Обновление не удалось.'
       end
+      puts '--------------------------'
     end
 
     def generate_images
