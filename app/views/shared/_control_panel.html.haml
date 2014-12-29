@@ -8,3 +8,4 @@
   %li= menu_item(can?(:manage, MenuItem), 'Меню', admin_menu_items_path)
   %li= menu_item(can?(:manage, Mailer), 'Рассылки', admin_mailers_path)
   %li= menu_item(can?(:force_update, Product), 'Обновление', force_update_path)
+  %li= menu_item(true, 'Скачать прайс', products_path(format: 'xlsx'))

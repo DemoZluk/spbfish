@@ -3,25 +3,33 @@ class ProductsController < ApplicationController
   include CurrentSettings
   include CurrentProducts
 
-  load_and_authorize_resource except: [:vote, :search]
+  load_and_authorize_resource except: [:show, :vote, :search]
 
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
   before_action :change_user_prefs, only: [:index, :search]
 
-  skip_before_action :authenticate_user!, only: [:show, :search]
+  skip_before_action :authenticate_user!, only: [:index, :show, :search]
 
   # GET /products
   # GET /products.json
   def index
-    current_list_of Product.accessible_by(current_ability)
+    @products = current_list_of Product.accessible_by(current_ability)
+    respond_to do |format|
+      format.html
+      format.xlsx
+    end
   end
 
   # GET /products/1
   # GET /products/1.json
   def show
-    respond_to do |format|
-      format.html
-      format.js
+    if can? :read, @product
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+      redirect_to store_url, notice: 'Нет доступа к данной странице'
     end
   end
 
@@ -115,10 +123,18 @@ class ProductsController < ApplicationController
     end
   end
 
+  def price
+    @products = Product.all
+    respond_to do |format|
+      format.html
+      format.xslx
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find_by permalink: params[:id]
+      @product = Product.find_by(permalink: params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

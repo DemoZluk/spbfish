@@ -10,12 +10,13 @@ Fishmarkt::Application.routes.draw do
     # get ':id/page=:page', action: :show, on: :collection
   end
 
-  resources :products, except: [:new, :create, :destroy, :index] do
+  resources :products, except: [:new, :create, :destroy] do
     # get :who_bought, on: :member
     get :vote, on: :member
   end
+
   match 'force_update' => 'products#force_update', via: [:post, :get]
-  get '/catalog(/*gid)/:id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
+  get '/catalog(/*gid)/*id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
   get '/search' => 'products#search'
 
   post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product

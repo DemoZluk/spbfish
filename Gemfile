@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4'
+gem 'rails', '~> 4.1.8'
 gem 'activerecord'
 
 # Need pg for heroku
@@ -129,3 +129,8 @@ end
 gem "recaptcha"
 
 gem 'tinymce-rails'
+
+# Create xlsx files
+gem 'axlsx'
+#gem 'acts_as_xlsx'
+gem 'axlsx_rails'

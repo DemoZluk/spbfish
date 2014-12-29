@@ -156,6 +156,10 @@ ul.child a.current-page {
 .authform {
   max-width: 365px;
   margin: 0 auto;
+
+  .checkbox {
+    display: inline-block;
+  }
 }
 
 .authform form {

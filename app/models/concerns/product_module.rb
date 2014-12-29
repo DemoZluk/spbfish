@@ -24,12 +24,12 @@ module ProductModule
       webdata_file = 'webdata.zip'
       if File.exists? shared_path + webdata_file
         puts "#{prefix}Начинаем подготовку к выгрузке..."
-        puts 'Распаковка webdata.zip'
+        puts "Распаковка 'webdata.zip'..."
         if File.exists?(shared_path + 'webdata')
-          puts 'Папка webdata уже есть, удаляем вместе с содержимым...'
+          puts "Папка 'webdata' уже есть, удаляем вместе с содержимым..."
           FileUtils.rm_rf(shared_path + 'webdata')
         else
-          puts 'Папка webdata не существует, создаём...'
+          puts "Папка 'webdata' не существует, создаём..."
           Dir.mkdir shared_path + 'webdata'
         end
         Zip::File.open shared_path + webdata_file do |zip|
@@ -38,13 +38,13 @@ module ProductModule
           end
         end
         if File.exists?(shared_path + 'webdata/import_files') && File.exists?(shared_path + 'webdata/import.xml') && File.exists?(shared_path + 'webdata/offers.xml')
-          puts 'Удаляем предыдущие import_files...'
+          puts "Удаляем предыдущие 'import_files'..."
           FileUtils.rm_rf(shared_path + 'public/images/import_files') if File.exists?(shared_path + 'public/images/import_files')
-          puts 'Перемещаем import_files...'
+          puts "Перемещаем 'import_files'..."
           FileUtils.mv(shared_path + 'webdata/import_files', shared_path + 'public/images/import_files')
-          puts 'Перемещаем import.xml...'
+          puts "Перемещаем 'import.xml'..."
           FileUtils.mv(shared_path + 'webdata/import.xml', shared_path + 'xml', force: true)
-          puts 'Перемещаем offers.xml...'
+          puts "Перемещаем 'offers.xml'..."
           FileUtils.mv(shared_path + 'webdata/offers.xml', shared_path + 'xml', force: true)
           puts 'Удаляем остатки...'
           FileUtils.rm_rf(shared_path + 'webdata')
@@ -59,7 +59,7 @@ module ProductModule
           FileUtils.rm_rf(shared_path + 'webdata') if File.exists?(shared_path + 'webdata')
         end
       else
-        puts 'Файл webdata.zip не найден. Убедитесь, что он лежит в нужной папке.'
+        puts "Файл 'webdata.zip' не найден. Убедитесь, что он лежит в нужной папке."
         puts 'Обновление не удалось.'
       end
       puts '--------------------------'

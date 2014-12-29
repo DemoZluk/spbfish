@@ -1,0 +1,35 @@
+wb = xlsx_package.workbook
+wb.use_autowidth = false
+
+title = wb.styles.add_style b: true, sz: 15
+parent_style = wb.styles.add_style b: true, border: { style: :medium, color: '000000' }, bg_color: 'F2F5A9', sz: 10, indent: 100
+bold = wb.styles.add_style b: true, sz: 10
+regular = wb.styles.add_style sz: 10, border: { style: :thin, color: '000000' }
+
+wb.add_worksheet(name: 'Прайс') do |sheet|
+  sheet.add_row ["Прайс от #{@products.order(:updated_at).first.updated_at.strftime '%d.%m.%Y'}"], style: title
+  sheet.add_row [], height: 10
+
+  sheet.add_row ['Артикул', 'Производитель', 'Наименование', 'Полное наименование', 'Ваш заказ', 'Цена', 'Стоимость'], style: bold, height: 15, widths: [10, 16, 50, 70, 10, 10, 10] do |row|
+  end
+
+  Group.where{parent_id == ''}.order(:priority).each do |parent|
+    sheet.add_row [parent.title, '', '', '', '', '', ''], style: parent_style, height: 15 do |row|
+      sheet.merge_cells row.cells.to_a
+    end
+    parent.children.order(:priority).each do |g|
+      sheet.add_row [g.title, '', '', '', '', '', ''], style: parent_style, height: 15 do |row|
+        sheet.merge_cells row.cells.to_a
+      end
+      g.products.order('producer, item').accessible_by(current_ability).each do |p|
+        sheet.add_row([p.item, p.producer, p.title, p.long_name, 0, p.price], style: regular, height: 15, type: :string) do |row|
+          row.add_cell "=E#{row.index + 1}*F#{row.index + 1}", style: regular, height: 15
+        end
+      end
+    end
+    # sheet.add_row ['', '', '', '', '', ''], height: 15 do |row|
+    #   sheet.merge_cells row.cells.to_a
+    # end
+  end
+  sheet.auto_filter = "A3:G#{sheet.rows.last.index + 1}"
+end
