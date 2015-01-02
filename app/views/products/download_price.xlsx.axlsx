@@ -7,7 +7,7 @@ bold = wb.styles.add_style b: true, sz: 10
 regular = wb.styles.add_style sz: 10, border: { style: :thin, color: '000000' }
 
 wb.add_worksheet(name: 'Прайс') do |sheet|
-  sheet.add_row ["Прайс от #{@products.order(:updated_at).first.updated_at.strftime '%d.%m.%Y'}"], style: title
+  sheet.add_row ["Прайс от #{@date.strftime('%d.%m.%Y')}"], style: title
   sheet.add_row [], height: 10
 
   sheet.add_row ['Артикул', 'Производитель', 'Наименование', 'Полное наименование', 'Ваш заказ', 'Цена', 'Стоимость'], style: bold, height: 15, widths: [10, 16, 50, 70, 10, 10, 10] do |row|
@@ -32,4 +32,12 @@ wb.add_worksheet(name: 'Прайс') do |sheet|
     # end
   end
   sheet.auto_filter = "A3:G#{sheet.rows.last.index + 1}"
+  sheet.sheet_view.pane do |pane|
+    pane.top_left_cell = "A4"
+    pane.state = :frozen_split
+    pane.y_split = 3
+    pane.active_pane = :bottom_right
+  end
 end
+
+xlsx_package.serialize @filename

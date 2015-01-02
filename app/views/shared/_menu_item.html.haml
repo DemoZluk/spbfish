@@ -1,0 +1,6 @@
+%li
+  - c = "btn-gray#{(options == request.path) ? ' current-page' : nil}"
+  - if options.present? && options != request.path
+    = link_to(name, options, html_options.merge(class: c))
+  - else
+    = content_tag(:span, name, html_options.merge(class: c))

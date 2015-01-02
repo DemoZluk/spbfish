@@ -18,6 +18,7 @@ config/database.yml
 /log/*.log
 /tmp
 /xml
+/price
 *.class
 *.pyc
 *.pyo

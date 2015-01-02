@@ -6,7 +6,7 @@ class Ability
     user ||= User.new # guest user (not logged in)
     roles = user.role?
 
-    if roles.include?('admin')
+    if roles && roles.include?('admin')
       can :manage, :all
     else
       if roles.include?('products_manager')
@@ -20,7 +20,7 @@ class Ability
         can :manage, Order
         can :manage, Cart
       end
-      can [:read], Product, Product.with_price do |p|
+      can [:read, :download_price], Product, Product.with_price do |p|
         p.price > 0
       end
       can [:read, :update, :destroy, :clear], Cart, user_id: user.id

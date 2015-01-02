@@ -18,6 +18,7 @@ Fishmarkt::Application.routes.draw do
   match 'force_update' => 'products#force_update', via: [:post, :get]
   get '/catalog(/*gid)/*id' => 'products#show', as: :show_product, constraints: {gid: /([\-\w]*\/)?[\-\w]*/}
   get '/search' => 'products#search'
+  get '/download_price' => 'products#download_price', format: 'xlsx'
 
   post '/bookmark/:product' => 'bookmarks#bookmark_product', as: :bookmark_product
   resources :bookmarks, except: [:edit, :update, :show]

@@ -3,12 +3,13 @@
   - if user_signed_in? && current_user.role?.any?
     %li= render 'shared/control_panel'
   %li= link_to('Каталог', store_path, class: 'btn-gray')
+  = menu_item(user_signed_in?, 'Скачать прайс', download_price_path)
   - MenuItem.all_published.primary.each do |item|
     %li
-      = menu_item(item.published?, item.title, item.permalink)
+      %ul= menu_item(item.published?, item.title, item.permalink)
       - if item.children.any?
         %ul.child
           - item.children.each do |child|
-            %li= menu_item(true, child.title, child.permalink)
+            = menu_item(true, child.title, child.permalink)
   %li= link_to('Гарантия', '/warranty', class: 'btn-gray')
   %li= link_to('Отзывы и пожелания', '/feedback', class: 'btn-gray')

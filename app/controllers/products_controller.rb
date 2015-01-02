@@ -8,7 +8,8 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
   before_action :change_user_prefs, only: [:index, :search]
 
-  skip_before_action :authenticate_user!, only: [:index, :show, :search]
+  skip_before_action :authenticate_user!, only: [:download_price, :index, :show, :search]
+  skip_before_action :set_cart, only: [:download_price]
 
   # GET /products
   # GET /products.json
@@ -16,7 +17,44 @@ class ProductsController < ApplicationController
     @products = current_list_of Product.accessible_by(current_ability)
     respond_to do |format|
       format.html
-      format.xlsx
+      # format.xlsx { 
+      #   date = Product.order('updated_at desc').first.updated_at.strftime('%F_%T')
+      #   @filename = "price/price-#{date}.xlsx"
+
+      #   Dir.mkdir('price') unless File.exists?('price')
+
+      #   if File.exists? @filename
+      #     send_file @filename
+      #   else
+      #     response.headers['Content-Disposition'] = 'attachment; filename="FishMarkt-pricelist.xlsx"'
+      #   end
+        
+      # }
+    end
+  end
+
+  def download_price
+    if user_signed_in?
+      @products = Product.accessible_by(current_ability)
+
+      respond_to do |format|
+        format.xlsx {
+          @date = @products.order('updated_at desc').first.updated_at
+          @filename = "price/price-#{@date.strftime('%F_%T')}.xlsx"
+
+          Dir.mkdir('price') unless File.exists?('price')
+
+          response.headers['Content-Disposition'] = 'attachment; filename="FishMarkt-pricelist.xlsx"'
+
+          if File.exists? @filename
+            send_file @filename
+          else
+            render xlsx: 'download_price'
+          end
+        }
+      end
+    else
+      redirect_to store_path, notice: 'Для скачивания прайса необходимо зарегистрироваться.'
     end
   end
 
