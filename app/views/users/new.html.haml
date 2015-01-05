@@ -1,0 +1,12 @@
+.authform.well.well-lg
+  = form_tag sign_up_path do
+    %h3 Регистрация
+    .form-group
+      = label_tag 'information_email', 'Email'
+      = text_field_tag 'information[email]', '', class: 'form-control', placeholder: 'mail@example.com'
+    .form-group
+      = label_tag 'information_phone_number', 'Телефон'
+      = text_field_tag 'information[phone_number]', '', class: 'form-control', placeholder: '+7-987-654-32-10'
+    .form-group
+      = label_tag 'information_inn', 'ИНН'
+      = text_field_tag 'information[inn]', '', class: 'form-control', placeholder: '998877665544'

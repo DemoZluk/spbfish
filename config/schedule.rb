@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 # 
 set :output, 'log/cron_jobs.log'
-set :whenever_identifier, "fishmarkt"
+set :whenever_identifier, "spbfish"
 
 env :PATH, ENV['PATH']
 env :GEM_HOME, ENV['GEM_HOME']

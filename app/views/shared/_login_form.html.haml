@@ -1,4 +1,4 @@
 = button_to "Войти", login_path, method: 'get', id: 'enter', class: 'btn btn-yellow', data: {toggle: 'modal', target: '#form'}, remote: true
-%div= link_to "Регистрация", sign_up_path, data: {toggle: 'modal', target: '#form'}, remote: true
+%div= link_to "Регистрация", sign_up_path#, data: {toggle: 'modal', target: '#form'}, remote: true
 
 =# render "devise/shared/links"

@@ -10,8 +10,13 @@
 
     .right_panel.pull-right.col-md-3
       %p.price{itemprop: 'offers', itemscope: true, itemtype: 'http://schema.org/Offer'}
-        %span{itemprop: 'price'}= number_to_currency @product.price
-        %br/ 
+        %span{itemprop: 'price'}
+          Цена: 
+          - if user_signed_in?
+            = number_to_currency @product.price
+          - else
+            = link_to 'Узнать', sign_up_path, data: {toggle: 'modal', target: '#form'}, remote: true
+        %br/
         %small= "за 1 #{@product.storages.first.try(:unit) || 'шт'}."
       %p.item
         Артикул:

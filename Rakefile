@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Fishmarkt::Application.load_tasks
+Spbfish::Application.load_tasks

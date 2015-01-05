@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
       #   if File.exists? @filename
       #     send_file @filename
       #   else
-      #     response.headers['Content-Disposition'] = 'attachment; filename="FishMarkt-pricelist.xlsx"'
+      #     response.headers['Content-Disposition'] = 'attachment; filename="Spbfish-pricelist.xlsx"'
       #   end
         
       # }
@@ -44,13 +44,13 @@ class ProductsController < ApplicationController
 
           Dir.mkdir('price') unless File.exists?('price')
 
-          response.headers['Content-Disposition'] = 'attachment; filename="FishMarkt-pricelist.xlsx"'
-
           if File.exists? @filename
             send_file @filename
           else
             render xlsx: 'download_price'
           end
+
+          response.headers['Content-Disposition'] = 'attachment; filename="Spbfish-pricelist.xlsx"'
         }
       end
     else
@@ -158,14 +158,6 @@ class ProductsController < ApplicationController
 
         render json: {output: output.split("\n")}
       end
-    end
-  end
-
-  def price
-    @products = Product.all
-    respond_to do |format|
-      format.html
-      format.xslx
     end
   end
 

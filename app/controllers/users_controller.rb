@@ -1,6 +1,8 @@
 class UsersController < ApplicationController
   load_and_authorize_resource
-  skip_authorize_resource only: [:show]
+  skip_before_action :authenticate_user!, only: [:new]
+  skip_authorize_resource only: [:show, :new]
+  respond_to :html, :js
   
 
   # # GET /users
@@ -22,6 +24,18 @@ class UsersController < ApplicationController
       authorize! :show, @user
     else
       @user = current_user
+    end
+  end
+
+  def new
+  end
+
+  def create
+    if verify_recaptcha
+      generated_password = Devise.friendly_token.first(8)
+      user = User.create!(email: data[:email], password: generated_password)
+    else
+      render :new
     end
   end
 
@@ -90,7 +104,7 @@ class UsersController < ApplicationController
   private
 
     def data
-      params.require(:information).permit(:phone_number, :address, :name)
+      params.require(:information).permit(:phone_number, :address, :name, :email)
     end
     # Use callbacks to share common setup or constraints between actions.
 

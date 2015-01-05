@@ -20,19 +20,19 @@ commit () {
 }
  
 push () {
-  git push fishmarkt master
+  git push spbfish master
 }
 
 deploy () {
   echo "Stopping apache2 to preserve resources"
-  ssh -t fish@fishmarkt.ru "sudo service apache2 stop"
+  ssh -t fish@spbfish.ru "sudo service apache2 stop"
   cap production deploy
 
   echo "Starting apache2 again"
-  ssh -t fish@fishmarkt.ru "sudo service apache2 start"
+  ssh -t fish@spbfish.ru "sudo service apache2 start"
 
   echo "Restarting rails app"
-  ssh fish@fishmarkt.ru "touch /home/fish/www/fishmarkt/current/tmp/restart.txt"
+  ssh fish@spbfish.ru "touch /home/fish/www/spbfish/current/tmp/restart.txt"
 }
 
 git status
@@ -40,5 +40,5 @@ git status
 ask_yn "Add ALL changes?" add
 ask_yn "Commit changes?" commit
 ask_yn "Push changes to repo?" push
-ask_yn "Deploy to fishmarkt?" deploy
+ask_yn "Deploy to spbfish?" deploy
 

@@ -20,7 +20,7 @@ module ProductModule
     end
 
     def get_webdata
-      shared_path = '/home/fish/www/fishmarkt/shared/'
+      shared_path = '/home/fish/www/spbfish/shared/'
       webdata_file = 'webdata.zip'
       if File.exists? shared_path + webdata_file
         puts "#{prefix}Начинаем подготовку к выгрузке..."

@@ -1,4 +1,4 @@
-Fishmarkt::Application.routes.draw do
+Spbfish::Application.routes.draw do
 
   root 'store#index', as: 'store'
 
@@ -34,11 +34,11 @@ Fishmarkt::Application.routes.draw do
   delete 'cart' => 'carts#clear'
   resources :carts, param: :cid, except: :index
 
-  post  'orders/check' => 'orders#check', as: 'check_order'
-  post  'orders/payment' => 'orders#payment', as: 'payment_order'
-  get   'payment_success' => 'orders#payment_success'
-  get   'payment_failure' => 'orders#payment_failure'
-  match 'yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
+  # post  'orders/check' => 'orders#check', as: 'check_order'
+  # post  'orders/payment' => 'orders#payment', as: 'payment_order'
+  # get   'payment_success' => 'orders#payment_success'
+  # get   'payment_failure' => 'orders#payment_failure'
+  # match 'yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
   resources :orders, except: :index do
     member do
       get 'cancel'
@@ -62,7 +62,8 @@ Fishmarkt::Application.routes.draw do
     get 'login' => "users/sessions#new"
     post 'login' => "users/sessions#create"
     get 'logout' => "users/sessions#destroy"
-    get 'sign_up' => "users/registrations#new"
+    get 'sign_up' => "users#new"
+    post 'sign_up' => "users#create"
     get 'profile/edit' => "devise/registrations#edit"
     get 'users' => "users#index"
     get 'user/:id' => "users#show", as: :user

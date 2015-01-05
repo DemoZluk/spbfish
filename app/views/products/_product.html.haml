@@ -14,7 +14,11 @@
 
     .price.right.pull-right.col-sm-3.col-lg-2{itemprop: 'offers', itemscope: true, itemtype: 'http://schema.org/Offer'}
       Цена: 
-      %span{itemprop: 'price'}= number_to_currency(product.price)
+      %span{itemprop: 'price'}
+        - if user_signed_in?
+          = number_to_currency product.price
+        - else
+          = link_to 'Узнать', sign_up_path, data: {toggle: 'modal', target: '#form'}, remote: true
 
   .product.row
     - cache_if (action_name != 'search'), product do

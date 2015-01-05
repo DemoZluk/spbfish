@@ -27,8 +27,8 @@ require 'whenever/capistrano'
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
 
 @user = "fish"
-@server = "fishmarkt.ru"
-@application = 'fishmarkt'
+@server = "spbfish.ru"
+@application = 'spbfish'
 
 role :app, "#{@user}@#{@server}"
 

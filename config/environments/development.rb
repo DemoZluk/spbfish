@@ -1,4 +1,4 @@
-Fishmarkt::Application.configure do
+Spbfish::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -21,12 +21,12 @@ Fishmarkt::Application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.fishmarkt.ru",
+    address: "smtp.spbfish.ru",
     port: 587,
-    domain: "fishmarkt.ru",
+    domain: "spbfish.ru",
     authentication: "plain",
-    user_name: "mail@fishmarkt.ru",
-    password: "discus",
+    user_name: "mail@spbfish.ru",
+    password: "alexis",
     enable_starttls_auto: true,
     openssl_verify_mode: 'none'
   }
