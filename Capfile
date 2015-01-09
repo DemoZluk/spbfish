@@ -27,26 +27,13 @@ require 'whenever/capistrano'
 Dir.glob('lib/capistrano/tasks/*.cap').each { |r| import r }
 
 @user = "fish"
-@server = "spbfish.ru"
+@server = "test.spbfish.ru"
 @application = 'spbfish'
 
 role :app, "#{@user}@#{@server}"
 
 set :rvm_type, :system
 set :rvm_ruby_version, '2.1.1'
-
-
-task :precompile do
-  on roles :app do
-    info release_path
-  end
-end
-
-task :test_path do
-  on roles :app do
-    info release_path
-  end
-end
 
 task :chk_rvm do
   on roles :app, in: :sequence, wait: 5 do
