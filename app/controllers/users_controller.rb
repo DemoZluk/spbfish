@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
+  require 'csv'
+
   load_and_authorize_resource
-  skip_before_action :authenticate_user!, only: [:new]
-  skip_authorize_resource only: [:show, :new]
+  skip_before_action :authenticate_user!, only: [:new, :create]
+  skip_authorize_resource only: [:show, :new, :create]
   respond_to :html, :js
-  
 
   # # GET /users
   # # GET /users.json
@@ -28,15 +29,59 @@ class UsersController < ApplicationController
   end
 
   def new
+    @user.build_information
   end
 
   def create
     if verify_recaptcha
-      generated_password = Devise.friendly_token.first(8)
-      user = User.create!(email: data[:email], password: generated_password)
+      @user = init_user_with data[:email]
+      user_data = data.except(:email, :type)
+      info = @user.create_information(user_data) if user_data.reject{|k,v| v.to_s.empty?}.any?
+      puts @user.attributes
+      if @user.save
+        UsersMailer.notify_user(data, generated_password).deliver
+        UsersMailer.new_user(data, @user).deliver
+        redirect_to store_path, flash: {success: 'Учетная запись создана, но требует подтверждения с нашей стороны. Как только мы получим уведомление наш менеджер свяжется с Вами и подтвердит её.'}
+      else
+        render :new
+      end
     else
+      @user = User.new(email: data[:email])
+      @user.build_information data.except(:email, :type)
+      @user.errors.add :base, t(:recaptcha_failure)
       render :new
     end
+  end
+
+  def confirm
+    user = User.find_by(confirmation_token: params[:t])
+
+    if user.confirm!
+      UsersMailer.confirmed(user).deliver
+      redirect_to store_path, flash: {success: "Пользователь #{user.email} подтверждён"}
+    end
+  end
+
+  def batch_create
+    if params[:csv].present? && file = params[:csv].read
+      @batch = {yes: 0, no: {}}
+      CSV.parse(file).each do |row|
+        email = row[0]
+        user = init_user_with email
+        if user.save
+          @batch[:yes] += 1
+        else
+          @batch[:no][row[0]] = user.errors.full_messages
+        end
+      end
+      puts @batch
+      render :batch_create
+    end
+  end
+
+  def init_user_with email
+    generated_password = Devise.friendly_token.first(8)
+    User.new(email: email, password: generated_password)
   end
 
   # # GET /users/new
@@ -78,9 +123,9 @@ class UsersController < ApplicationController
 
   def add_data
     if info = current_user.information
-      info.update(data)
+      info.update(shipping_name: data[:name], shipping_address: data[:address], shipping_phone: data[:phone_number])
     else
-      current_user.create_information(data)
+      current_user.create_information(shipping_name: data[:name], shipping_address: data[:address], shipping_phone: data[:phone_number])
     end
     redirect_to user_root_path, notice: t('devise.registrations.updated')
   end
@@ -104,7 +149,7 @@ class UsersController < ApplicationController
   private
 
     def data
-      params.require(:information).permit(:phone_number, :address, :name, :email)
+      params.require(:information).permit(:phone_number, :address, :name, :email, :director, :contact, type: [])
     end
     # Use callbacks to share common setup or constraints between actions.
 

@@ -1,2 +1,7 @@
 %ul#menu_articles
-  %li= link_to_unless_current 'Гарантия', '/warranty'
+  %h4 Полезная информация
+  %hr/
+  - {'Корм для рыб оптом' => 'korm-dlya-ryb-optom', 'Рыбка доктор' => 'rybka-doktor', 'Рыбный пилинг' => 'rybnyj-piling', 'Куплю Гарра руфа' => 'kuplyu-garra-rufa'}.each do |title, link|
+    %li= link_to_unless_current title, link
+  %li Аквариумные рыбки купить
+  %li Аквариумные растения

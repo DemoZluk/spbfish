@@ -1,0 +1,16 @@
+.container
+  - if @batch
+    .row
+      %h3 Итог:
+      %p Получилось создать: #{@batch[:yes]}
+      - if @batch[:no].size > 0
+        %p Не получилось создать: #{@batch[:no].size}
+        %h6 Причины:
+        - @batch[:no].each do |k, v|
+          %p #{k}: #{v.join(', ')}
+  .row
+    %h3 Загрузить файл с email'ами
+    = form_tag({action: :batch_create}, multipart: true) do
+      = label_tag 'csv', 'Файл'
+      = file_field_tag 'csv', accept: 'text/csv'
+      = submit_tag 'Загрузить'

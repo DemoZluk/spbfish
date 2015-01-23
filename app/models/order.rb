@@ -5,10 +5,10 @@ class Order < ActiveRecord::Base
   belongs_to :state
   belongs_to :user
 
-  PAYMENT_TYPES = ['Наличный', 'Безналичный']
+  SHIPPING_TYPES = ['Доставка', 'Самовывоз']
   validates :name, :email, :shipping_date, :phone_number, presence: true
-  validates :address, presence: true, unless: 'pay_type == "Самовывоз"'
-  validates :pay_type, presence: true, inclusion: PAYMENT_TYPES
+  validates :address, presence: true, unless: 'shipping_type == "Самовывоз"'
+  validates :shipping_type, presence: true, inclusion: SHIPPING_TYPES
   validates :comment, length: {maximum: 200}
   validate :check_date
 
@@ -61,14 +61,6 @@ class Order < ActiveRecord::Base
 
   def confirmed?
     confirmed_at.present? && state? == 'Подтверждён'
-  end
-
-  def cash?
-    pay_type == 'Наличный'
-  end
-
-  def noncash?
-    pay_type == 'Безналичный'
   end
 
   def active?

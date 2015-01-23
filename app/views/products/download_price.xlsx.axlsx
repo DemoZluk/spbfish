@@ -13,6 +13,8 @@ wb.add_worksheet(name: 'Прайс') do |sheet|
   sheet.add_row ['Артикул', 'Производитель', 'Наименование', 'Полное наименование', 'Ваш заказ', 'Цена', 'Стоимость', 'Картинка'], style: bold, height: 15, widths: [10, 16, 50, 70, 10, 10, 10, 30] do |row|
   end
 
+  imgs = Hash[Image.order(:original_url).group{product_id}.map { |e| [e.product_id.to_i, e.original_url] }]
+
   Group.where{parent_id == ''}.order(:priority).each do |parent|
     if parent.all_products.with_price.any?
       sheet.add_row [parent.title, '', '', '', '', '', '', ''], style: parent_style, height: 15 do |row|

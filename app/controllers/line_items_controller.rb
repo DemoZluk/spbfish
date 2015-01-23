@@ -2,6 +2,7 @@ class LineItemsController < ApplicationController
   include CurrentCart
   before_action :set_cart, only: [:index, :create, :destroy, :decrement, :increment, :update]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement, :increment]
+  before_action :signed_in?
   skip_before_action :authenticate_user!, only: [:create, :decrement, :increment, :destroy]
 
   # GET /line_items
@@ -119,6 +120,13 @@ class LineItemsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    def signed_in?
+      unless user_signed_in?
+        flash.now[:notice] = 'Вам необходимо авторизоваться' 
+        redirect_to controller: 'users/sessions', action: :new, flash: { error: 'Вам необходимо авторизоваться' }
+        # render 'users/new.js'
+      end
+    end
     def set_line_item
       @line_item = LineItem.find(params[:id])
     end

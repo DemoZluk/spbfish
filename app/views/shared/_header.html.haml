@@ -3,9 +3,9 @@
     .banner.col-sm-12.col-md-6{role: 'banner'}
       -# #logo= link_to image_tag('logo.png', {id: 'logo_img', alt: 'logo'}), store_path, {title: 'Каталог'}
       #left_header_part
-        = link_to t('default_title'), store_path, id: 'title'
+        = link_to t('store_name'), store_path, id: 'title'
         %br
-        %p Оптовый магазин товаров для аквариумов, прудов и террариумов
+        %p= t('store_description')
 
     .col-sm-12.col-md-6#enter_form
       - if user_signed_in?
@@ -24,6 +24,8 @@
           = t('phone1')
           %br/
           = t('phone2')
+          %br/
+          = t('phone3')
     .col-sm-12.col-md-8
       %nav#top_menu
         = render 'shared/menu_top'

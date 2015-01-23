@@ -1,0 +1,12 @@
+%html
+  %head
+    %title Регистрация нового пользователя
+    %meta{:content => "text/html; charset=utf-8"}/ 
+    %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/
+
+  %body.email.new_user
+    %p Здравствуйте #{@data[:name].presence || @data[:email]}!
+    %p Вы успешно зарегистрировались на сайте spbfish.ru.
+    %p После того как мы получим вашу анкету и подтвердим вашу учётную запись вы сможете войти на сайт со следующими данными:
+    %p email: #{@data[:email]}
+    %p Пароль: #{@pass}

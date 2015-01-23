@@ -2,13 +2,14 @@
 - prods = @group.try(:all_products) || @search_products || Product.with_price
 %h3 Выбрать
 = form_tag request.path, {remote: true, method: 'get', id: 'filter', name: 'preferences', autocomplete: 'off'} do
-  #price.well.well-sm
-    %h4 Цена
-    = text_field_tag 'minPrice', params['minPrice'], {class: 'min', placeholder: @products_min, data: {min: @products_min, current: @min_price}}
-    \-
-    = text_field_tag 'maxPrice', params['maxPrice'], {class: 'max', placeholder: @products_max, data: {max: @products_max, current: @max_price}}
-    руб.
-    .slider{data: {min: @products_min, max: @products_max}}
+  - if user_signed_in?
+    #price.well.well-sm
+      %h4 Цена
+      = text_field_tag 'minPrice', params['minPrice'], {class: 'min', placeholder: @products_min, data: {min: @products_min, current: @min_price}}
+      \-
+      = text_field_tag 'maxPrice', params['maxPrice'], {class: 'max', placeholder: @products_max, data: {max: @products_max, current: @max_price}}
+      руб.
+      .slider{data: {min: @products_min, max: @products_max}}
   #producer
     - prod_list = prods.group{producer}.order{count(id).desc}.size.to_a
     - if prod_list.any?

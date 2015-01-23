@@ -26,7 +26,7 @@ atom_feed do |feed|
           end
         end
 
-        xhtml.p "Тип оплаты: #{order.pay_type}"
+        xhtml.p "Тип доставки: #{order.shipping_type}"
       end
       entry.author do |author|
         author.name order.name

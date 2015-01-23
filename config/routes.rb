@@ -1,6 +1,6 @@
 Spbfish::Application.routes.draw do
 
-  root 'store#index', as: 'store'
+  root 'articles#show', id: 'home', as: 'store'
 
   resources :menu_items, except: :index
 
@@ -62,12 +62,15 @@ Spbfish::Application.routes.draw do
     get 'login' => "users/sessions#new"
     post 'login' => "users/sessions#create"
     get 'logout' => "users/sessions#destroy"
-    get 'sign_up' => "users#new"
-    post 'sign_up' => "users#create"
+    get '/sign_up' => "users#new"
+    post '/sign_up' => "users#create"
     get 'profile/edit' => "devise/registrations#edit"
     get 'users' => "users#index"
     get 'user/:id' => "users#show", as: :user
+    get 'users/confirm/:t' => "users#confirm", as: 'confirm_user'
   end
+
+  match '/users/batch_create' => "users#batch_create", as: 'batch_create', via: [:post, :get]
 
   get 'user_prefs' => 'store#change_user_prefs'
 
@@ -94,7 +97,6 @@ Spbfish::Application.routes.draw do
   end
   get '/subscriptions' => 'mailers#subscriptions'
   get '/unsubscribe/:t' => 'mailers#unsubscribe'
-
   
   get '/feedback' => 'articles#new_feedback'
   post '/feedback' => 'articles#feedback'

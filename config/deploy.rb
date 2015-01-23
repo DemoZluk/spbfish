@@ -2,8 +2,8 @@
 lock '3.1.0'
 
 user = 'fish'
-domain = 'spbfish.ru'
-application = 'spbfish'
+domain = 'test.spbfish.ru'
+application = 'spbfish.ru'
 
 # set :user, @user
 # set :domain, @server

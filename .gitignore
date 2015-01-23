@@ -15,8 +15,9 @@ config/database.yml
 /public/catalog/
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
+/log
 /tmp
+
 /xml
 /price
 *.class

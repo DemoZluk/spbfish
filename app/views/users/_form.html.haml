@@ -1,19 +1,38 @@
-= form_for current_user do |f|
-  - if current_user.errors.any?
+- @user ||= User.new
+= form_for @user, url: sign_up_path do |f|
+  = devise_error_messages!
+  - if @user.errors.any?
     #error_explanation
-      %h2= "#{pluralize(current_user.errors.count, "error")} prohibited this user from being saved:"
+      %h2 Вы не смогли зарегистрироватся по следующим причинам:
       %ul
-        - current_user.errors.full_messages.each do |msg|
+        - @user.errors.full_messages.each do |msg|
           %li= msg
-
-  .field
-    = f.label :name, 'Имя'
-    = f.text_field :name, size: 40
-  .field
-    = f.label :password, 'Пароль'
-    = f.password_field :password, size: 40
-  .field
-    = f.label :password_confirmation, 'Подтверждение пароля'
-    = f.password_field :password_confirmation, size: 40
-  .actions
-    = f.submit 'Создать'
+  .form-group
+    = label_tag 'information_email', 'Email'
+    = f.email_field :email, {name: 'information[email]', class: 'form-control', placeholder: 'mail@example.com', required: true}
+  .form-group
+    = label_tag 'information_title', 'Наименование'
+    = text_field_tag 'information[name]', @user.info.try(:name), class: 'form-control', placeholder: 'ИП Иванов И. И.'
+  .form-group
+    = label_tag 'information_phone_number', 'Телефон'
+    = text_field_tag 'information[phone_number]', @user.info.try(:phone_number), class: 'form-control', placeholder: '+7-987-654-32-10'
+  .form-group
+    = label_tag 'information_address', 'Фактический адрес'
+    = text_field_tag 'information[address]', @user.info.try(:address), class: 'form-control', placeholder: 'Санкт-Петербург, ул. Ленина д. 1, кв. 1'
+  .form-group
+    = label_tag 'information_director', 'Руководитель'
+    = text_field_tag 'information[director]', @user.info.try(:director), class: 'form-control', placeholder: 'Иванов И. И.'
+  .form-group
+    = label_tag 'information_contact', 'Контактное лицо'
+    = text_field_tag 'information[contact]', @user.info.try(:contact), class: 'form-control', placeholder: 'Петров П. П.'
+  .form-group
+    %h6 Вид деятельности
+    %ul#trade_type
+      - {'store' => 'Магазин', 'network' => 'Сеть магазинов', 'internet' => 'Интернет-магазин', 'wsale' => 'Оптовая торговля', 'salon' => 'Аквариумный салон'}.each do |k, v|
+        %li
+          = check_box_tag k, v, false, name: "information[type][]"
+          = label_tag k, v
+      %li
+        = text_field_tag 'information[type][]', nil, class: 'form-control', placeholder: 'Другое'
+  = recaptcha_tags ajax: true
+  = submit_tag 'Зарегистрироваться', class: 'button right'

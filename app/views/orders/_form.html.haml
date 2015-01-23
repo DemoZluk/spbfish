@@ -23,9 +23,9 @@
         = f.telephone_field :phone_number, class: 'form-control', placeholder: "8-987-654-32-10", required: true
     .row
       .form-group.col-md-6
-        = f.label(:pay_type)
+        = f.label(:shipping_type)
         %span.required *
-        = f.select :pay_type, Order::PAYMENT_TYPES, prompt: 'Выберите способ оплаты', class: 'form-control', required: true
+        = f.select :shipping_type, Order::SHIPPING_TYPES, prompt: 'Выберите способ доставки', class: 'form-control', required: true
       .form-group.col-md-6
         = f.label(:shipping_date)
         %span.required *

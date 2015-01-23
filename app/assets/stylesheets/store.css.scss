@@ -242,6 +242,7 @@ mark {
       list-style: none;
       border: 1px dotted transparent;
       border-radius: 3px;
+      padding-left: 8px;
 
       &.current {
         border-color: #666;
@@ -266,10 +267,10 @@ mark {
     position: absolute;
     top: 50%;
     margin-top: -4px;
-    right: 0px;
+    left: 0px;
     height: 0px;
     border-width: 4px;
-    border-color: transparent transparent transparent #000;
+    border-color: transparent #000 transparent transparent;
     border-style: solid;
   }
 
@@ -278,10 +279,11 @@ mark {
     border: 1px solid #357EBD;
     position: absolute;
     z-index: 9999;
-    right: -($side_width);
+    left: -($side_width);
     top: -1px;
     width: $side_width;
-    border-radius: 0px 8px 8px 8px;
+    border-radius: 8px 0px 8px 8px;
+    text-align: right;
   }
 
   li.parent:hover>.child {

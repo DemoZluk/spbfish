@@ -4,4 +4,5 @@
     %nav.menu_side
       %ul
         - Group.where(parent_id: '').order('-priority DESC').each do |group|
+          = group.all_products.accessible_by(current_ability).any?
           = menu_for_group(group)

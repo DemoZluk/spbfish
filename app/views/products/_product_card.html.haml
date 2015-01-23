@@ -14,10 +14,10 @@
           Цена: 
           - if user_signed_in?
             = number_to_currency @product.price
+            %br/
+            %small= "за 1 #{@product.storages.first.try(:unit) || 'шт'}."
           - else
             = link_to 'Узнать', sign_up_path, data: {toggle: 'modal', target: '#form'}, remote: true
-        %br/
-        %small= "за 1 #{@product.storages.first.try(:unit) || 'шт'}."
       %p.item
         Артикул:
         = @product.item

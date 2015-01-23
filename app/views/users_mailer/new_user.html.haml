@@ -1,0 +1,18 @@
+%html
+  %head
+    %title Регистрация нового пользователя
+    %meta{:content => "text/html; charset=utf-8"}/ 
+    %link{:rel => "stylesheet", :type => "text/css", :href => "emails.css.scss"}/ 
+
+  %body.email.new_user
+    %h2 Новый пользователь
+    %p Запрос на регистрацию нового пользователя:
+    %br/
+    %table
+      - @data.each do |k,v|
+        - if v.present?
+          %tr
+            %th= t("#{k}")
+            %td= v
+
+  %p= link_to 'Подтвердить аккаунт', confirm_user_url(t: @user.confirmation_token)

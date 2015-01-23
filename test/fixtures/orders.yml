@@ -5,10 +5,10 @@ one:
   address: 123 The Street
   phone_number: 123456
   email: dave@example.org
-  pay_type: Наличный
+  shipping_type: Наличный
 
 two:
   name: MyString
   address: MyText
   email: MyString
-  pay_type: MyString
+  shipping_type: MyString

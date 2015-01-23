@@ -15,9 +15,9 @@
                   %div
                     Ждём подтверждения почты: #{resource.unconfirmed_email}
               %fieldset
-                %p Оставьте незаполненным, если не хотите изменить.
+                %p Оставьте незаполненным, если не хотите изменять текущий пароль.
                 .form-group
-                  = f.label :password
+                  = f.label :password, 'Новый пароль'
                   = f.password_field :password, :autocomplete => 'off', class: 'form-control'
                 .form-group
                   = f.label :password_confirmation

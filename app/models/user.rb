@@ -20,13 +20,10 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  validates :email, presence: true, uniqueness: {case_sensitive: false}
+  #validates :email, uniqueness: {case_sensitive: false}
   validates :discount, numericality: { only_integer: true }, inclusion: { in: 0..100, message: 'Скидка должна быть в пределах от 0 до 100' }
 
-  def create options = {}
-    puts '!!!'
-    super options
-  end
+  alias_method :info, :information
 
 
   def admin?

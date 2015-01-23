@@ -32,7 +32,7 @@ class OrdersControllerTest < ActionController::TestCase
 
   test "should fail to create order" do
     assert_no_difference('Order.count') do
-      post :create, order: { address: @ordr.address, email: @ordr.email, name: @ordr.name, pay_type: @ordr.pay_type, shipping_date: DateTime.current-1 }
+      post :create, order: { address: @ordr.address, email: @ordr.email, name: @ordr.name, shipping_type: @ordr.shipping_type, shipping_date: DateTime.current-1 }
     end
   end
 
@@ -47,6 +47,6 @@ class OrdersControllerTest < ActionController::TestCase
   end
 
   test "should update order" do
-    patch :update, id: @ordr, order: { address: @ordr.address, email: @ordr.email, name: @ordr.name, pay_type: @ordr.pay_type }
+    patch :update, id: @ordr, order: { address: @ordr.address, email: @ordr.email, name: @ordr.name, shipping_type: @ordr.shipping_type }
   end
 end
