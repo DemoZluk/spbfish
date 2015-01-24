@@ -1,16 +1,16 @@
 %ul.parent
-  -# application_helper: menu_item(path = {}, name = nil, html_options = nil, &block)
+  -# menu_items_helper: menu_item(path = {}, options = nil, condition = true, html_options = nil, &block)
   - if user_signed_in? && current_user.role?.any?
     %li= render 'shared/control_panel'
-  %li= link_to('О компании', store_path, class: 'btn-gray')
-  %li= link_to('Каталог', '/catalog', class: 'btn-gray')
-  = menu_item(user_signed_in?, 'Скачать прайс', download_price_path)
+  %li= menu_item('О компании', store_path)
+  %li= menu_item('Каталог', '/catalog')
+  = menu_item('Скачать прайс', download_price_path, user_signed_in?)
   - MenuItem.all_published.primary.each do |item|
     %li
-      %ul= menu_item(item.published?, item.title, item.permalink)
+      %ul= menu_item(item.title, item.permalink, item.published?)
       - if item.children.any?
         %ul.child
           - item.children.each do |child|
-            = menu_item(true, child.title, child.permalink)
-  %li= link_to('Гарантия', '/warranty', class: 'btn-gray')
-  %li= link_to('Отзывы и пожелания', '/feedback', class: 'btn-gray')
+            = menu_item(child.title, child.permalink)
+  %li= menu_item('Гарантия', '/warranty')
+  %li= menu_item('Отзывы и пожелания', '/feedback')

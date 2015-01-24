@@ -46,7 +46,7 @@
 //   }
 
 body {
-  margin: 5px 5px 70px;
+  margin: 0px 0px 70px;
 }
 
 #main label, #side label {
@@ -133,20 +133,6 @@ form.centered-form {
   background-color: #F0F000;
   border-color: #444;
   border-width: 2px;
-}
-
-.btn-gray {
-  @extend .btn;
-  background: #CCC;
-}
-
-.current-page {
-  @extend .btn;
-  background: #5DB141;
-}
-
-ul.child a.current-page {
-  border-radius: 4px 0px 4px 4px;
 }
 
 .btn-link {

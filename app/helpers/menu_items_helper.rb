@@ -1,5 +1,5 @@
 module MenuItemsHelper
-  def menu_item(condition, name, options = nil, html_options = {})
+  def menu_item(name, options = {}, condition = true, html_options = {})
     if condition
       render 'shared/menu_item', name: name, options: options, html_options: html_options
       # c = 'btn-gray'

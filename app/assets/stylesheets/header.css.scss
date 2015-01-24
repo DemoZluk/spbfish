@@ -1,21 +1,14 @@
 
 #header_wrapper {
-  border: 2px solid #444444;
-  padding: 7px;
   margin-bottom: 5px;
-  border-radius: 5px;
+  background: url('/images/scrolling-bg.jpg') 0 0;
 }
 
 #header {
-  display: inline-block;
-  width: 100%;
   min-height: 115px;
-  background: #428bca;
-  padding: 10px;
-  box-shadow: 0 0 3px #1FC0C0;
+  padding: 15px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
-  border-radius: 5px;
   position: relative;
 
   #logo {
@@ -67,19 +60,36 @@
 #enter_form {
   display: inline-block;
   text-align: right;
-  margin-bottom: 40px;
+  text-align: right;
+
+  a {
+    color: #FFF;
+  }
 }
 
 #top_menu {
   display: block;
-  text-align: right;
+  width: 100%;
+  text-align: center;
+  background: #FFF;
+  box-shadow: 0px -10px 15px 13px #FFF;
 
-  li:hover {
-    text-decoration: underline;
+  .btn-gray {
+    padding: 10px 10px;
+    font-size: 17px;
+    font-weight: bold;
+    vertical-align: middle;
+    border-radius: 20px;
+
+    &:hover, &.current-page {
+      color: #029;
+      box-shadow: -15px 0 7px -10px, 15px 0 7px -10px;
+    }
   }
 
   ul {
     z-index: 10;
+    margin: 0;
 
     li {
       position: relative;
@@ -108,21 +118,17 @@
   }
   
   ul.parent>li, ul.child {
-    border: 2px solid #555;
-    border-radius: 6px;
     //background: rgb(152,224,176); /* Old browsers */
     //@include grad(rgba(152,224,176,1), 0%, rgba(44,224,20,1) , 50%, rgba(5,209,2,1), 51%, rgba(94,229,139,1), 100%);
     //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#98e0b0', endColorstr='#5ee58b',GradientType=0 ); /* IE6-9 */
-    box-shadow: 2px 2px 3px rgba(65, 65, 65, 0.55);
   }
 
   ul.child {
     position: absolute;
-    top: 28px;
-    right: -2px;
+    top: 30px;
+    right: 0px;
     display: none;
-    border-radius: 6px 0px 6px 6px;
-    background: #CCC;
+    background: #FFF;
 
     li {
       a {
@@ -141,11 +147,4 @@ a.phone_number {
   font-size: 20px;
   vertical-align: middle;
   font-weight: bold;
-}
-
-#enter_form {
-  text-align: right;
-  a {
-    color: #FFF;
-  }
 }
