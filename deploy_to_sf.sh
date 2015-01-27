@@ -24,12 +24,12 @@ push () {
 }
 
 deploy () {
-  echo "Stopping apache2 to preserve resources"
-  ssh -t fish@spbfish.ru "sudo service apache2 stop"
+#  echo "Stopping apache2 to preserve resources"
+#  ssh -t fish@spbfish.ru "sudo service apache2 stop"
   cap production deploy
 
-  echo "Starting apache2 again"
-  ssh -t fish@spbfish.ru "sudo service apache2 start"
+#  echo "Starting apache2 again"
+#  ssh -t fish@spbfish.ru "sudo service apache2 start"
 
   echo "Restarting rails app"
   ssh fish@spbfish.ru "touch /home/fish/www/spbfish/current/tmp/restart.txt"
