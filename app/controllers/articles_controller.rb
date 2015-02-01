@@ -16,7 +16,7 @@ class ArticlesController < ApplicationController
       if params[:id] && lookup_context.exists?(params[:id], 'static')
         render template: 'static/main'
       else
-        redirect_to feedback_path, notice: t('.article_doesnt_exist'), flash: {url: request.original_url}
+        redirect_to contacts_path, notice: t('.article_doesnt_exist'), flash: {url: request.original_url}
       end
     end
   end
