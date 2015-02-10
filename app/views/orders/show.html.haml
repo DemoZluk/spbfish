@@ -7,7 +7,7 @@
   %h1.underlined
     = @page_title
     = link_to 'Правка', edit_order_path(@order) if can? :update, @order
-    = link_to 'Печать', print_order_path(@order), class: 'btn-primary' if can? :print, @order
+    -# link_to 'Печать', print_order_path(@order), class: 'btn-primary' if can? :print, @order
   .row
     - if @order.token == params[:t] || can?(:show, @order)
       .col-lg-4.col-lg-push-8

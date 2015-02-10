@@ -1,10 +1,12 @@
 class CartsController < ApplicationController
   include CurrentCart
   include Redirect
-  load_and_authorize_resource
+
   before_action :set_cart, only: [:show, :create, :update, :clear]
   skip_before_action :authenticate_user!, only: [:create, :show, :update, :clear]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
+
+  load_and_authorize_resource
 
   # GET /carts
   # GET /carts.json

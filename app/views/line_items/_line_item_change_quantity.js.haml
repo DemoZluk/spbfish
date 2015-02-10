@@ -1,6 +1,6 @@
+- @order = @line_item.order
 - if @user_cart && @current_cart && @current_cart != @user_cart
-  $('#content .items span').text("#{@user_cart.line_items.count}");
-  $('#content .grand-total > span').html("#{ j grand_total @user_cart }");
+  @current_cart = @user_cart
 
 - else
   // Пересчитать общую сумму
@@ -18,8 +18,8 @@
   // Корзина внизу
   $('#cart').html("#{ j render('shared/cart', cart: @current_cart) }");
 
-  $('#content .items span').text("#{@current_cart.line_items.count}");
-  $('#content .grand-total > span').html("#{ j grand_total @current_cart }");
+$('#content .items span').text("#{(@order || @current_cart).line_items.count}");
+$('#content .grand-total > span').html("#{ j grand_total(@order || @current_cart) }");
 
 - if @line_item && @line_item.quantity > 0
   // Пересчитать количество товаров

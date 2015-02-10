@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    article_params['permalink'] ||= article_params['title'].mb_chars.parameterize.gsub(/^\//, '')
+    (article_params['permalink'] ||= article_params['title'].mb_chars.parameterize).gsub(/^\//, '')
     @article = Article.new(article_params)
 
     respond_to do |format|

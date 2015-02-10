@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   require 'csv'
 
-  load_and_authorize_resource
   skip_before_action :authenticate_user!, only: [:new, :create]
-  skip_authorize_resource only: [:show, :new, :create]
+
+  load_and_authorize_resource except: [:show, :new, :create]
   respond_to :html, :js
 
   # # GET /users
@@ -29,12 +29,15 @@ class UsersController < ApplicationController
   end
 
   def new
+    @user ||= User.new
     @user.build_information
   end
 
   def create
     if verify_recaptcha
-      @user = init_user_with data[:email]
+      generated_password = Devise.friendly_token.first(8)
+      @user = User.new(email: data[:email], password: generated_password)
+
       user_data = data.except(:email, :type)
       info = @user.create_information(user_data) if user_data.reject{|k,v| v.to_s.empty?}.any?
       puts @user.attributes
@@ -77,11 +80,6 @@ class UsersController < ApplicationController
       puts @batch
       render :batch_create
     end
-  end
-
-  def init_user_with email
-    generated_password = Devise.friendly_token.first(8)
-    User.new(email: email, password: generated_password)
   end
 
   # # GET /users/new

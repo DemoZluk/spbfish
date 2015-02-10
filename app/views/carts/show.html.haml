@@ -1,7 +1,7 @@
 .container-fluid
   %h1
     Ваша корзина
-    = link_to 'Список корзин', carts_path
+    = link_to 'Список корзин', carts_path if can? :index, Cart
 
   = render 'carts/cart'
 

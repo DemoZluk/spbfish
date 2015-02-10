@@ -26,7 +26,7 @@
           display: block;
         }
     = csrf_meta_tags
-      
+
   %body{class: "#{controller_name} #{action_name}", id: 'top'}
     #form.modal.fade
       .modal-dialog
@@ -35,7 +35,7 @@
           %button.close{data: {dismiss: 'modal'}} &times;
 
     #error_wrapper
-      - test_message = "Внимание! Сайт принимает заказы и находится в режиме наполнения информации."
+      - test_message = t(:message).presence
       #error{style: (error = flash[:error] || alert || test_message) ? nil : 'display: none'}
         = error
       #etw

@@ -57,40 +57,13 @@ class Product < ActiveRecord::Base
     Product.order('updated_at').last
   end
 
-  # def self.update_products_table
-  #   import = File.read('xml/import.xml')
-  #   doc = Nokogiri::XML(import)
+  def self.min_price
+    minimum(:price).floor
+  end
 
-  #   offers = Nokogiri::XML( File.read('xml/offers.xml') )
-
-  #   if doc.at_css('Каталог').attribute('СодержитТолькоИзменения').value == 'true'
-  #     doc.css('Товар').each do |product|
-  #       item_id     = product.at_css('>Ид').try :content
-  #       item        = product.at_css('>Артикул').try :content
-  #       title       = product.at_css('>Наименование').try :content
-  #       group_id    = product.at_css('>Группы>Ид').try :content
-  #       description = product.at_css('>Описание').try :content
-  #       producer    = product.at_css('>>Изготовитель>Наименование').try :content
-  #       long_name   = product.at_xpath("ЗначенияРеквизитов/ЗначениеРеквизита[Наименование='Полное наименование']/Значение").try :content
-
-  #       permalink   = title.mb_chars.parameterize('-')
-
-  #       price = offers
-
-  #       new_product =  Product.find_or_initialize_by(item_id: item_id)
-  #       new_product.update(
-  #         item:        item,
-  #         title:       title,
-  #         group_id:    group_id,
-  #         description: description,
-  #         producer:    producer,
-  #         long_name:   long_name,
-  #         permalink:   permalink
-  #       )
-
-  #     end
-  #   end
-  # end
+  def self.max_price
+    maximum(:price).ceil
+  end
 
   def avg_rating
     if ratings.any?

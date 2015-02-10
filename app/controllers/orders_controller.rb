@@ -27,10 +27,11 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @page_title = 'Оформление заказа'
-    if user_signed_in?
-      info = Hash(current_user.information.try(:attributes))
+    if user_signed_in? && current_user.information
+      info = Hash(current_user.information.attributes).with_indifferent_access
       info[:email] = current_user.email
-      @order = Order.new(name: info[:shipping_name], address: info[:shipping_address], phone_number: info[:shipping_phone])
+      puts info
+      @order = Order.new(email: current_user.email, name: info[:shipping_name], address: info[:shipping_address], phone_number: info[:shipping_phone])
     else
       @order = Order.new
     end
@@ -45,30 +46,18 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    params = order_params
-    if user_signed_in?
-      if params[:remember]
-        info = Information.find_or_create_by(user_id: current_user.id)
-        info.update order_params.slice(*Information.column_names)
-      end
+    if user_signed_in? && params[:remember]
+      info = Information.find_or_create_by(user_id: current_user.id)
+      info.update shipping_name: order_params[:name], shipping_address: order_params[:address], shipping_phone: order_params[:phone_number]
     end
 
-    @order = Order.new(params)
+    @order = Order.new(order_params)
     @order.user_id = @cart.user_id
     respond_to do |format|
       if @order.save && @order.add_line_items_from_cart(@cart)
         @order.state = 'Активен'
 
-        # if @order.pay_type == 'Наличный'
-        #   type = 'cash'
-        #   message = 'Вы выбрали наличный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. Вы сможете его оплатить наличными средствами при получнеии.'
-        # elsif @order.pay_type == 'Безналичный'
-        #   type = 'noncash'
-        #   message = 'Вы выбрали безналичный расчёт, с вами свяжется менеджер для согласования и подтверждения заказа. После подтверждения в письме вам придет ссылка, пройдя по которой, вы попадёте на страницу с формой оплаты.'
-        # else
-        #   redirect_to store_url, flash: {error: 'Способ оплаты не определён'} and return
-        # end
-        format.html { redirect_to order_url(@order, t: @order.token), flash: {success: message || I18n.t(:order_thanks)} }
+        format.html { redirect_to order_url(@order, t: @order.token), flash: {success: I18n.t(:order_thanks)} }
         format.json { render state: :created, location: @order }
         OrderNotifier.received(@order).deliver
         OrderNotifier.order(@order).deliver
@@ -133,172 +122,22 @@ class OrdersController < ApplicationController
   end
 
   # Confirmation of order by manager
-  def confirm
-    authorize! :confirm, Order
-    if @order.token == params[:token] && @order.update_columns(confirmed_at: DateTime.now) && (@order.state = 'Подтверждён') && OrderNotifier.confirmed(@order).deliver
-      respond_to do |format|
-        format.html { redirect_to_back_or_default flash: { success: "Заказ № #{@order.id} подтверждён"} }
-        format.js { flash.now[:success] = "Заказ № #{@order.id} подтверждён"; render 'orders/change_order.js' }
-        format.json { head :no_content }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to_back_or_default flash: {error: 'Произошла ошибка. Попробоуйте позднее.'} }
-        format.js { flash.now[:error] = 'Произошла ошибка. Попробоуйте позднее.'; render 'orders/change_order.js' }
-        format.json { render json: {message: 'Произошла ошибка. Попробоуйте позднее.'} }
-      end
-    end
-  end
-
-  def print
-    authorize! :print, @order
-  end
-
-  def print_preview
-    authorize! :print, @order
-    @page_title = "Печать заказа №#{@order.id}"
-    @discount = params[:discount].to_i
-    @shipping = params[:shipping].to_i
-  end
-
-  # def yandex_payment
-  #   if @order.token == order_params[:token]
-  #     if @order.confirmed?
-  #       respond_to do |format|
-  #         format.html
-  #         format.js
-  #         format.json { head :no_content }
-  #       end
-  #     else
-  #       redirect_to_back_or_default flash: {error: "Заказ № #{@order.id} ещё не подтверждён."}
+  # def confirm
+  #   authorize! :confirm, Order
+  #   if @order.token == params[:token] && @order.update_columns(confirmed_at: DateTime.now) && (@order.state = 'Подтверждён') && OrderNotifier.confirmed(@order).deliver
+  #     respond_to do |format|
+  #       format.html { redirect_to_back_or_default flash: { success: "Заказ № #{@order.id} подтверждён"} }
+  #       format.js { flash.now[:success] = "Заказ № #{@order.id} подтверждён"; render 'orders/change_order.js' }
+  #       format.json { head :no_content }
   #     end
   #   else
-  #     redirect_to_back_or_default flash: {error: 'Ошибка! Неверный ключ.'}
-  #   end
-  # end
-
-  # def check
-  #   @params = payment_params
-  #   if @order
-  #     order_parameters = {}
-  #     order_parameters[:action] = 'checkOrder'
-  #     order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
-  #     order_parameters[:orderSumCurrencyPaycash] = '643'
-  #     order_parameters[:orderSumBankPaycash] = '1001' #@params[:shopSumBankPaycash]
-  #     order_parameters[:shopId] = '22081'
-  #     order_parameters[:invoiceId] = @params[:invoiceId]
-  #     order_parameters[:customerNumber] = @params[:customerNumber] || ''
-  #     order_parameters[:shopPassword] = 'fishMarkt'
-
-  #     md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
-
-  #     @code = 200
-
-  #     if md5 == @params[:md5].upcase
-  #       @code = 0
-  #     else
-  #       @code = 1
+  #     respond_to do |format|
+  #       format.html { redirect_to_back_or_default flash: {error: 'Произошла ошибка. Попробоуйте позднее.'} }
+  #       format.js { flash.now[:error] = 'Произошла ошибка. Попробоуйте позднее.'; render 'orders/change_order.js' }
+  #       format.json { render json: {message: 'Произошла ошибка. Попробоуйте позднее.'} }
   #     end
-
-  #     render 'orders/result.xml'
-  #   else
-  #     puts 'fail'
   #   end
   # end
-
-  # def payment_success
-  #   respond_to do |format|
-  #     format.html { flash.now[:success] = 'Платеж успешно проведён' }
-  #     format.json { render json: {message: 'Платеж успешно проведён'} }
-  #   end
-  # end
-
-  # def payment_failure
-  #   respond_to do |format|
-  #     format.html { flash.now[:danger] = 'Платеж не проведён' }
-  #     format.json { render json: {message: 'Платеж не проведён'} }
-  #   end
-  # end
-
-  # def payment
-  #   @params = payment_params
-  #   if @order
-  #     order_parameters = {}
-  #     order_parameters[:action] = 'paymentAviso'
-  #     order_parameters[:orderSumAmount] = '%.2f' % @order.total_price
-  #     order_parameters[:orderSumCurrencyPaycash] = '643'
-  #     order_parameters[:orderSumBankPaycash] = '1001' #@params[:shopSumBankPaycash]
-  #     order_parameters[:shopId] = '22081'
-  #     order_parameters[:invoiceId] = @params[:invoiceId]
-  #     order_parameters[:customerNumber] = @params[:customerNumber] || ''
-  #     order_parameters[:shopPassword] = 'fishMarkt'
-
-  #     md5 = Digest::MD5.hexdigest(order_parameters.values.join(';')).upcase
-
-  #     @code = 200
-
-  #     if md5 == @params[:md5].upcase
-  #       @code = 0
-  #       @order.state = 'Оплачен'
-  #       @order.update_attribute(:invoice_id, @params[:invoiceId])
-  #       OrderNotifier.paid(@order, @params).deliver
-  #     else
-  #       @code = 1
-  #     end
-
-
-  #     render 'orders/payment.xml'
-  #   else
-  #     redirect_to '/payment_failure',  flash: {error: 'Предоставлены неизвестные параметры'}
-  #   end
-  # end
-
-  def close
-    authorize! :close, Order
-    if (@order.state = 'Закрыт')
-      respond_to do |format|
-        format.html { redirect_to orders_url, flash: { warning: "Заказ № #{@order.id} закрыт"} }
-        format.js {flash.now[:warning] = "Заказ № #{@order.id} закрыт"; render 'orders/change_order.js'}
-        format.json { head :no_content }
-      end
-    end
-  end
-
-  def cancel
-    authorize! :cancel, Order
-    if (@order.state = 'Отменён') && (@order.update_columns(confirmed_at: nil))
-      OrderNotifier.canceled(@order).deliver
-      respond_to do |format|
-        format.html { redirect_to orders_url, flash: { warning: "Заказ № #{@order.id} отменён"} }
-        format.js {flash.now[:warning] = "Заказ № #{@order.id} отменён"; render 'orders/change_order.js'}
-        format.json { head :no_content }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to_back_or_default flash: { warning: "Не получилось отменть заказ №#{@order.id}"} }
-        format.js { flash.now[:warning] = "Не получилось отменть заказ № #{@order.id}"; render 'orders/change_order.js' }
-        format.json { render json: {status: 'error'} }
-      end
-    end
-  end
-
-  def repeat
-    if @order.state = 'Активен'
-      OrderNotifier.received(@order).deliver
-      OrderNotifier.order(@order).deliver
-      respond_to do |format|
-        format.html { redirect_to_back_or_default flash: {success: 'Заказ заново размещён'} }
-        format.js { flash.now[:success] = 'Заказ заново размещён'; render 'orders/change_order.js'}
-        format.json { head :no_content }
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to_back_or_default flash: {success: 'Заказ не может быть заново размещён'} }
-        format.js {render 'orders/change_order.js'}
-        format.json { head :no_content }
-      end
-    end
-  end
 
   def multiple_orders
     if params[:commit] == 'Удалить'
@@ -317,7 +156,7 @@ class OrdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @controller = Rails.application.routes.recognize_path(request.referrer)[:controller]
-      @order = Order.find(payment_params[:orderNumber] || params[:id] || order_params[:id])
+      @order = Order.find(params[:id] || order_params[:id])
       @line_items = @order.line_items.page params[:page]
     rescue ActiveRecord::RecordNotFound
       redirect_to_back_or_default flash: {error: t('orders.show.no_such_order')}
@@ -339,7 +178,4 @@ class OrdersController < ApplicationController
       {}
     end
 
-    def payment_params
-      params.permit(:performedDatetime, :paymentDatetime, :code, :shopId, :invoiceId, :orderSumAmount, :shopSumAmount, :shopSumBankPaycash, :message, :techMessage, :orderNumber, :md5, :customerNumber)
-    end
 end

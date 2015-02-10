@@ -5,11 +5,11 @@
   - if user_signed_in?
     #price.well.well-sm
       %h4 Цена
-      = text_field_tag 'minPrice', params['minPrice'], {class: 'min', placeholder: @products_min, data: {min: @products_min, current: @min_price}}
+      = text_field_tag 'minPrice', params['minPrice'], {class: 'min', placeholder: prods.min_price, data: {min: prods.min_price, current: @min_price}}
       \-
-      = text_field_tag 'maxPrice', params['maxPrice'], {class: 'max', placeholder: @products_max, data: {max: @products_max, current: @max_price}}
+      = text_field_tag 'maxPrice', params['maxPrice'], {class: 'max', placeholder: prods.max_price, data: {max: prods.max_price, current: @max_price}}
       руб.
-      .slider{data: {min: @products_min, max: @products_max}}
+      .slider{data: {min: prods.min_price, max: prods.max_price}}
   #producer
     - prod_list = prods.group{producer}.order{count(id).desc}.size.to_a
     - if prod_list.any?
@@ -35,9 +35,9 @@
           %h4= title[0]
           - if vals.numerical.length > 5
             .numerical{ data: { id: prop.id } }
-              %input.min{:type => "text", placeholder: vals.min_by(&:value).value, name: "r[#{prop.id}][]", value: (params[:r].try(:[], prop.id.to_s).try(:[], 0))}/
+              %input.min{:type => "text", placeholder: vals.min_by(&:value).value, name: "r[#{prop.id}][min]", value: (params[:r].try(:[], prop.id.to_s).try(:[], 'min'))}/
               \ - 
-              %input.max{:type => "text", placeholder: vals.max_by(&:value).value, name: "r[#{prop.id}][]", value: (params[:r].try(:[], prop.id.to_s).try(:[], 1))}
+              %input.max{:type => "text", placeholder: vals.max_by(&:value).value, name: "r[#{prop.id}][max]", value: (params[:r].try(:[], prop.id.to_s).try(:[], 'max'))}
               = title[1]
               .slider{data: {min: vals.min_by(&:value).value, max: vals.max_by(&:value).value}}
           - else

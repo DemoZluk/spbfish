@@ -12,14 +12,6 @@
         .col-xs-12.col-lg-6.right.grand-total
           Итого:
           %span= number_to_currency @cart.total_price
-      - if user_signed_in?
-        .row.discount
-          .col-xs-12.col-lg-6.items
-            Ваша скидка:
-            %span= "#{@cart.user.try(:discount).to_i}%"
-          .col-xs-12.col-lg-6.right.grand-total
-            Итого cо скидкой: 
-            %span= number_to_currency @cart.discount_price
 
     .col-xs12.col-lg-4
       .form-group

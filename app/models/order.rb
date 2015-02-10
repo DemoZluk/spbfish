@@ -6,7 +6,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
 
   SHIPPING_TYPES = ['Доставка', 'Самовывоз']
-  validates :name, :email, :shipping_date, :phone_number, presence: true
+  validates :name, :email, :phone_number, presence: true
   validates :address, presence: true, unless: 'shipping_type == "Самовывоз"'
   validates :shipping_type, presence: true, inclusion: SHIPPING_TYPES
   validates :comment, length: {maximum: 200}

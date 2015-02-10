@@ -3,10 +3,10 @@ class ProductsController < ApplicationController
   include CurrentSettings
   include CurrentProducts
 
-  load_and_authorize_resource except: [:show, :vote, :search]
-
   before_action :set_product, only: [:show, :edit, :update, :destroy, :vote]
   before_action :change_user_prefs, only: [:index, :search]
+
+  load_and_authorize_resource except: [:show, :vote, :search]
 
   skip_before_action :authenticate_user!, only: [:download_price, :index, :show, :search]
   skip_before_action :set_cart, only: [:download_price]
@@ -54,7 +54,7 @@ class ProductsController < ApplicationController
         }
       end
     else
-      redirect_to store_path, notice: 'Для скачивания прайса необходимо зарегистрироваться.'
+      redirect_to store_path, flash: {error: "Для скачивания прайса необходимо #{view_context.link_to 'войти', login_url} или #{view_context.link_to 'зарегистрироваться', sign_up_url}.".html_safe}
     end
   end
 
@@ -164,7 +164,7 @@ class ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find_by(permalink: params[:id])
+      @product = Product.find_by(permalink: params[:id]) || redirect_to_back_or_default(flash: {error: 'Не найден товар.'})
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

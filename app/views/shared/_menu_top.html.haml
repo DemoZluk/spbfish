@@ -4,7 +4,7 @@
     %li= render 'shared/control_panel'
   %li= menu_item('О компании', store_path)
   %li= menu_item('Каталог', '/catalog')
-  = menu_item('Скачать прайс', download_price_path, user_signed_in?)
+  = menu_item('Скачать прайс', download_price_path)
   - MenuItem.all_published.primary.each do |item|
     %li
       %ul= menu_item(item.title, item.permalink, item.published?)
@@ -12,5 +12,5 @@
         %ul.child
           - item.children.each do |child|
             = menu_item(child.title, child.permalink)
-  -#%li= menu_item('Гарантия', '/warranty')
+  %li= menu_item('Гарантия', '/warranty')
   %li= menu_item('Контакты', '/contacts')

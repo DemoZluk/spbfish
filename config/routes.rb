@@ -13,6 +13,7 @@ Spbfish::Application.routes.draw do
   resources :products, except: [:new, :create, :destroy] do
     # get :who_bought, on: :member
     get :vote, on: :member
+    get :edit, on: :member
   end
 
   match 'force_update' => 'products#force_update', via: [:post, :get]
@@ -44,19 +45,18 @@ Spbfish::Application.routes.draw do
   # get   'payment_success' => 'orders#payment_success'
   # get   'payment_failure' => 'orders#payment_failure'
   # match 'yandex-payment' => 'orders#yandex_payment', via: [:get, :post], as: 'yandex_pay'
-  resources :orders, except: :index do
-    member do
-      get 'cancel'
-      get 'confirm/:token', action: 'confirm', as: 'confirm'
-      get 'payment'
-      get 'repeat'
-      get 'close'
-      get 'print'
-      match 'print_preview', via: [:get, :post]
-    end
+  resources :orders do
+    # member do
+      # get 'cancel'
+      # get 'confirm/:token', action: 'confirm', as: 'confirm'
+      # get 'payment'
+      # get 'repeat'
+      # get 'close'
+      # get 'print'
+      # match 'print_preview', via: [:get, :post]
+    # end
   end
   post 'add_by_item/:id' => 'orders#add_by_item', as: 'add_by_item'
-
   delete 'multiple_orders' => 'orders#multiple_orders', action: 'delete'
 
   get 'profile' => 'users#show', as: 'user_root'
