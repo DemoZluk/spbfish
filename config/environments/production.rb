@@ -20,7 +20,7 @@ Spbfish::Application.configure do
     domain: "spbfish.ru",
     authentication: "plain",
     user_name: "mail@spbfish.ru",
-    password: "discus",
+    password: "alexis",
     enable_starttls_auto: true,
     openssl_verify_mode: 'none'
   }
